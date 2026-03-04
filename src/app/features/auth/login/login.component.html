@@ -1,0 +1,14 @@
+<div class="login-wrap">
+  <h2>Đăng nhập</h2>
+  <form [formGroup]="form" (ngSubmit)="submit()">
+    <div>
+      <label>Tên đăng nhập</label>
+      <input formControlName="username" />
+    </div>
+    <div>
+      <label>Mật khẩu</label>
+      <input type="password" formControlName="password" />
+    </div>
+    <button type="submit">Đăng nhập</button>
+  </form>
+</div>
