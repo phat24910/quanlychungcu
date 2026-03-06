@@ -1,0 +1,14 @@
+.input-error {
+  border-color: #EF4444 !important;
+  box-shadow: 0 0 0 3px rgba(239,68,68,0.08);
+}
+
+.field-tooltip { display: flex; align-items: center; }
+
+.field-tooltip .anticon {
+  font-size: 18px;
+}
+
+.list-disc {
+  list-style-type: disc;
+}
