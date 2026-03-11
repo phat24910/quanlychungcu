@@ -25,6 +25,13 @@ const routes: Routes = [
       import('@features/resident/feature').then((m) => m.ResidentFeatureModule)
   },
 
+  {
+    path: 'profile',
+    canActivate: [AuthGuard],
+    loadChildren: () =>
+      import('../../../../libs/features/profile/feature/src/lib').then((m) => m.ProfileFeatureModule)
+  },
+
   { path: '**', redirectTo: 'auth/login' }
 ];
 

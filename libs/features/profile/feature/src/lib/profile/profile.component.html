@@ -1,0 +1,118 @@
+<div class="p-4">
+  <div *ngIf="loading && !profile" style="margin-top:12px; text-align:center"><nz-spin></nz-spin></div>
+  <div *ngIf="!loading && !profile" style="margin-top:12px">Không có dữ liệu</div>
+
+  <nz-card *ngIf="profile" nzBordered class="profile-card">
+    <div class="profile-header">
+      <div class="avatar-wrapper">
+        <div class="avatar-circle">
+          <img [src]="profile?.anhDaiDienUrl || avatarUrl" alt="avatar"
+            style="width:100%;height:100%;object-fit:cover" />
+        </div>
+      </div>
+      <div class="profile-meta">
+        <div class="username">{{ profile?.username || 'admin1' }}</div>
+        <div class="user-id">Mã người dùng: {{ profile?.id || 1 }}</div>
+        <div class="edit-actions">
+          <button nz-button class="edit-btn" (click)="startEdit()" *ngIf="!editMode">Chỉnh sửa</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="profile-body">
+      <nz-descriptions nzBordered [nzColumn]="1">
+        <nz-descriptions-item nzTitle="Email">{{ profile?.email || '' }}</nz-descriptions-item>
+        <nz-descriptions-item nzTitle="Số điện thoại">{{ profile?.phoneNumber || '' }}</nz-descriptions-item>
+        <nz-descriptions-item nzTitle="CMND/CCCD">{{ profile?.idCard || '' }}</nz-descriptions-item>
+        <nz-descriptions-item nzTitle="Địa chỉ">{{ profile?.diaChi || '' }}</nz-descriptions-item>
+        <nz-descriptions-item nzTitle="Giới tính">{{ profile?.gioiTinhName || '' }}</nz-descriptions-item>
+        <nz-descriptions-item nzTitle="Ngày sinh">{{ profile?.dob | date:'dd/MM/yyyy' }}</nz-descriptions-item>
+        <nz-descriptions-item nzTitle="Quyền hạn">{{ profile?.roleName || 'ADMIN' }}</nz-descriptions-item>
+      </nz-descriptions>
+    </div>
+  </nz-card>
+
+  <!-- loading template -->
+  <ng-template #loading>
+    <div class="flex items-center justify-center gap-5 py-20"><nz-spin></nz-spin></div>
+  </ng-template>
+
+  <!-- Edit modal -->
+  <nz-modal [(nzVisible)]="isEditVisible" nzTitle="Chỉnh sửa thông tin cá nhân" (nzOnCancel)="cancelEdit()"
+    (nzOnOk)="save()" [nzOkLoading]="saving" nzOkText="Lưu" nzCancelText="Hủy" [nzWidth]="720">
+    <ng-container *nzModalContent>
+      <div class="edit-modal-content flex gap-6 items-start">
+        <div class="modal-left w-28 flex flex-col items-center">
+            <div class="modal-avatar">
+              <img class="w-20 h-20 rounded-full object-cover border-4 border-white shadow" [src]="avatarPreview || avatarUrl || profile?.anhDaiDienUrl" alt="Ảnh đại diện" />
+            </div>
+            <label class="file-input-label mt-2 flex flex-col items-center gap-2">
+              <input class="hidden" type="file" (change)="onFileChange($event)" accept="image/*" />
+              <span class="choose-txt px-3 py-1 bg-white border rounded text-sm">Thay ảnh</span>
+            </label>
+          </div>
+
+        <div class="modal-right flex-1">
+          <form nz-form nzLayout="horizontal" class="modal-form">
+            <nz-form-item>
+              <nz-form-label nzFor="email" nzSpan="6">Email</nz-form-label>
+              <nz-form-control nzSpan="18">
+                <input id="email" name="email" nz-input [(ngModel)]="editModel.email" />
+              </nz-form-control>
+            </nz-form-item>
+
+            <nz-form-item>
+              <nz-form-label nzFor="phone" nzSpan="6">Số điện thoại</nz-form-label>
+              <nz-form-control nzSpan="18">
+                <input id="phone" name="phone" nz-input [(ngModel)]="editModel.phoneNumber" />
+              </nz-form-control>
+            </nz-form-item>
+
+            <nz-form-item>
+              <nz-form-label nzFor="idcard" nzSpan="6">CMND/CCCD</nz-form-label>
+              <nz-form-control nzSpan="18">
+                <input id="idcard" name="idcard" nz-input [(ngModel)]="editModel.idCard" />
+              </nz-form-control>
+            </nz-form-item>
+
+            <nz-form-item>
+              <nz-form-label nzFor="name" nzSpan="6">Họ & Tên</nz-form-label>
+              <nz-form-control nzSpan="18">
+                <div style="display:flex;gap:8px"><input name="firstName" nz-input [(ngModel)]="editModel.firstName"
+                    placeholder="Họ" /><input name="lastName" nz-input [(ngModel)]="editModel.lastName"
+                    placeholder="Tên" /></div>
+              </nz-form-control>
+            </nz-form-item>
+
+            <nz-form-item>
+              <nz-form-label nzFor="diachi" nzSpan="6">Địa chỉ</nz-form-label>
+              <nz-form-control nzSpan="18">
+                <input id="diachi" name="diachi" nz-input [(ngModel)]="editModel.diaChi" />
+              </nz-form-control>
+            </nz-form-item>
+
+            <nz-form-item>
+              <nz-form-label nzFor="gioitinh" nzSpan="6">Giới tính</nz-form-label>
+              <nz-form-control nzSpan="18">
+                <nz-select id="gioitinh" name="gioitinh" class="gioitinh-select" style="width:100%"
+                  [(ngModel)]="editModel.gioiTinhId">
+                  <nz-option [nzValue]="null" nzLabel="Chưa chọn"></nz-option>
+                  <nz-option [nzValue]="0" nzLabel="Không xác định"></nz-option>
+                  <nz-option [nzValue]="1" nzLabel="Nam"></nz-option>
+                  <nz-option [nzValue]="2" nzLabel="Nữ"></nz-option>
+                </nz-select>
+              </nz-form-control>
+            </nz-form-item>
+
+            <nz-form-item>
+              <nz-form-label nzFor="dob" nzSpan="6">Ngày sinh</nz-form-label>
+              <nz-form-control nzSpan="18">
+                <input id="dob" name="dob" nz-input type="date" [(ngModel)]="editModel.dob" />
+              </nz-form-control>
+            </nz-form-item>
+          </form>
+        </div>
+      </div>
+    </ng-container>
+  </nz-modal>
+</div>

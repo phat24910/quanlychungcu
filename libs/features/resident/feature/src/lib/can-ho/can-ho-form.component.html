@@ -1,0 +1,38 @@
+<div>
+  <h3>{{ id ? 'Cập nhật' : 'Tạo căn hộ' }}</h3>
+  <form nz-form [formGroup]="form" (ngSubmit)="save()">
+    <nz-form-item>
+      <nz-form-label [nzSpan]="6">Toà nhà ID</nz-form-label>
+      <nz-form-control [nzSpan]="14">
+        <input nz-input type="number" formControlName="toaNhaId" />
+      </nz-form-control>
+    </nz-form-item>
+
+    <nz-form-item>
+      <nz-form-label [nzSpan]="6">Mã căn hộ</nz-form-label>
+      <nz-form-control [nzSpan]="14">
+        <input nz-input formControlName="maCanHo" />
+      </nz-form-control>
+    </nz-form-item>
+
+    <nz-form-item>
+      <nz-form-label [nzSpan]="6">Diện tích</nz-form-label>
+      <nz-form-control [nzSpan]="14">
+        <nz-input-number formControlName="dienTich" [nzMin]="0"></nz-input-number>
+      </nz-form-control>
+    </nz-form-item>
+
+    <nz-form-item>
+      <nz-form-label [nzSpan]="6">Tầng</nz-form-label>
+      <nz-form-control [nzSpan]="14">
+        <input nz-input type="number" formControlName="tang" />
+      </nz-form-control>
+    </nz-form-item>
+
+    <nz-form-item>
+      <nz-form-control [nzSpan]="14" [nzOffset]="6">
+        <button nz-button nzType="primary" type="submit">Lưu</button>
+      </nz-form-control>
+    </nz-form-item>
+  </form>
+</div>

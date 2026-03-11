@@ -2,6 +2,11 @@
 {
   "extends": "./tsconfig.base.json",
   "compileOnSave": false,
+  "include": [
+    "src/**/*.ts",
+    "apps/**/*.ts",
+    "libs/**/*.ts"
+  ],
   "angularCompilerOptions": {
     "enableI18nLegacyMessageIdFormat": false,
     "strictInjectionParameters": true,

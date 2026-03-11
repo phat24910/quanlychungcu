@@ -1,0 +1,28 @@
+<div>
+  <h2 class="text-lg font-semibold mb-3">Danh sách tầng
+    <span *ngIf="toaNhaName">- {{ toaNhaName }}</span>
+  </h2>
+
+  <nz-table [nzData]="items" [nzLoading]="loading" [nzShowPagination]="false">
+    <thead>
+      <tr>
+        <th style="width:60px">STT</th>
+        <th>Mã tầng</th>
+        <th>Tên tầng</th>
+        <th>Loại tầng</th>
+        <th style="width:120px">Thao tác</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let it of items; let i = index">
+        <td>{{ i + 1 }}</td>
+        <td>{{ it.maTang }}</td>
+        <td>{{ it.tenTang }}</td>
+        <td>{{ it.tenLoaiTang || '-' }}</td>
+        <td>
+          <button nz-button nzType="link" class="text-red-500" (click)="deleteOne(it.id)">Xóa</button>
+        </td>
+      </tr>
+    </tbody>
+  </nz-table>
+</div>

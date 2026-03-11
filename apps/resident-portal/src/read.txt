@@ -1,0 +1,1890 @@
+Đăng nhập
+/api/auth/login
+{
+  "username": "string",
+  "password": "string"
+}
+
+Code	Description	Links
+200
+OK
+
+Media type
+
+text/plain
+Controls Accept header.
+Example Value
+Schema
+{
+  "result": {
+    "userId": 0,
+    "username": "string",
+    "email": "string",
+    "anhDaiDienUrl": "string",
+    "role": "string",
+    "fullName": "string",
+    "accessToken": "string",
+    "refreshToken": "string"
+  },
+  "warningMessages": [
+    "string"
+  ],
+  "errors": [
+    {
+      "code": "string",
+      "description": "string"
+    }
+  ],
+  "isOk": true
+}
+No links
+400
+Bad Request
+
+Media type
+
+text/plain
+Example Value
+Schema
+{
+  "result": "string",
+  "warningMessages": [
+    "string"
+  ],
+  "errors": [
+    {
+      "code": "string",
+      "description": "string"
+    }
+  ],
+  "isOk": true
+}
+
+
+
+Đăng xuất
+/api/auth/logout
+200
+OK
+
+Media type
+
+text/plain
+Controls Accept header.
+Example Value
+Schema
+{
+  "result": true,
+  "warningMessages": [
+    "string"
+  ],
+  "errors": [
+    {
+      "code": "string",
+      "description": "string"
+    }
+  ],
+  "isOk": true
+}
+No links
+400
+Bad Request
+
+Media type
+
+text/plain
+Example Value
+Schema
+{
+  "result": "string",
+  "warningMessages": [
+    "string"
+  ],
+  "errors": [
+    {
+      "code": "string",
+      "description": "string"
+    }
+  ],
+  "isOk": true
+}
+
+
+
+
+
+ Cấp lại access token mới bằng refresh token
+/api/auth/refresh-token
+{
+  "token": "string"
+}
+Responses
+Code	Description	Links
+200
+OK
+
+Media type
+
+text/plain
+Controls Accept header.
+Example Value
+Schema
+{
+  "result": {
+    "userId": 0,
+    "username": "string",
+    "email": "string",
+    "anhDaiDienUrl": "string",
+    "role": "string",
+    "fullName": "string",
+    "accessToken": "string",
+    "refreshToken": "string"
+  },
+  "warningMessages": [
+    "string"
+  ],
+  "errors": [
+    {
+      "code": "string",
+      "description": "string"
+    }
+  ],
+  "isOk": true
+}No links
+400
+Bad Request
+
+Media type
+
+text/plain
+Example Value
+Schema
+{
+  "result": "string",
+  "warningMessages": [
+    "string"
+  ],
+  "errors": [
+    {
+      "code": "string",
+      "description": "string"
+    }
+  ],
+  "isOk": true
+}
+
+
+
+
+
+
+Yêu cầu tạo mã khôi phục mật khẩu qua email
+/api/auth/forgot-password
+Request body
+
+application/json
+Example Value
+Schema
+{
+  "username": "string"
+}
+Responses
+Code	Description	Links
+200
+OK
+
+Media type
+
+text/plain
+Controls Accept header.
+Example Value
+Schema
+{
+  "result": "string",
+  "warningMessages": [
+    "string"
+  ],
+  "errors": [
+    {
+      "code": "string",
+      "description": "string"
+    }
+  ],
+  "isOk": true
+}
+No links
+400
+Bad Request
+
+Media type
+
+text/plain
+Example Value
+Schema
+{
+  "result": "string",
+  "warningMessages": [
+    "string"
+  ],
+  "errors": [
+    {
+      "code": "string",
+      "description": "string"
+    }
+  ],
+  "isOk": true
+}
+
+
+
+
+
+Đặt lại mật khẩu mới thông qua mã khôi phục
+/api/auth/reset-password
+Request body
+
+application/json
+Example Value
+Schema
+{
+  "username": "string",
+  "resetCode": "string",
+  "newPassword": "string",
+  "confirmPassword": "string"
+}
+Responses
+Code	Description	Links
+200
+OK
+
+Media type
+
+text/plain
+Controls Accept header.
+Example Value
+Schema
+{
+  "result": true,
+  "warningMessages": [
+    "string"
+  ],
+  "errors": [
+    {
+      "code": "string",
+      "description": "string"
+    }
+  ],
+  "isOk": true
+}
+No links
+400
+Bad Request
+
+Media type
+
+text/plain
+Example Value
+Schema
+{
+  "result": "string",
+  "warningMessages": [
+    "string"
+  ],
+  "errors": [
+    {
+      "code": "string",
+      "description": "string"
+    }
+  ],
+  "isOk": true
+}
+
+
+
+
+
+
+Thay đổi mật khẩu cho người dung đang đăng nhập
+/api/auth/change-password
+Request body
+
+application/json
+Example Value
+Schema
+{
+  "oldPassword": "string",
+  "newPassword": "string",
+  "confirmPassword": "string"
+}
+Responses
+Code	Description	Links
+200
+OK
+
+Media type
+
+text/plain
+Controls Accept header.
+Example Value
+Schema
+{
+  "result": "string",
+  "warningMessages": [
+    "string"
+  ],
+  "errors": [
+    {
+      "code": "string",
+      "description": "string"
+    }
+  ],
+  "isOk": true
+}
+No links
+400
+Bad Request
+
+Media type
+
+text/plain
+Example Value
+Schema
+{
+  "result": "string",
+  "warningMessages": [
+    "string"
+  ],
+  "errors": [
+    {
+      "code": "string",
+      "description": "string"
+    }
+  ],
+  "isOk": true
+}
+
+
+
+
+
+
+tạo mới tòa nhà
+/api/toa-nha
+Parameters
+Try it out
+No parameters
+
+Request body
+
+application/json
+Example Value
+Schema
+{
+  "maToaNha": "string",
+  "tenToaNha": "string",
+  "diaChi": "string",
+  "moTa": "string",
+}
+Responses
+Code	Description	Links
+200
+OK
+
+Media type
+
+text/plain
+Controls Accept header.
+Example Value
+Schema
+{
+  "result": {
+    "id": 0,
+    "maToaNha": "string",
+    "tenToaNha": "string",
+    "soCanHo": 0,
+    "diaChi": "string",
+    "moTa": "string",
+    "trangThaiToaNhaId": 0,
+    "tenTrangThaiToaNha": "string"
+  },
+  "warningMessages": [
+    "string"
+  ],
+  "errors": [
+    {
+      "code": "string",
+      "description": "string"
+    }
+  ],
+  "isOk": true
+}
+
+No links
+400
+Bad Request
+
+Media type
+
+text/plain
+Example Value
+Schema
+{
+  "result": "string",
+  "warningMessages": [
+    "string"
+  ],
+  "errors": [
+    {
+      "code": "string",
+      "description": "string"
+    }
+  ],
+  "isOk": true
+}
+
+
+
+
+
+
+Cập nhật thông tin tòa nhà
+/api/toa-nha
+Parameters
+Try it out
+No parameters
+
+Request body
+
+application/json
+Example Value
+Schema
+{
+  "id": 0,
+  "tenToaNha": "string",
+  "diaChi": "string",
+  "moTa": "string",
+  "trangThaiToaNhaId": 0
+}
+Responses
+Code	Description	Links
+200
+OK
+
+Media type
+
+text/plain
+Controls Accept header.
+Example Value
+Schema
+{
+  "result": {
+    "id": 0,
+    "maToaNha": "string",
+    "tenToaNha": "string",
+    "soCanHo": 0,
+    "diaChi": "string",
+    "moTa": "string",
+    "trangThaiToaNhaId": 0,
+    "tenTrangThaiToaNha": "string"
+  },
+  "warningMessages": [
+    "string"
+  ],
+  "errors": [
+    {
+      "code": "string",
+      "description": "string"
+    }
+  ],
+  "isOk": true
+}
+No links
+400
+Bad Request
+
+Media type
+
+text/plain
+Example Value
+Schema
+{
+  "result": "string",
+  "warningMessages": [
+    "string"
+  ],
+  "errors": [
+    {
+      "code": "string",
+      "description": "string"
+    }
+  ],
+  "isOk": true
+}
+
+
+
+
+
+
+
+Xóa 1 hoặc nhiều tòa nhà theo ds id
+/api/toa-nha
+Parameters
+Try it out
+No parameters
+
+Request body
+
+application/json
+Example Value
+Schema
+{
+  "ids": [
+    0
+  ]
+}
+Responses
+Code	Description	Links
+200
+OK
+
+Media type
+
+text/plain
+Controls Accept header.
+Example Value
+Schema
+{
+  "result": [
+    {
+      "id": 0,
+      "maToaNha": "string",
+      "tenToaNha": "string",
+      "soCanHo": 0,
+      "diaChi": "string",
+      "moTa": "string",
+      "trangThaiToaNhaId": 0,
+      "tenTrangThaiToaNha": "string"
+    }
+  ],
+  "warningMessages": [
+    "string"
+  ],
+  "errors": [
+    {
+      "code": "string",
+      "description": "string"
+    }
+  ],
+  "isOk": true
+}
+No links
+400
+Bad Request
+
+Media type
+
+text/plain
+Example Value
+Schema
+{
+  "result": "string",
+  "warningMessages": [
+    "string"
+  ],
+  "errors": [
+    {
+      "code": "string",
+      "description": "string"
+    }
+  ],
+  "isOk": true
+}
+
+
+
+
+
+Lấy ds tòa nhà (hỗ trợ tìm kiếm, lọc, sắp xếp, phân trang)
+/api/toa-nha/get-list
+Parameters
+Try it out
+No parameters
+
+Request body
+
+application/json
+Example Value
+Schema
+{
+  "keyword": "string",
+  "sortCol": "string",
+  "isAsc": true,
+  "pageNumber": 0,
+  "pageSize": 0
+}
+Responses
+Code	Description	Links
+200
+OK
+
+Media type
+
+text/plain
+Controls Accept header.
+Example Value
+Schema
+{
+  "result": {
+    "items": [
+      {
+        "id": 0,
+        "maToaNha": "string",
+        "tenToaNha": "string",
+        "soCanHo": 0,
+        "diaChi": "string",
+        "moTa": "string",
+        "trangThaiToaNhaId": 0,
+        "tenTrangThaiToaNha": "string"
+      }
+    ],
+    "pagingInfo": {
+      "pageSize": 0,
+      "pageNumber": 0,
+      "totalItems": 0
+    }
+  },
+  "warningMessages": [
+    "string"
+  ],
+  "errors": [
+    {
+      "code": "string",
+      "description": "string"
+    }
+  ],
+  "isOk": true
+}
+No links
+400
+Bad Request
+
+Media type
+
+text/plain
+Example Value
+Schema
+{
+  "result": "string",
+  "warningMessages": [
+    "string"
+  ],
+  "errors": [
+    {
+      "code": "string",
+      "description": "string"
+    }
+  ],
+  "isOk": true
+}
+
+
+
+
+
+Lấy chi tiết tòa nhà theo ID
+/api/toa-nha/get-by-id
+Parameters
+Try it out
+No parameters
+
+Request body
+
+application/json
+Example Value
+Schema
+{
+  "id": 0
+}
+Responses
+Code	Description	Links
+200
+OK
+
+Media type
+
+text/plain
+Controls Accept header.
+Example Value
+Schema
+{
+  "result": {
+    "id": 0,
+    "maToaNha": "string",
+    "tenToaNha": "string",
+    "soCanHo": 0,
+    "diaChi": "string",
+    "moTa": "string",
+    "trangThaiToaNhaId": 0,
+    "tenTrangThaiToaNha": "string",
+    "canHos": [
+      {
+        "id": 0,
+        "maCanHo": "string",
+        "tangId": 0,
+        "tenTang": "string",
+        "dienTich": 0,
+        "soPhongNgu": 0,
+        "soPhongTam": 0,
+        "loaiCanHoId": 0,
+        "tenLoaiCanHo": "string",
+        "tinhTrangCanHoId": 0,
+        "tenTinhTrangCanHo": "string"
+      }
+    ]
+  },
+  "warningMessages": [
+    "string"
+  ],
+  "errors": [
+    {
+      "code": "string",
+      "description": "string"
+    }
+  ],
+  "isOk": true
+}
+No links
+400
+Bad Request
+
+Media type
+
+text/plain
+Example Value
+Schema
+{
+  "result": "string",
+  "warningMessages": [
+    "string"
+  ],
+  "errors": [
+    {
+      "code": "string",
+      "description": "string"
+    }
+  ],
+  "isOk": true
+}
+
+
+
+
+
+
+Tạo mới 1 căn hộ
+/api/can-ho
+Parameters
+Try it out
+No parameters
+
+Request body
+
+application/json
+Example Value
+Schema
+{
+  "maCanHo": "string",
+  "dienTich": 0,
+  "tangId": 0,
+  "soPhongNgu": 0,
+  "soPhongTam": 0,
+  "loaiCanHoId": 0
+}
+Responses
+Code	Description	Links
+200
+OK
+
+Media type
+
+text/plain
+Controls Accept header.
+Example Value
+Schema
+{
+  "result": {
+    "id": 0,
+    "maCanHo": "string",
+    "tangId": 0,
+    "tenTang": "string",
+    "dienTich": 0,
+    "soPhongNgu": 0,
+    "soPhongTam": 0,
+    "loaiCanHoId": 0,
+    "tenLoaiCanHo": "string",
+    "tinhTrangCanHoId": 0,
+    "tenTinhTrangCanHo": "string"
+  },
+  "warningMessages": [
+    "string"
+  ],
+  "errors": [
+    {
+      "code": "string",
+      "description": "string"
+    }
+  ],
+  "isOk": true
+}
+No links
+400
+Bad Request
+
+Media type
+
+text/plain
+Example Value
+Schema
+{
+  "result": "string",
+  "warningMessages": [
+    "string"
+  ],
+  "errors": [
+    {
+      "code": "string",
+      "description": "string"
+    }
+  ],
+  "isOk": true
+}
+
+
+
+
+
+Cập nhật thông tin căn hộ
+/api/can-ho
+Parameters
+Try it out
+No parameters
+
+Request body
+
+application/json
+Example Value
+Schema
+{
+  "id": 0,
+  "dienTich": 0,
+  "tangId": 0,
+  "soPhongNgu": 0,
+  "soPhongTam": 0,
+  "loaiCanHoId": 0,
+  "tinhTrangCanHoId": 0
+}
+Responses
+Code	Description	Links
+200
+OK
+
+Media type
+
+text/plain
+Controls Accept header.
+Example Value
+Schema
+{
+  "result": {
+    "id": 0,
+    "maCanHo": "string",
+    "tangId": 0,
+    "tenTang": "string",
+    "dienTich": 0,
+    "soPhongNgu": 0,
+    "soPhongTam": 0,
+    "loaiCanHoId": 0,
+    "tenLoaiCanHo": "string",
+    "tinhTrangCanHoId": 0,
+    "tenTinhTrangCanHo": "string"
+  },
+  "warningMessages": [
+    "string"
+  ],
+  "errors": [
+    {
+      "code": "string",
+      "description": "string"
+    }
+  ],
+  "isOk": true
+}
+No links
+400
+Bad Request
+
+Media type
+
+text/plain
+Example Value
+Schema
+{
+  "result": "string",
+  "warningMessages": [
+    "string"
+  ],
+  "errors": [
+    {
+      "code": "string",
+      "description": "string"
+    }
+  ],
+  "isOk": true
+}
+
+
+
+
+
+
+XÓa 1 hoặc nhiều căn hộ theo ds ID
+/api/can-ho
+Parameters
+Try it out
+No parameters
+
+Request body
+
+application/json
+Example Value
+Schema
+{
+  "ids": [
+    0
+  ]
+}
+Responses
+Code	Description	Links
+200
+OK
+
+Media type
+
+text/plain
+Controls Accept header.
+Example Value
+Schema
+{
+  "result": [
+    {
+      "id": 0,
+      "maCanHo": "string",
+      "tangId": 0,
+      "tenTang": "string",
+      "dienTich": 0,
+      "soPhongNgu": 0,
+      "soPhongTam": 0,
+      "loaiCanHoId": 0,
+      "tenLoaiCanHo": "string",
+      "tinhTrangCanHoId": 0,
+      "tenTinhTrangCanHo": "string"
+    }
+  ],
+  "warningMessages": [
+    "string"
+  ],
+  "errors": [
+    {
+      "code": "string",
+      "description": "string"
+    }
+  ],
+  "isOk": true
+}
+No links
+400
+Bad Request
+
+Media type
+
+text/plain
+Example Value
+Schema
+{
+  "result": "string",
+  "warningMessages": [
+    "string"
+  ],
+  "errors": [
+    {
+      "code": "string",
+      "description": "string"
+    }
+  ],
+  "isOk": true
+}
+
+
+
+
+
+
+Lấy ds căn hộ (hỗ trợ tìm kiếm, lọc, sắp xếp, phân trang)
+/api/can-ho/get-list
+Parameters
+Try it out
+No parameters
+
+Request body
+
+application/json
+Example Value
+Schema
+{
+  "tangId": 0,
+  "keyword": "string",
+  "sortCol": "string",
+  "isAsc": true,
+  "pageNumber": 0,
+  "pageSize": 0
+}
+Responses
+Code	Description	Links
+200
+OK
+
+Media type
+
+text/plain
+Controls Accept header.
+Example Value
+Schema
+{
+  "result": {
+    "items": [
+      {
+        "id": 0,
+        "maCanHo": "string",
+        "tangId": 0,
+        "tenTang": "string",
+        "dienTich": 0,
+        "soPhongNgu": 0,
+        "soPhongTam": 0,
+        "loaiCanHoId": 0,
+        "tenLoaiCanHo": "string",
+        "tinhTrangCanHoId": 0,
+        "tenTinhTrangCanHo": "string"
+      }
+    ],
+    "pagingInfo": {
+      "pageSize": 0,
+      "pageNumber": 0,
+      "totalItems": 0
+    }
+  },
+  "warningMessages": [
+    "string"
+  ],
+  "errors": [
+    {
+      "code": "string",
+      "description": "string"
+    }
+  ],
+  "isOk": true
+}
+No links
+400
+Bad Request
+
+Media type
+
+text/plain
+Example Value
+Schema
+{
+  "result": "string",
+  "warningMessages": [
+    "string"
+  ],
+  "errors": [
+    {
+      "code": "string",
+      "description": "string"
+    }
+  ],
+  "isOk": true
+}
+
+
+
+
+
+
+Lấy chi tiết căn hộ theo id
+/api/can-ho/get-by-id
+Parameters
+Try it out
+No parameters
+
+Request body
+
+application/json
+Example Value
+Schema
+{
+  "id": 0
+}
+Responses
+Code	Description	Links
+200
+OK
+
+Media type
+
+text/plain
+Controls Accept header.
+Example Value
+Schema
+{
+  "result": {
+    "id": 0,
+    "tangId": 0,
+    "tenTang": "string",
+    "maCanHo": "string",
+    "dienTich": 0,
+    "soPhongNgu": 0,
+    "soPhongTam": 0,
+    "loaiCanHoId": 0,
+    "tenLoaiCanHo": "string",
+    "tinhTrangCanHoId": 0,
+    "tenTinhTrangCanHo": "string",
+    "quanHeCuTrus": [
+      {
+        "id": 0,
+        "canHoId": 0,
+        "userId": 0,
+        "fullName": "string",
+        "loaiQuanHeCuTruId": 0,
+        "tenLoaiQuanHeCuTru": "string",
+        "ngayBatDau": "2026-03-11T08:19:58.655Z",
+        "ngayKetThuc": "2026-03-11T08:19:58.655Z",
+        "isKetThuc": true
+      }
+    ]
+  },
+  "warningMessages": [
+    "string"
+  ],
+  "errors": [
+    {
+      "code": "string",
+      "description": "string"
+    }
+  ],
+  "isOk": true
+}
+No links
+400
+Bad Request
+
+Media type
+
+text/plain
+Example Value
+Schema
+{
+  "result": "string",
+  "warningMessages": [
+    "string"
+  ],
+  "errors": [
+    {
+      "code": "string",
+      "description": "string"
+    }
+  ],
+  "isOk": true
+}
+
+
+
+
+
+
+Thay đổi mật khẩu cho người dùng đang đăng nhập
+/api/Profile/change-password
+Parameters
+Try it out
+No parameters
+
+Request body
+
+application/json
+Example Value
+Schema
+{
+  "oldPassword": "string",
+  "newPassword": "string",
+  "confirmPassword": "string"
+}
+Responses
+Code	Description	Links
+200
+OK
+
+Media type
+
+text/plain
+Controls Accept header.
+Example Value
+Schema
+{
+  "result": "string",
+  "warningMessages": [
+    "string"
+  ],
+  "errors": [
+    {
+      "code": "string",
+      "description": "string"
+    }
+  ],
+  "isOk": true
+}
+No links
+400
+Bad Request
+
+Media type
+
+text/plain
+Example Value
+Schema
+{
+  "result": "string",
+  "warningMessages": [
+    "string"
+  ],
+  "errors": [
+    {
+      "code": "string",
+      "description": "string"
+    }
+  ],
+  "isOk": true
+}
+
+
+
+
+
+
+
+Lấy thông tin cá nhân người dùng đang đăng nhập
+/api/Profile/get-profile
+Parameters
+Try it out
+No parameters
+
+Responses
+Code	Description	Links
+200
+OK
+
+Media type
+
+text/plain
+Controls Accept header.
+Example Value
+Schema
+{
+  "result": {
+    "id": 0,
+    "username": "string",
+    "email": "string",
+    "firstName": "string",
+    "lastName": "string",
+    "phoneNumber": "string",
+    "idCard": "string",
+    "dob": "2026-03-10T04:08:57.001Z",
+    "gioiTinhId": 0,
+    "gioiTinhName": "string",
+    "roleId": 0,
+    "roleName": "string"
+  },
+  "warningMessages": [
+    "string"
+  ],
+  "errors": [
+    {
+      "code": "string",
+      "description": "string"
+    }
+  ],
+  "isOk": true
+}
+No links
+400
+Bad Request
+
+Media type
+
+text/plain
+Example Value
+Schema
+{
+  "result": "string",
+  "warningMessages": [
+    "string"
+  ],
+  "errors": [
+    {
+      "code": "string",
+      "description": "string"
+    }
+  ],
+  "isOk": true
+}
+
+
+
+
+
+Cập nhật thông tin cá nhân người dùng đang đăng nhập
+/api/Profile
+Parameters
+Try it out
+No parameters
+
+Request body
+
+application/json
+Example Value
+Schema
+{
+  "firstName": "string",
+  "lastName": "string",
+  "phoneNumber": "string",
+  "idCard": "string",
+  "dob": "2026-03-10T04:09:50.629Z",
+  "gioiTinhId": 0,
+  "diaChi": "string"
+}
+Responses
+Code	Description	Links
+200
+OK
+
+Media type
+
+text/plain
+Controls Accept header.
+Example Value
+Schema
+{
+  "result": {
+    "id": 0,
+    "username": "string",
+    "email": "string",
+    "firstName": "string",
+    "lastName": "string",
+    "phoneNumber": "string",
+    "idCard": "string",
+    "dob": "2026-03-10T04:09:50.630Z",
+    "gioiTinhId": 0,
+    "gioiTinhName": "string",
+    "roleId": 0,
+    "roleName": "string"
+  },
+  "warningMessages": [
+    "string"
+  ],
+  "errors": [
+    {
+      "code": "string",
+      "description": "string"
+    }
+  ],
+  "isOk": true
+}
+No links
+400
+Bad Request
+
+Media type
+
+text/plain
+Example Value
+Schema
+{
+  "result": "string",
+  "warningMessages": [
+    "string"
+  ],
+  "errors": [
+    {
+      "code": "string",
+      "description": "string"
+    }
+  ],
+  "isOk": true
+}
+
+
+
+
+Cập nhật ảnh đại diện người dùng đang đăng nhập
+/api/Profile/change-avatar
+Parameters
+Try it out
+No parameters
+
+Request body
+
+multipart/form-data
+avatar
+string($binary)
+Responses
+Code	Description	Links
+200
+OK
+
+Media type
+
+text/plain
+Controls Accept header.
+Example Value
+Schema
+{
+  "result": "string",
+  "warningMessages": [
+    "string"
+  ],
+  "errors": [
+    {
+      "code": "string",
+      "description": "string"
+    }
+  ],
+  "isOk": true
+}
+No links
+400
+Bad Request
+
+Media type
+
+text/plain
+Example Value
+Schema
+{
+  "result": "string",
+  "warningMessages": [
+    "string"
+  ],
+  "errors": [
+    {
+      "code": "string",
+      "description": "string"
+    }
+  ],
+  "isOk": true
+}
+
+
+
+
+Tạo mới tầng
+/api/tang
+Parameters
+Try it out
+No parameters
+
+Request body
+
+application/json
+Example Value
+Schema
+{
+  "maTang": "string",
+  "tenTang": "string",
+  "loaiTangId": 0,
+  "toaNhaId": 0
+}
+Responses
+Code	Description	Links
+200
+OK
+
+Media type
+
+text/plain
+Controls Accept header.
+Example Value
+Schema
+{
+  "result": {
+    "id": 0,
+    "maTang": "string",
+    "tenTang": "string",
+    "loaiTangId": 0,
+    "tenLoaiTang": "string",
+    "toaNhaId": 0,
+    "tenToaNha": "string"
+  },
+  "warningMessages": [
+    "string"
+  ],
+  "errors": [
+    {
+      "code": "string",
+      "description": "string"
+    }
+  ],
+  "isOk": true
+}
+No links
+400
+Bad Request
+
+Media type
+
+text/plain
+Example Value
+Schema
+{
+  "result": "string",
+  "warningMessages": [
+    "string"
+  ],
+  "errors": [
+    {
+      "code": "string",
+      "description": "string"
+    }
+  ],
+  "isOk": true
+}
+
+
+
+Cập nhật thông tin tầng
+/api/tang
+Parameters
+Try it out
+No parameters
+
+Request body
+
+application/json
+Example Value
+Schema
+{
+  "id": 0,
+  "maTang": "string",
+  "tenTang": "string",
+  "loaiTangId": 0,
+  "toaNhaId": 0
+}
+Responses
+Code	Description	Links
+200
+OK
+
+Media type
+
+text/plain
+Controls Accept header.
+Example Value
+Schema
+{
+  "result": {
+    "id": 0,
+    "maTang": "string",
+    "tenTang": "string",
+    "loaiTangId": 0,
+    "tenLoaiTang": "string",
+    "toaNhaId": 0,
+    "tenToaNha": "string"
+  },
+  "warningMessages": [
+    "string"
+  ],
+  "errors": [
+    {
+      "code": "string",
+      "description": "string"
+    }
+  ],
+  "isOk": true
+}
+No links
+400
+Bad Request
+
+Media type
+
+text/plain
+Example Value
+Schema
+{
+  "result": "string",
+  "warningMessages": [
+    "string"
+  ],
+  "errors": [
+    {
+      "code": "string",
+      "description": "string"
+    }
+  ],
+  "isOk": true
+}
+
+
+
+Xóa tầng theo ds ID
+Parameters
+Try it out
+No parameters
+
+Request body
+
+application/json
+Example Value
+Schema
+{
+  "ids": [
+    0
+  ]
+}
+Responses
+Code	Description	Links
+200
+OK
+
+Media type
+
+text/plain
+Controls Accept header.
+Example Value
+Schema
+{
+  "result": [
+    {
+      "id": 0,
+      "maTang": "string",
+      "tenTang": "string",
+      "loaiTangId": 0,
+      "tenLoaiTang": "string",
+      "toaNhaId": 0,
+      "tenToaNha": "string"
+    }
+  ],
+  "warningMessages": [
+    "string"
+  ],
+  "errors": [
+    {
+      "code": "string",
+      "description": "string"
+    }
+  ],
+  "isOk": true
+}
+No links
+400
+Bad Request
+
+Media type
+
+text/plain
+Example Value
+Schema
+{
+  "result": "string",
+  "warningMessages": [
+    "string"
+  ],
+  "errors": [
+    {
+      "code": "string",
+      "description": "string"
+    }
+  ],
+  "isOk": true
+}
+
+
+
+Lấy ds tầng theo ID tòa nhà
+/api/tang/get-list
+
+Parameters
+Try it out
+No parameters
+
+Request body
+
+application/json
+Example Value
+Schema
+{
+  "toaNhaId": 0,
+  "keyword": "string",
+  "sortCol": "string",
+  "isAsc": true,
+  "pageNumber": 0,
+  "pageSize": 0
+}
+Responses
+Code	Description	Links
+200
+OK
+
+Media type
+
+text/plain
+Controls Accept header.
+Example Value
+Schema
+{
+  "result": {
+    "items": [
+      {
+        "id": 0,
+        "maTang": "string",
+        "tenTang": "string",
+        "loaiTangId": 0,
+        "tenLoaiTang": "string",
+        "toaNhaId": 0,
+        "tenToaNha": "string"
+      }
+    ],
+    "pagingInfo": {
+      "pageSize": 0,
+      "pageNumber": 0,
+      "totalItems": 0
+    }
+  },
+  "warningMessages": [
+    "string"
+  ],
+  "errors": [
+    {
+      "code": "string",
+      "description": "string"
+    }
+  ],
+  "isOk": true
+}
+No links
+400
+Bad Request
+
+Media type
+
+text/plain
+Example Value
+Schema
+{
+  "result": "string",
+  "warningMessages": [
+    "string"
+  ],
+  "errors": [
+    {
+      "code": "string",
+      "description": "string"
+    }
+  ],
+  "isOk": true
+}
+
+
+
+Lấy chi tiết tầng theo ID
+/api/tang/get-by-id
+Parameters
+Try it out
+No parameters
+
+Request body
+
+application/json
+Example Value
+Schema
+{
+  "id": 0
+}
+Responses
+Code	Description	Links
+200
+OK
+
+Media type
+
+text/plain
+Controls Accept header.
+Example Value
+Schema
+{
+  "result": {
+    "id": 0,
+    "maTang": "string",
+    "tenTang": "string",
+    "loaiTangId": 0,
+    "tenLoaiTang": "string",
+    "toaNhaId": 0,
+    "tenToaNha": "string",
+    "canHos": [
+      {
+        "id": 0,
+        "maCanHo": "string",
+        "tangId": 0,
+        "tenTang": "string",
+        "dienTich": 0,
+        "soPhongNgu": 0,
+        "soPhongTam": 0,
+        "loaiCanHoId": 0,
+        "tenLoaiCanHo": "string",
+        "tinhTrangCanHoId": 0,
+        "tenTinhTrangCanHo": "string"
+      }
+    ]
+  },
+  "warningMessages": [
+    "string"
+  ],
+  "errors": [
+    {
+      "code": "string",
+      "description": "string"
+    }
+  ],
+  "isOk": true
+}
+No links
+400
+Bad Request
+
+Media type
+
+text/plain
+Example Value
+Schema
+{
+  "result": "string",
+  "warningMessages": [
+    "string"
+  ],
+  "errors": [
+    {
+      "code": "string",
+      "description": "string"
+    }
+  ],
+  "isOk": true
+}

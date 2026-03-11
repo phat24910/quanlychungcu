@@ -1,0 +1,116 @@
+:host {
+  display: block;
+}
+
+.profile-card {
+  border-radius: 8px;
+  overflow: visible;
+  box-shadow: 0 6px 18px rgba(16,24,40,0.06);
+  padding: 0;
+}
+
+.profile-header {
+  background: linear-gradient(90deg, #f8fafc 0%, #ffffff 100%);
+  padding: 28px 24px;
+  display: flex;
+  align-items: center;
+  gap: 24px;
+}
+
+.avatar-wrapper {
+  position: relative;
+  width: 140px;
+  flex: 0 0 140px;
+}
+
+.avatar-circle {
+  width: 120px;
+  height: 120px;
+  border-radius: 9999px;
+  overflow: hidden;
+  border: 4px solid #fff;
+  box-shadow: 0 4px 12px rgba(2,6,23,0.08);
+}
+
+.profile-meta {
+  flex: 1;
+}
+
+.username {
+  font-weight: 700;
+  font-size: 18px;
+  margin-bottom: 6px;
+}
+
+.user-id {
+  color: rgba(0,0,0,0.45);
+  font-size: 12px;
+}
+
+.edit-actions {
+  margin-top: 12px;
+}
+
+.edit-btn {
+  --btn-bg: #0ea5e9;
+  background: var(--btn-bg);
+  border-color: transparent;
+  color: #fff;
+}
+
+.nz-descriptions {
+  margin-top: 8px;
+}
+
+.nz-descriptions .ant-descriptions-item-label {
+  font-weight: 600;
+}
+
+.profile-body {
+  padding: 16px 24px 28px 24px;
+}
+
+@media (max-width: 768px) {
+  .profile-header { flex-direction: column; align-items: center; text-align: center }
+  .avatar-wrapper { width: auto }
+  .profile-body { padding: 12px }
+}
+
+/* Force left-aligned fixed-width labels for modal form */
+.modal-form .ant-form-item { align-items: center; display: flex; }
+.modal-form .ant-form-item-label { display: block; width: 140px; text-align: left; padding-right: 12px; box-sizing: border-box; }
+.modal-form .ant-form-item-label > label { display: block; width: 140px; text-align: left; margin: 0; }
+.modal-form .ant-form-item-control { flex: 1; }
+
+@media (max-width:720px){
+  .modal-form .ant-form-item { display:block }
+  .modal-form .ant-form-item-label, .modal-form .ant-form-item-label > label { width: auto; text-align: left; padding-right: 0 }
+}
+
+/* Input / select visual polish */
+.modal-form .ant-input,
+.modal-form .ant-select-selector,
+.modal-form textarea,
+.modal-form input[type="date"] {
+  background: #ffffff;
+  border: 1px solid #d1d5db;
+  padding: 10px 12px;
+  border-radius: 8px;
+  box-shadow: 0 1px 0 rgba(16,24,40,0.02);
+  transition: border-color .15s ease, box-shadow .15s ease, transform .06s ease;
+  height: 38px;
+}
+
+.modal-form .ant-input:focus,
+.modal-form .ant-select-focused .ant-select-selector,
+.modal-form .ant-input:focus-visible {
+  border-color: #40a9ff;
+  box-shadow: 0 6px 20px rgba(24, 144, 255, 0.08);
+  outline: none;
+  transform: translateY(-1px);
+}
+
+.modal-form .ant-select-selector { height: 38px; display:flex; align-items:center }
+.modal-form .ant-input[disabled], .modal-form .ant-select-disabled .ant-select-selector {
+  background: #f8fafc; color: rgba(0,0,0,0.65);
+}

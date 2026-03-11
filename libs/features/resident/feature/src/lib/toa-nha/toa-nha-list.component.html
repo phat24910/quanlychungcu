@@ -1,0 +1,85 @@
+<div>
+  <nz-modal [(nzVisible)]="isModalVisible" [nzTitle]="modalTitle" (nzOnCancel)="cancelModal()" (nzOnOk)="onModalOk()"
+    [nzOkLoading]="saving" nzOkText="Lưu" nzCancelText="Hủy" nzWidth="420" nzWrapClassName="custom-modal">
+    <ng-container *nzModalContent>
+      <app-toa-nha-form [inModal]="true" [id]="editingId" (saved)="onSaved()"></app-toa-nha-form>
+    </ng-container>
+  </nz-modal>
+  <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px">
+    <div style="display:flex; gap:8px; align-items:center; max-width:70%">
+      <input nz-input placeholder="Nhập từ khóa" [(ngModel)]="keyword"
+        style="width:360px;border-radius:6px;padding:6px 12px;border:1px solid #e5e7eb;height:40px;box-sizing:border-box" />
+      <button nz-button nzType="primary" (click)="onSearch()"
+        style="display:flex;align-items:center;border:1px solid #e5e7eb;border-radius:6px;padding:6px 12px;font-weight:600;height:40px;box-sizing:border-box"><i
+          nz-icon nzType="search" nzTheme="outline"></i>&nbsp;Tìm kiếm</button>
+      <button nz-button
+        style="display:flex;align-items:center;border:1px solid #e5e7eb;background:#fff;border-radius:6px;padding:6px 12px;font-weight:600;height:40px;box-sizing:border-box"><i
+          nz-icon nzType="filter" nzTheme="outline"></i>&nbsp;Tìm nâng cao</button>
+    </div>
+
+    <div style="display:flex;align-items:center;gap:8px">
+      <button *ngIf="setOfCheckedId.size > 0" nz-button nzType="primary" nzDanger (click)="deleteSelectedMultiple()"
+        style="display:flex;align-items:center;border:1px solid #e5e7eb;border-radius:6px;padding:6px 12px;font-weight:600;height:40px;box-sizing:border-box"><i
+          nz-icon nzType="delete" nzTheme="outline"></i>&nbsp;Xóa đã chọn</button>
+      <button nz-button nzType="default" (click)="onRefresh()"
+        style="display:flex;align-items:center;border:1px solid #e5e7eb;background:#fff;border-radius:6px;padding:6px 12px;font-weight:600;height:40px;box-sizing:border-box"><i
+          nz-icon nzType="reload" nzTheme="outline"></i>&nbsp;Refresh</button>
+      <button nz-button nzType="primary" (click)="openCreateModal()"
+        style="display:flex;align-items:center;border:1px solid #e5e7eb;border-radius:6px;padding:6px 12px;font-weight:600;height:40px;box-sizing:border-box"><i
+          nz-icon nzType="plus" nzTheme="outline"></i>&nbsp;Thêm mới</button>
+    </div>
+  </div>
+
+  <nz-table #tnTable [nzData]="items" [nzShowPagination]="false"
+    (nzCurrentPageDataChange)="onCurrentPageDataChange($event)">
+    <thead>
+      <tr>
+        <th style="width:48px" [(nzChecked)]="checked" [nzIndeterminate]="indeterminate"
+          (nzCheckedChange)="onAllChecked($event)"></th>
+        <th style="width:64px; white-space:nowrap; text-align:center">Thao tác</th>
+        <th style="width:48px">STT</th>
+        <th (click)="onSort('maToaNha')" style="cursor:pointer; width:100px">Mã tòa</th>
+        <th (click)="onSort('tenToaNha')" style="cursor:pointer; width:150px">Tên tòa</th>
+        <th style="width:360px">Mô tả</th>
+        <th style="width:100px">Số căn</th>
+        <th style="width:120px">Trạng thái</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let it of tnTable.data; let i = index">
+        <td [nzChecked]="setOfCheckedId.has(it.id!)" (nzCheckedChange)="onItemChecked(it.id!, $event)"></td>
+        <td style="text-align:center">
+          <a nz-dropdown nzTrigger="hover" [nzDropdownMenu]="actionMenu">
+            <i nz-icon nzType="unordered-list" nzTheme="outline" class="text-lg cursor-pointer"></i>
+          </a>
+          <nz-dropdown-menu #actionMenu="nzDropdownMenu">
+            <ul nz-menu>
+              <li nz-menu-item (click)="editToaNha(it.id)"><i nz-icon nzType="edit" nzTheme="outline"></i>&nbsp;Chỉnh
+                sửa</li>
+              <li nz-menu-item class="text-red-500" (click)="deleteSelected(it.id)"><i nz-icon nzType="delete"
+                  nzTheme="outline"></i>&nbsp;Xóa</li>
+            </ul>
+          </nz-dropdown-menu>
+        </td>
+        <td>{{ i + 1 }}</td>
+        <td>{{ it.maToaNha }}</td>
+        <td>
+          <a [routerLink]="['/can-ho']" [queryParams]="{ toaNhaId: it.id, toaNhaName: it.tenToaNha }">
+            {{ it.tenToaNha }}
+          </a>
+        </td>
+        <td style="white-space:normal">{{ it.moTa || '-' }}</td>
+        <td>{{ it.soCanHo || '-' }}</td>
+        <td>
+          <span class="status-pill" [ngClass]="getStatusClass(it.trangThaiToaNhaId)">
+            {{ getStatusName(it.trangThaiToaNhaId, it.tenTrangThaiToaNha) }}
+          </span>
+        </td>
+      </tr>
+    </tbody>
+  </nz-table>
+  <div style="display:flex;justify-content:flex-end;margin-top:12px">
+    <nz-pagination [nzPageIndex]="pageNumber" [nzPageSize]="pageSize" [nzTotal]="totalItems"
+      (nzPageIndexChange)="onPageChange($event)" (nzPageSizeChange)="onPageSizeChange($event)"></nz-pagination>
+  </div>
+</div>

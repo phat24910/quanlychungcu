@@ -5,17 +5,28 @@ import {
   MenuFoldOutline,
   MenuUnfoldOutline,
   FormOutline,
-  DashboardOutline
-} from '@ant-design/icons-angular/icons';
-
-import {
+  DashboardOutline,
   UserOutline,
   LockOutline,
   EyeOutline,
+  EyeInvisibleOutline,
   LoginOutline,
-  MailOutline,
-  PhoneOutline,
-  QuestionCircleOutline
+  HomeOutline,
+  TeamOutline,
+  BankOutline,
+  ToolOutline,
+  PayCircleOutline,
+  AppstoreOutline,
+  NotificationOutline,
+  SettingOutline,
+  LogoutOutline,
+  DownOutline,
+  SearchOutline,
+  FilterOutline,
+  ReloadOutline,
+  PlusOutline,
+  UnorderedListOutline,
+  DeleteOutline
 } from '@ant-design/icons-angular/icons';
 
 const icons = [
@@ -26,10 +37,24 @@ const icons = [
   UserOutline,
   LockOutline,
   EyeOutline,
+  EyeInvisibleOutline,
   LoginOutline,
-  MailOutline,
-  PhoneOutline,
-  QuestionCircleOutline
+  HomeOutline,
+  TeamOutline,
+  BankOutline,
+  ToolOutline,
+  PayCircleOutline,
+  AppstoreOutline,
+  NotificationOutline,
+  SettingOutline,
+  LogoutOutline,
+  SearchOutline,
+  FilterOutline,
+  ReloadOutline,
+  PlusOutline,
+  UnorderedListOutline,
+  DeleteOutline,
+  DownOutline
 ];
 
 @NgModule({

@@ -4,7 +4,7 @@
 
 export const environment = {
   production: false,
-  apiBaseUrl: 'https://s803t7mx-5232.asse.devtunnels.ms'
+  apiBaseUrl: 'https://chungcu-webapi-fwf7cva4c7c6ajae.eastasia-01.azurewebsites.net'
 };
 
 /*

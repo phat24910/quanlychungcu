@@ -2,6 +2,8 @@
 @tailwind components;
 @tailwind utilities;
 
+@import "~ng-zorro-antd/ng-zorro-antd.min.css";
+
 /* You can add global styles to this file, and also import other style files */
 
 body { font-family: Inter, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial; }

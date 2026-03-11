@@ -1,0 +1,14 @@
+.resident-layout {
+  display: grid;
+  grid-template-columns: 280px minmax(0, 1fr);
+  gap: 16px;
+}
+
+.resident-layout__tree {
+  max-height: calc(100vh - 160px);
+  overflow: auto;
+}
+
+.resident-layout__content {
+  min-width: 0;
+}

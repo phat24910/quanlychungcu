@@ -1,0 +1,40 @@
+<div>
+    <h2 class="text-lg font-semibold mb-3">Danh sách căn hộ
+    <span *ngIf="tangName">- {{ tangName }}</span>
+  </h2>
+
+  <div style="margin-bottom:12px">
+    <button nz-button nzType="primary" [routerLink]="['./create']" [queryParams]="{ toaNhaId: toaNhaId }">
+      Thêm căn hộ
+    </button>
+  </div>
+
+  <nz-table #chTable [nzData]="items">
+    <thead>
+      <tr>
+        <th>Số căn</th>
+        <th>Tầng</th>
+        <th>Diện tích</th>
+        <th>Loại</th>
+        <th>Chủ hộ</th>
+        <th>Trạng thái</th>
+        <th>Thao tác</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let it of chTable.data">
+        <td>{{ it.maCanHo }}</td>
+        <td>{{ it.tang }}</td>
+        <td>{{ it.dienTich ? (it.dienTich + 'm²') : '-' }}</td>
+        <td>{{ it.loaiCanHoId || '-' }}</td>
+        <td>-</td>
+        <td>{{ it.tinhTrangCanHoId ? 'Đang ở' : 'Trống' }}</td>
+        <td>
+          <a [routerLink]="['/can-ho', it.id]">Chi tiết</a>
+          <button nz-button nzType="link" [routerLink]="['/can-ho', it.id, 'edit']">Sửa</button>
+          <button nz-button nzType="default" (click)="deleteOne(it.id)">Xóa</button>
+        </td>
+      </tr>
+    </tbody>
+  </nz-table>
+</div>

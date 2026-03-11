@@ -19,12 +19,143 @@ export class LoginComponent {
   warningMessages: string[] = [];
   usernameErrors: string[] = [];
   passwordErrors: string[] = [];
+  showForgotModal = false;
+  forgotStep = 1;
+  forgotLoading = false;
+  forgotFormStep1: FormGroup;
+  forgotFormStep2: FormGroup;
+  forgotErrors: string[] = [];
+  forgotMessages: string[] = [];
+  forgotUsername = '';
 
 
   constructor(private fb: FormBuilder, private router: Router, private auth: AuthService) {
     this.form = this.fb.group({
       username: ['', [Validators.required]],
       password: ['', Validators.required]
+    });
+
+    this.forgotFormStep1 = this.fb.group({
+      username: ['', [Validators.required]]
+    });
+
+    this.forgotFormStep2 = this.fb.group({
+      resetCode: ['', [Validators.required]],
+      newPassword: ['', [Validators.required]],
+      confirmNewPassword: ['', [Validators.required]]
+    });
+  }
+
+  private extractErrors(body: any): string[] {
+    const out: string[] = [];
+    if (!body) return out;
+    if (body.errors) {
+      if (Array.isArray(body.errors)) {
+        body.errors.forEach((e: any) => {
+          const desc: string = (e?.description || e?.code || '').toString();
+          if (desc) out.push(desc);
+        });
+      } else if (typeof body.errors === 'object') {
+        Object.keys(body.errors).forEach((k) => {
+          const v = body.errors[k];
+          if (Array.isArray(v)) v.forEach((m: any) => out.push(String(m)));
+          else if (v) out.push(String(v));
+        });
+      }
+    }
+    if (body.result && typeof body.result === 'string') out.push(body.result);
+    return out;
+  }
+
+  openForgotPassword() {
+    this.showForgotModal = true;
+    this.forgotStep = 1;
+    this.forgotErrors = [];
+    this.forgotMessages = [];
+    const usernameCtrl = this.form.get('username');
+    const username = (usernameCtrl?.value || '').toString().trim();
+    this.forgotFormStep1.patchValue({ username });
+  }
+
+  closeForgotPassword() {
+    this.showForgotModal = false;
+    this.forgotStep = 1;
+    this.forgotFormStep1.reset();
+    this.forgotFormStep2.reset();
+    this.forgotErrors = [];
+    this.forgotMessages = [];
+    this.forgotUsername = '';
+  }
+
+  submitForgotStep1() {
+    this.forgotErrors = [];
+    this.forgotMessages = [];
+    this.forgotFormStep1.markAllAsTouched();
+    const usernameCtrl = this.forgotFormStep1.get('username');
+    const username = (usernameCtrl?.value || '').toString().trim();
+    if (usernameCtrl && username !== usernameCtrl.value) {
+      usernameCtrl.setValue(username, { emitEvent: false });
+    }
+    this.forgotLoading = true;
+    this.auth.forgotPassword(username).subscribe({
+      next: (res: any) => {
+        this.forgotLoading = false;
+        if (!res) return;
+        if (res.errors && res.errors.length) {
+          this.forgotErrors.push(...this.extractErrors(res));
+          return;
+        }
+        if (res.result && typeof res.result === 'string') this.forgotMessages.push(res.result);
+        this.forgotUsername = username;
+        this.forgotStep = 2;
+      },
+      error: (err: any) => {
+        this.forgotLoading = false;
+        const body = err?.error;
+        if (body) this.forgotErrors.push(...this.extractErrors(body));
+      }
+    });
+  }
+
+  submitForgotStep2() {
+    this.forgotErrors = [];
+    this.forgotMessages = [];
+    const resetCodeCtrl = this.forgotFormStep2.get('resetCode');
+    const newPasswordCtrl = this.forgotFormStep2.get('newPassword');
+    const confirmNewPasswordCtrl = this.forgotFormStep2.get('confirmNewPassword');
+    const resetCode = (resetCodeCtrl?.value || '').toString().trim();
+    const newPassword = (newPasswordCtrl?.value || '').toString().trim();
+    const confirmNewPassword = (confirmNewPasswordCtrl?.value || '').toString().trim();
+    if (resetCodeCtrl && resetCode !== resetCodeCtrl.value) resetCodeCtrl.setValue(resetCode, { emitEvent: false });
+    if (newPasswordCtrl && newPassword !== newPasswordCtrl.value) newPasswordCtrl.setValue(newPassword, { emitEvent: false });
+    if (confirmNewPasswordCtrl && confirmNewPassword !== confirmNewPasswordCtrl.value) confirmNewPasswordCtrl.setValue(confirmNewPassword, { emitEvent: false });
+    this.forgotFormStep2.markAllAsTouched();
+
+    if (newPassword && confirmNewPassword && newPassword !== confirmNewPassword) {
+      this.forgotErrors.push('Mật khẩu xác nhận không khớp.');
+      return;
+    }
+    this.forgotLoading = true;
+    this.auth.resetPassword(this.forgotUsername, resetCode, newPassword, confirmNewPassword).subscribe({
+      next: (res: any) => {
+        this.forgotLoading = false;
+        if (!res) return;
+        if (res.errors && res.errors.length) {
+          this.forgotErrors.push(...this.extractErrors(res));
+          return;
+        }
+        if (res.isOk === false) {
+          if (res.result && typeof res.result === 'string') this.forgotErrors.push(res.result);
+          return;
+        }
+        if (res.result && typeof res.result === 'string') this.forgotMessages.push(res.result);
+        this.forgotStep = 3;
+      },
+      error: (err: any) => {
+        this.forgotLoading = false;
+        const body = err?.error;
+        if (body) this.forgotErrors.push(...this.extractErrors(body));
+      }
     });
   }
 
@@ -69,16 +200,12 @@ export class LoginComponent {
           this.usernameErrors = [];
           this.passwordErrors = [];
           this.errorMessages = [];
-          res.errors.forEach((e: any) => {
-            const desc: string = (e?.description || e?.code || '').toString();
+          const errs = this.extractErrors(res);
+          errs.forEach((desc: string) => {
             const lower = desc.toLowerCase();
-            if (lower.includes('username') || lower.includes('tài khoản')) {
-              this.usernameErrors.push(desc);
-            } else if (lower.includes('password') || lower.includes('mật khẩu')) {
-              this.passwordErrors.push(desc);
-            } else {
-              this.errorMessages.push(desc);
-            }
+            if (lower.includes('username') || lower.includes('tài khoản')) this.usernameErrors.push(desc);
+            else if (lower.includes('password') || lower.includes('mật khẩu')) this.passwordErrors.push(desc);
+            else this.errorMessages.push(desc);
           });
           return;
         }
@@ -96,23 +223,16 @@ export class LoginComponent {
         const body = err?.error;
         if (body) {
           if (body.warningMessages) this.warningMessages = body.warningMessages;
-          if (body.errors) {
-            this.usernameErrors = [];
-            this.passwordErrors = [];
-            this.errorMessages = [];
-            body.errors.forEach((e: any) => {
-              const desc: string = (e?.description || e?.code || '').toString();
-              const lower = desc.toLowerCase();
-              if (lower.includes('username') || lower.includes('tài khoản')) {
-                this.usernameErrors.push(desc);
-              } else if (lower.includes('password') || lower.includes('mật khẩu')) {
-                this.passwordErrors.push(desc);
-              } else {
-                this.errorMessages.push(desc);
-              }
-            });
-          }
-          if (body.result && typeof body.result === 'string') this.errorMessages.push(body.result);
+          const errs = this.extractErrors(body);
+          this.usernameErrors = [];
+          this.passwordErrors = [];
+          this.errorMessages = [];
+          errs.forEach((desc: string) => {
+            const lower = desc.toLowerCase();
+            if (lower.includes('username') || lower.includes('tài khoản')) this.usernameErrors.push(desc);
+            else if (lower.includes('password') || lower.includes('mật khẩu')) this.passwordErrors.push(desc);
+            else this.errorMessages.push(desc);
+          });
         }
       }
     });

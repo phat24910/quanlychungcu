@@ -52,6 +52,12 @@
       "@features/resident/feature": [
         "libs/features/resident/feature/src/lib/index.ts"
       ],
+      "@features/profile/feature": [
+        "libs/features/profile/feature/src/lib/index.ts"
+      ],
+      "@features/profile/data-access": [
+        "libs/features/profile/data-access/src/lib/index.ts"
+      ],
       "@features/resident/data-access": [
         "libs/features/resident/data-access/src/lib/index.ts"
       ],

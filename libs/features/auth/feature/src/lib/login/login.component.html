@@ -8,10 +8,6 @@
         style="background: linear-gradient(135deg, rgba(91, 130, 206, 0.9) 0%, rgba(193, 204, 249, 0.35) 100%);">
       </div>
       <div class="relative z-10 flex flex-col justify-end p-16 text-white max-w-2xl">
-        <!-- <div class="mb-6 flex items-center gap-3">
-          <i nz-icon nzType="bank" nzTheme="outline" class="text-white text-3xl"></i>
-          <h2 class="text-2xl font-bold tracking-tight text-white">Smart Apartment Management</h2>
-        </div> -->
         <h1 class="text-4xl font-black leading-tight mb-4 text-white">Hệ thống Quản lý Vận hành Chung cư Thông minh
           TPHCM
         </h1>
@@ -73,14 +69,10 @@
               </span>
             </div>
           </div>
-          <!-- có bạn Trí hồi trước định vào thực tập chung với bạn Khánh á anh, mà lúc đó bạn nghỉ ko học lên kỹ sư nữa nên ko có váo thực tập
-           giờ bạn muốn xin vào, công ty mình có tuyển ko a-->
           <div class="flex items-center justify-between mt-1">
-            <!-- <label class="flex items-center gap-2 cursor-pointer">
-              <input type="checkbox" class="w-5 h-5 rounded border-slate-300 text-primary" />
-              <span class="text-sm text-slate-600">Ghi nhớ đăng nhập</span>
-            </label> -->
-            <a class="ml-auto text-sm font-semibold text-primary" href="#">Quên mật khẩu?</a>
+            <button type="button" class="ml-auto text-sm font-semibold text-primary" (click)="openForgotPassword()">
+              Quên mật khẩu?
+            </button>
           </div>
 
           <div *ngIf="errorMessages?.length" class="text-red-600 text-sm">
@@ -95,6 +87,107 @@
             <i nz-icon nzType="login" nzTheme="outline" class="text-white text-lg"></i>
           </button>
         </form>
+
+        <!-- password modal -->
+        <div *ngIf="showForgotModal" class="fixed inset-0 z-50 flex items-center justify-center bg-black/40">
+          <div class="bg-white rounded-2xl shadow-2xl w-full max-w-md mx-4 p-6 relative">
+            <button type="button" class="absolute right-4 top-4 text-slate-400 hover:text-slate-600"
+              (click)="closeForgotPassword()">
+              <i nz-icon nzType="close" nzTheme="outline"></i>
+            </button>
+
+            <h2 class="text-xl font-bold text-slate-900 mb-1">Quên mật khẩu</h2>
+            <p class="text-sm text-slate-500 mb-4" *ngIf="forgotStep === 1">
+              Nhập tên đăng nhập, hệ thống sẽ gửi mã khôi phục tới email của bạn.
+            </p>
+            <p class="text-sm text-slate-500 mb-4" *ngIf="forgotStep === 2">
+              Nhập mã khôi phục đã nhận được và mật khẩu mới.
+            </p>
+            <div class="mb-3" *ngIf="forgotErrors?.length">
+              <ul class="text-sm text-red-600 list-disc ml-4">
+                <li *ngFor="let e of forgotErrors">{{ e }}</li>
+              </ul>
+            </div>
+            <div class="mb-3" *ngIf="forgotMessages?.length">
+              <ul class="text-sm text-emerald-600 list-disc ml-4">
+                <li *ngFor="let m of forgotMessages">{{ m }}</li>
+              </ul>
+            </div>
+
+            <form *ngIf="forgotStep === 1" [formGroup]="forgotFormStep1" (ngSubmit)="submitForgotStep1()"
+              class="flex flex-col gap-4 mt-2">
+              <div class="flex flex-col gap-1.5">
+                <label class="text-sm font-semibold text-slate-700 ml-1">Tên đăng nhập<span
+                    class="text-red-600">*</span></label>
+                <div class="relative flex items-center">
+                  <span class="absolute left-4 text-slate-400">
+                    <i nz-icon nzType="user" nzTheme="outline" class="text-slate-400"></i>
+                  </span>
+                  <input formControlName="username"
+                    class="w-full h-12 pl-12 pr-4 bg-slate-50 border border-slate-200 rounded-xl focus:ring-2 focus:ring-primary outline-none"
+                    placeholder="Tên đăng nhập" />
+                </div>
+              </div>
+              <div class="flex justify-end gap-2 mt-2">
+                <button type="button"
+                  class="px-4 h-10 rounded-lg border border-slate-200 text-slate-600 text-sm font-medium"
+                  (click)="closeForgotPassword()">Hủy</button>
+                <button type="submit" [disabled]="forgotLoading"
+                  class="px-4 h-10 rounded-lg bg-primary text-white text-sm font-semibold flex items-center justify-center gap-2">
+                  <span *ngIf="!forgotLoading">Gửi mã khôi phục</span>
+                  <span *ngIf="forgotLoading">Đang gửi...</span>
+                </button>
+              </div>
+            </form>
+
+            <form *ngIf="forgotStep === 2" [formGroup]="forgotFormStep2" (ngSubmit)="submitForgotStep2()"
+              class="flex flex-col gap-4 mt-2">
+              <div class="flex flex-col gap-1.5">
+                <label class="text-sm font-semibold text-slate-700 ml-1">Mã khôi phục<span
+                    class="text-red-600">*</span></label>
+                <input formControlName="resetCode"
+                  class="w-full h-12 px-4 bg-slate-50 border border-slate-200 rounded-xl focus:ring-2 focus:ring-primary outline-none"
+                  placeholder="Nhập mã khôi phục" />
+              </div>
+              <div class="flex flex-col gap-1.5">
+                <label class="text-sm font-semibold text-slate-700 ml-1">Mật khẩu mới<span
+                    class="text-red-600">*</span></label>
+                <input type="password" formControlName="newPassword"
+                  class="w-full h-12 px-4 bg-slate-50 border border-slate-200 rounded-xl focus:ring-2 focus:ring-primary outline-none"
+                  placeholder="Mật khẩu mới" />
+              </div>
+              <div class="flex flex-col gap-1.5">
+                <label class="text-sm font-semibold text-slate-700 ml-1">Xác nhận mật khẩu mới<span
+                    class="text-red-600">*</span></label>
+                <input type="password" formControlName="confirmNewPassword"
+                  class="w-full h-12 px-4 bg-slate-50 border border-slate-200 rounded-xl focus:ring-2 focus:ring-primary outline-none"
+                  placeholder="Nhập lại mật khẩu mới" />
+              </div>
+              <div class="flex justify-between gap-2 mt-2">
+                <button type="button"
+                  class="px-4 h-10 rounded-lg border border-slate-200 text-slate-600 text-sm font-medium"
+                  (click)="forgotStep = 1; forgotErrors = []; forgotMessages = []">Quay lại</button>
+                <div class="flex gap-2 ml-auto">
+                  <button type="button"
+                    class="px-3 h-10 rounded-lg border border-slate-200 text-slate-600 text-xs font-medium"
+                    (click)="submitForgotStep1()">Gửi lại mã</button>
+                  <button type="submit" [disabled]="forgotLoading"
+                    class="px-4 h-10 rounded-lg bg-primary text-white text-sm font-semibold flex items-center justify-center gap-2">
+                    <span *ngIf="!forgotLoading">Đặt lại mật khẩu</span>
+                    <span *ngIf="forgotLoading">Đang xử lý...</span>
+                  </button>
+                </div>
+              </div>
+            </form>
+
+            <div *ngIf="forgotStep === 3" class="mt-4 flex flex-col gap-4">
+              <button type="button" class="w-full h-10 rounded-lg bg-primary text-white text-sm font-semibold"
+                (click)="closeForgotPassword()">
+                Quay lại đăng nhập
+              </button>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   </div>
