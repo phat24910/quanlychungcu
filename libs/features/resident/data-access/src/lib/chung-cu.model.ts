@@ -20,8 +20,8 @@ export interface ToaNha {
   id?: number;
   maToaNha?: string;
   tenToaNha: string;
-  soTang: number;
-  soTangHam?: number;
+  // soTang: number;
+  // soTangHam?: number;
   soCanHo?: number;
   diaChi?: string;
   moTa?: string;
@@ -41,14 +41,16 @@ export interface Tang {
 
 export interface CanHo {
   id?: number;
-  toaNhaId: number;
   maCanHo?: string;
+  tangId?: number;
+  tenTang?: string;
   dienTich?: number;
-  tang?: number;
   soPhongNgu?: number;
   soPhongTam?: number;
   loaiCanHoId?: number;
+  tenLoaiCanHo?: string;
   tinhTrangCanHoId?: number;
+  tenTinhTrangCanHo?: string;
 }
 
 // Cấu trúc chung cư dùng cho tree view

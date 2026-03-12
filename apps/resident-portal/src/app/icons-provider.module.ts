@@ -26,7 +26,8 @@ import {
   ReloadOutline,
   PlusOutline,
   UnorderedListOutline,
-  DeleteOutline
+  DeleteOutline,
+  CommentOutline
 } from '@ant-design/icons-angular/icons';
 
 const icons = [
@@ -54,7 +55,8 @@ const icons = [
   PlusOutline,
   UnorderedListOutline,
   DeleteOutline,
-  DownOutline
+  DownOutline,
+  CommentOutline
 ];
 
 @NgModule({

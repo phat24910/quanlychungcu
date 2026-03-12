@@ -1,7 +1,7 @@
 import { FlatTreeControl } from '@angular/cdk/tree';
 import { SelectionModel } from '@angular/cdk/collections';
 import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
 import { NzTreeFlatDataSource, NzTreeFlattener } from 'ng-zorro-antd/tree-view';
 import { ChungCuService, CauTrucToaNha, CauTrucTang, CauTrucCanHo } from '@features/resident/data-access';
 
@@ -61,7 +61,7 @@ export class CauTrucChungCuTreeComponent implements OnInit {
 
   dataSource = new NzTreeFlatDataSource(this.treeControl, this.treeFlattener);
 
-  constructor(private svc: ChungCuService, private router: Router) {}
+  constructor(private svc: ChungCuService, private router: Router, private route: ActivatedRoute) {}
 
   ngOnInit(): void {
     this.loadTree();
@@ -130,13 +130,15 @@ export class CauTrucChungCuTreeComponent implements OnInit {
     this.selectListSelection.toggle(node);
 
     if (node.type === 'root') {
-      this.router.navigate(['/dashboard/resident/toa-nha']);
+      this.router.navigate(['toa-nha'], { relativeTo: this.route });
     } else if (node.type === 'building' && node.buildingId != null) {
-      this.router.navigate(['/dashboard/resident/tang'], {
+      this.router.navigate(['tang'], {
+        relativeTo: this.route,
         queryParams: { toaNhaId: node.buildingId, toaNhaName: node.name }
       });
     } else if (node.type === 'floor' && node.tangId != null) {
-      this.router.navigate(['/dashboard/resident/can-ho'], {
+      this.router.navigate(['can-ho'], {
+        relativeTo: this.route,
         queryParams: { tangId: node.tangId, tangName: node.name }
       });
     }

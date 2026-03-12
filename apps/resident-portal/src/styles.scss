@@ -7,3 +7,14 @@
 /* You can add global styles to this file, and also import other style files */
 
 body { font-family: Inter, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial; }
+
+/* Global modal sizing for forms */
+.custom-modal .ant-modal {
+	max-width: 520px !important;
+	width: 100% !important;
+}
+
+.custom-modal .ant-modal-content {
+	border-radius: 8px;
+}
+ 

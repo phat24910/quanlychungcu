@@ -59,6 +59,18 @@ export class ChungCuService {
 	return this.http.post<ApiResponse<any[]>>(`${this.base}/catalog/trang-thai-toa-nha-for-selector`, {});
   }
 
+  getLoaiTangForSelector(): Observable<ApiResponse<any[]>> {
+    return this.http.post<ApiResponse<any[]>>(`${this.base}/catalog/loai-tang-for-selector`, {});
+  }
+
+  getLoaiCanHoForSelector(): Observable<ApiResponse<any[]>> {
+    return this.http.post<ApiResponse<any[]>>(`${this.base}/catalog/loai-can-ho-for-selector`, {});
+  }
+
+  getTinhTrangCanHoForSelector(): Observable<ApiResponse<any[]>> {
+    return this.http.post<ApiResponse<any[]>>(`${this.base}/catalog/tinh-trang-can-ho-for-selector`, {});
+  }
+
   getCauTrucChungCu(keyword?: string): Observable<ApiResponse<CauTrucToaNha[]>> {
 	const body: any = {};
 	if (keyword) body.keyword = keyword;

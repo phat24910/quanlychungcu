@@ -5,7 +5,8 @@ import { ChungCuService } from '@features/resident/data-access';
 
 @Component({
   selector: 'app-toa-nha-form',
-  templateUrl: './toa-nha-form.component.html'
+  templateUrl: './toa-nha-form.component.html',
+  styleUrls: ['./toa-nha-form.component.scss']
 })
 export class ToaNhaFormComponent implements OnInit {
   form: FormGroup;

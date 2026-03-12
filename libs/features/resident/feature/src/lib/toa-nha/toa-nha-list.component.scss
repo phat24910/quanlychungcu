@@ -1,13 +1,3 @@
-/* Giới hạn kích thước modal Tòa nhà cho gọn lại */
-::ng-deep .custom-modal .ant-modal {
-	max-width: 520px !important;
-	width: 100% !important;
-}
-
-::ng-deep .custom-modal .ant-modal-content {
-	border-radius: 8px;
-}
-
 /* trạng thái tòa nhà */
 .status-pill {
 	display: inline-flex;

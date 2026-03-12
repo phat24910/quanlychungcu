@@ -2,7 +2,7 @@
   display: block;
 }
 
-.toa-nha-form-wrapper {
+.tang-form-wrapper {
   padding-top: 4px;
 }
 
@@ -14,22 +14,15 @@
   box-shadow: none;
 }
 
-
-::ng-deep .toa-nha-form-wrapper input[nz-input],
-::ng-deep .toa-nha-form-wrapper textarea[nz-input] {
+::ng-deep .tang-form-wrapper input[nz-input] {
   border-radius: 10px;
   border: 1px solid #d1d5db;
   padding: 8px 10px;
   transition: border-color 0.15s ease, box-shadow 0.15s ease;
 }
 
-::ng-deep .toa-nha-form-wrapper input[nz-input]:focus,
-::ng-deep .toa-nha-form-wrapper textarea[nz-input]:focus {
+::ng-deep .tang-form-wrapper input[nz-input]:focus {
   border-color: #1677ff;
   box-shadow: 0 0 0 2px rgba(22, 119, 255, 0.15);
   outline: none;
-}
-
-::ng-deep .toa-nha-form-wrapper textarea[nz-input] {
-  resize: vertical;
 }

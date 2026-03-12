@@ -12,16 +12,6 @@
           <input nz-input formControlName="tenToaNha" placeholder="Nhập tên tòa nhà" />
         </div>
 
-        <div class="flex flex-col">
-          <label class="mb-2 font-medium text-gray-700">Số tầng</label>
-          <input nz-input type="number" formControlName="soTang" />
-        </div>
-
-        <div class="flex flex-col">
-          <label class="mb-2 font-medium text-gray-700">Số tầng hầm</label>
-          <input nz-input type="number" formControlName="soTangHam" />
-        </div>
-
         <div class="flex flex-col md:col-span-2">
           <label class="mb-2 font-medium text-gray-700">Địa chỉ</label>
           <input nz-input formControlName="diaChi" placeholder="Nhập địa chỉ" />
@@ -34,12 +24,11 @@
 
         <div class="flex flex-col">
           <label class="mb-2 font-medium text-gray-700">Trạng thái</label>
-          <select formControlName="trangThaiToaNhaId"
-            class="border border-gray-300 rounded-[10px] px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
-            <option *ngFor="let st of statusOptions" [ngValue]="st.id">
-              {{ st.name || st.ten || st.label }}
-            </option>
-          </select>
+          <nz-select formControlName="trangThaiToaNhaId" nzAllowClear nzPlaceHolder="-- Chọn trạng thái --"
+            style="width:100%" class="rounded-[10px]">
+            <nz-option *ngFor="let st of statusOptions" [nzValue]="st.id"
+              [nzLabel]="st.name || st.ten || st.label"></nz-option>
+          </nz-select>
         </div>
       </div>
     </div>

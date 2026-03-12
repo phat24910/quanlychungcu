@@ -23,6 +23,7 @@ import { ToaNhaListComponent } from './toa-nha/toa-nha-list.component';
 import { ToaNhaFormComponent } from './toa-nha/toa-nha-form.component';
 import { CanHoListComponent } from './can-ho/can-ho-list.component';
 import { CanHoFormComponent } from './can-ho/can-ho-form.component';
+import { TangFormComponent } from './tang/tang-form.component';
 import { CauTrucChungCuTreeComponent } from './cau-truc-chung-cu-tree/cau-truc-chung-cu-tree.component';
 import { ResidentLayoutComponent } from './resident-layout/resident-layout.component';
 import { TangListComponent } from './tang/tang-list.component';
@@ -51,6 +52,7 @@ const routes: Routes = [
     ToaNhaFormComponent,
     CanHoListComponent,
     CanHoFormComponent,
+    TangFormComponent,
     CauTrucChungCuTreeComponent,
     ResidentLayoutComponent,
     TangListComponent

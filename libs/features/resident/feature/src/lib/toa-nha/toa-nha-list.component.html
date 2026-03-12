@@ -38,8 +38,16 @@
           (nzCheckedChange)="onAllChecked($event)"></th>
         <th style="width:64px; white-space:nowrap; text-align:center">Thao tác</th>
         <th style="width:48px">STT</th>
-        <th (click)="onSort('maToaNha')" style="cursor:pointer; width:100px">Mã tòa</th>
-        <th (click)="onSort('tenToaNha')" style="cursor:pointer; width:150px">Tên tòa</th>
+        <th (click)="onSort('maToaNha')" style="cursor:pointer; width:100px">
+          Mã tòa
+          <i *ngIf="sortCol === 'maToaNha'" nz-icon [nzType]="isAsc ? 'caret-up' : 'caret-down'" nzTheme="outline"
+            style="margin-left:6px"></i>
+        </th>
+        <th (click)="onSort('tenToaNha')" style="cursor:pointer; width:150px">
+          Tên tòa
+          <i *ngIf="sortCol === 'tenToaNha'" nz-icon [nzType]="isAsc ? 'caret-up' : 'caret-down'" nzTheme="outline"
+            style="margin-left:6px"></i>
+        </th>
         <th style="width:360px">Mô tả</th>
         <th style="width:100px">Số căn</th>
         <th style="width:120px">Trạng thái</th>

@@ -19,7 +19,7 @@ export class ToaNhaListComponent implements OnInit {
   sortCol = '';
   isAsc = true;
   pageNumber = 1;
-  pageSize = 20;
+  pageSize = 10;
   totalItems = 0;
 
   listOfSelection: any[] = [];
@@ -95,6 +95,7 @@ export class ToaNhaListComponent implements OnInit {
       this.sortCol = col;
       this.isAsc = true;
     }
+    this.pageNumber = 1;
     this.load();
   }
 
@@ -130,9 +131,9 @@ export class ToaNhaListComponent implements OnInit {
     const st = this.statusDict[id];
     const rawName = (st && (st.name || st.ten || st.label)) as string | undefined;
     const name = (rawName || '').toLowerCase();
+    if (name.includes('ngừng') || name.includes('ngưng')) return 'status-stopped';
     if (name.includes('hoạt động')) return 'status-active';
     if (name.includes('bảo trì')) return 'status-maintain';
-    if (name.includes('ngừng') || name.includes('ngưng')) return 'status-stopped';
     return 'status-unknown';
   }
 
