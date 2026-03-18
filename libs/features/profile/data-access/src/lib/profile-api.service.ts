@@ -22,4 +22,8 @@ export class ProfileApiService {
   changePassword(payload: any): Observable<any> {
     return this.http.post<any>(`${environment.apiBaseUrl}/api/Profile/change-password`, payload);
   }
+
+  getGioiTinhForSelector(): Observable<any> {
+    return this.http.post<any>(`${environment.apiBaseUrl}/api/catalog/gioi-tinh-for-selector`, {});
+  }
 }

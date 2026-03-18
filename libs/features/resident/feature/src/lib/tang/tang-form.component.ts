@@ -13,6 +13,7 @@ export class TangFormComponent implements OnInit, OnChanges {
   @Input() id?: number;
   @Input() inModal = false;
   @Output() saved = new EventEmitter<void>();
+  @Output() done = new EventEmitter<void>();
 
   loaiTangOptions: any[] = [];
 
@@ -68,9 +69,14 @@ export class TangFormComponent implements OnInit, OnChanges {
       toaNhaId: fv.toaNhaId
     };
     const obs = this.id ? this.svc.updateTang(payload) : this.svc.createTang(payload);
-    obs.subscribe(() => {
-      if (this.inModal) this.saved.emit();
-      else this.router.navigate(['../'], { relativeTo: this.route });
-    });
+    const finish = (success = false) => {
+      if (success) {
+        if (this.inModal) this.saved.emit();
+        else this.router.navigate(['../'], { relativeTo: this.route });
+      }
+      this.done.emit();
+    };
+
+    obs.subscribe(() => finish(true), () => finish(false));
   }
 }

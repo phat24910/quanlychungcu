@@ -18,15 +18,18 @@ import { NzIconModule } from 'ng-zorro-antd/icon';
 import { NzDropDownModule } from 'ng-zorro-antd/dropdown';
 import { NzMenuModule } from 'ng-zorro-antd/menu';
 import { NzTreeViewModule } from 'ng-zorro-antd/tree-view';
+import { NzNotificationModule } from 'ng-zorro-antd/notification';
 import { QuanLyCuDanComponent } from './quan-ly-cu-dan/quan-ly-cu-dan.component';
 import { ToaNhaListComponent } from './toa-nha/toa-nha-list.component';
 import { ToaNhaFormComponent } from './toa-nha/toa-nha-form.component';
 import { CanHoListComponent } from './can-ho/can-ho-list.component';
 import { CanHoFormComponent } from './can-ho/can-ho-form.component';
+import { CanHoResidentsComponent } from './can-ho/can-ho-residents.component';
 import { TangFormComponent } from './tang/tang-form.component';
 import { CauTrucChungCuTreeComponent } from './cau-truc-chung-cu-tree/cau-truc-chung-cu-tree.component';
 import { ResidentLayoutComponent } from './resident-layout/resident-layout.component';
 import { TangListComponent } from './tang/tang-list.component';
+import { SharedUiModule } from '@shared/ui';
 
 const routes: Routes = [
   {
@@ -40,7 +43,8 @@ const routes: Routes = [
       { path: 'toa-nha/:id/edit', component: ToaNhaFormComponent },
       { path: 'can-ho', component: CanHoListComponent },
       { path: 'can-ho/create', component: CanHoFormComponent },
-      { path: 'can-ho/:id/edit', component: CanHoFormComponent }
+      { path: 'can-ho/:id/edit', component: CanHoFormComponent },
+      { path: 'can-ho/:id', component: CanHoResidentsComponent }
     ]
   }
 ];
@@ -52,6 +56,7 @@ const routes: Routes = [
     ToaNhaFormComponent,
     CanHoListComponent,
     CanHoFormComponent,
+    CanHoResidentsComponent,
     TangFormComponent,
     CauTrucChungCuTreeComponent,
     ResidentLayoutComponent,
@@ -76,7 +81,10 @@ const routes: Routes = [
     NzSelectModule,
     NzCheckboxModule,
     NzTreeViewModule,
-    FormsModule
+    FormsModule,
+    NzNotificationModule
+    ,
+    SharedUiModule
   ],
   providers: []
 })

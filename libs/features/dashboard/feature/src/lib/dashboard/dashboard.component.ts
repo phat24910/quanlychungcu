@@ -15,12 +15,13 @@ export class DashboardComponent implements OnInit {
   isMobile = false;
   currentTitle = 'Trang chủ';
   menuItems: any[] = [];
-  userName = 'Quản trị viên';
-  userRole = 'Ban quản lý';
+  username = '';
+  role = '';
   avatarUrl = '';
-  defaultAvatar = 'assets/images/login.jpg';
+  defaultAvatar = 'assets/images/avatar.png';
 
   private avatarSub?: Subscription;
+  private userSub?: Subscription;
 
   constructor(private router: Router, private auth: AuthService, private changePwd: ChangePasswordModalService) { }
 
@@ -38,6 +39,22 @@ export class DashboardComponent implements OnInit {
       else this.avatarUrl = this.auth.getAvatar() || '';
     });
     this.avatarUrl = this.auth.getAvatar() || this.avatarUrl;
+    const stored = this.auth.getCurrentUser();
+    if (stored) {
+      this.username = stored.fullName || stored.username || '';
+      this.role = stored.role || '';
+      if (stored.anhDaiDienUrl) this.avatarUrl = stored.anhDaiDienUrl;
+    }
+    this.userSub = this.auth.currentUser$.subscribe(u => {
+      if (u) {
+        this.username = u.fullName || u.username || this.username;
+        this.role = u.role || this.role;
+        if (u.anhDaiDienUrl) this.avatarUrl = u.anhDaiDienUrl;
+      } else {
+        this.username = '';
+        this.role = '';
+      }
+    });
   }
 
   @HostListener('window:resize')
@@ -70,6 +87,7 @@ export class DashboardComponent implements OnInit {
   ngOnDestroy(): void {
     this.routerSub?.unsubscribe();
     this.avatarSub?.unsubscribe();
+    this.userSub?.unsubscribe();
   }
 
   private routerSub?: Subscription;

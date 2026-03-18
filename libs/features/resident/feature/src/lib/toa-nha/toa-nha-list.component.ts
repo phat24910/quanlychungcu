@@ -4,6 +4,7 @@ import { ChungCuService, ToaNha } from '@features/resident/data-access';
 import { ViewChild } from '@angular/core';
 import { ToaNhaFormComponent } from './toa-nha-form.component';
 import { NzModalService } from 'ng-zorro-antd/modal';
+import { NzNotificationService } from 'ng-zorro-antd/notification';
 
 @Component({
   selector: 'app-toa-nha-list',
@@ -39,14 +40,19 @@ export class ToaNhaListComponent implements OnInit {
   editingId?: number;
   saving = false;
 
-  constructor(private svc: ChungCuService, private router: Router, private modal: NzModalService) {}
+  constructor(
+    private svc: ChungCuService,
+    private router: Router,
+    private modal: NzModalService,
+    private notification: NzNotificationService
+  ) {}
 
   ngOnInit(): void {
     this.load();
     this.loadStatusOptions();
   }
 
-  load(): void {
+  load(callback?: () => void): void {
     this.loading = true;
     const q = {
       keyword: this.keyword || undefined,
@@ -68,7 +74,11 @@ export class ToaNhaListComponent implements OnInit {
           this.totalItems = r.result.pagingInfo?.totalItems || 0;
         }
       }
-    }, () => (this.loading = false));
+      if (callback) callback();
+    }, () => {
+      this.loading = false;
+      if (callback) callback();
+    });
   }
 
   private loadStatusOptions(): void {
@@ -147,14 +157,24 @@ export class ToaNhaListComponent implements OnInit {
       nzOkDanger: true,
       nzCancelText: 'Hủy',
       nzOnOk: () => {
-        this.svc.deleteToaNha([id]).subscribe(() => this.load());
+        this.loading = true;
+        this.svc.deleteToaNha([id]).subscribe(() => {
+          this.notification.success('Đã xóa', 'Xóa tòa nhà thành công');
+          this.load();
+        }, (err: any) => {
+          this.loading = false;
+          this.notification.error('Lỗi', err?.message || 'Xóa thất bại');
+        });
       }
     });
   }
 
   deleteSelectedMultiple(): void {
     const ids = Array.from(this.setOfCheckedId);
-    if (!ids.length) return alert('Chưa chọn tòa nhà nào');
+    if (!ids.length) {
+      this.notification.warning('Thông báo', 'Chưa chọn tòa nhà nào');
+      return;
+    }
     this.modal.confirm({
       nzTitle: 'Xóa tòa nhà đã chọn',
       nzContent: `Bạn có chắc chắn muốn xóa ${ids.length} tòa nhà đã chọn?`,
@@ -163,9 +183,14 @@ export class ToaNhaListComponent implements OnInit {
       nzOkDanger: true,
       nzCancelText: 'Hủy',
       nzOnOk: () => {
+        this.loading = true;
         this.svc.deleteToaNha(ids).subscribe(() => {
           this.setOfCheckedId.clear();
+          this.notification.success('Đã xóa', `Xóa ${ids.length} tòa nhà thành công`);
           this.load();
+        }, (err: any) => {
+          this.loading = false;
+          this.notification.error('Lỗi', err?.message || 'Xóa thất bại');
         });
       }
     });
@@ -194,10 +219,15 @@ export class ToaNhaListComponent implements OnInit {
     this.formComp?.save();
   }
 
+  onDone(): void {
+    this.saving = false;
+  }
+
   onSaved(): void {
     this.saving = false;
     this.isModalVisible = false;
-    this.load();
+    const msg = this.editingId ? 'Cập nhật tòa nhà thành công' : 'Tạo tòa nhà thành công';
+    this.load(() => this.notification.success('Thành công', msg));
   }
 
   updateCheckedSet(id: number | undefined, checked: boolean): void {

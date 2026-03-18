@@ -4,7 +4,7 @@
   <nz-modal [(nzVisible)]="isModalVisible" [nzTitle]="modalTitle" (nzOnCancel)="cancelModal()" (nzOnOk)="onModalOk()"
     [nzOkLoading]="saving" nzOkText="Lưu" nzCancelText="Hủy" nzWidth="420" nzWrapClassName="custom-modal">
     <ng-container *nzModalContent>
-      <app-tang-form [inModal]="true" [id]="editingId" (saved)="onSaved()"></app-tang-form>
+      <app-tang-form [inModal]="true" [id]="editingId" (saved)="onSaved()" (done)="onDone()"></app-tang-form>
     </ng-container>
   </nz-modal>
 
@@ -33,8 +33,9 @@
     </div>
   </div>
 
-  <nz-table #tgTable [nzData]="items" [nzLoading]="loading" [nzShowPagination]="false"
-    (nzCurrentPageDataChange)="onCurrentPageDataChange($event)">
+  <app-scroll-table [height]="'480px'">
+    <nz-table #tgTable [nzData]="items" [nzLoading]="loading" [nzShowPagination]="false"
+      (nzCurrentPageDataChange)="onCurrentPageDataChange($event)">
     <thead>
       <tr>
         <th style="width:48px" [(nzChecked)]="checked" [nzIndeterminate]="indeterminate"
@@ -74,7 +75,8 @@
         <td>{{ getLoaiTangName(it.loaiTangId) || (it.tenLoaiTang || '-') }}</td>
       </tr>
     </tbody>
-  </nz-table>
+    </nz-table>
+  </app-scroll-table>
 
   <div style="display:flex;justify-content:flex-end;margin-top:12px">
     <nz-pagination [nzPageIndex]="pageNumber" [nzPageSize]="pageSize" [nzTotal]="totalItems"

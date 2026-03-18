@@ -11,6 +11,7 @@ import { DomSanitizer } from '@angular/platform-browser';
 })
 export class ProfileComponent implements OnInit {
   profile: any = null;
+  genders: any[] = [];
   loading = false;
   editMode = false;
   profileForm!: FormGroup;
@@ -39,6 +40,20 @@ export class ProfileComponent implements OnInit {
 
   ngOnInit(): void {
     this.load();
+    this.loadGenders();
+  }
+
+  loadGenders(): void {
+    this.api.getGioiTinhForSelector().subscribe({
+      next: (r: any) => {
+        if (r && r.isOk) {
+          this.genders = r.result || [];
+        } else if (Array.isArray(r)) {
+          this.genders = r || [];
+        }
+      },
+      error: () => {}
+    });
   }
 
   load(): void {

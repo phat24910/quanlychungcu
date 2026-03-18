@@ -12,6 +12,13 @@ export class AuthService {
   private avatarKey = 'avatar_url';
   private avatarSubject = new BehaviorSubject<string | null>(localStorage.getItem('avatar_url'));
   avatar$ = this.avatarSubject.asObservable();
+  private userKey = 'auth_user';
+  private userSubject = new BehaviorSubject<any>(
+    (() => {
+      try { return JSON.parse(localStorage.getItem('auth_user') || 'null'); } catch { return null; }
+    })()
+  );
+  currentUser$ = this.userSubject.asObservable();
 
   constructor(private http: HttpClient, private api: AuthApiService) {}
 
@@ -23,6 +30,12 @@ export class AuthService {
         const access = res?.result?.accessToken;
         const refresh = res?.result?.refreshToken;
         if (access) this.setTokens(access, refresh);
+        const user = res?.result || null;
+        if (user) {
+          try { localStorage.setItem(this.userKey, JSON.stringify(user)); } catch {}
+          this.userSubject.next(user);
+          if (user.anhDaiDienUrl) this.setAvatar(user.anhDaiDienUrl);
+        }
       })
     );
   }
@@ -72,6 +85,10 @@ export class AuthService {
     this.avatarSubject.next(url);
   }
 
+  getCurrentUser(): any {
+    try { return JSON.parse(localStorage.getItem(this.userKey) || 'null'); } catch { return null; }
+  }
+
   getAvatar(): string | null {
     return localStorage.getItem(this.avatarKey);
   }
@@ -87,6 +104,8 @@ export class AuthService {
   clearTokens() {
     localStorage.removeItem(this.accessKey);
     localStorage.removeItem(this.refreshKey);
+    localStorage.removeItem(this.userKey);
+    this.userSubject.next(null);
   }
 
   isAuthenticated(): boolean {

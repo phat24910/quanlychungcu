@@ -460,6 +460,7 @@ Example Value
 Schema
 {
   "id": 0,
+  "maToaNha": "string",
   "tenToaNha": "string",
   "diaChi": "string",
   "moTa": "string",
@@ -731,6 +732,7 @@ Schema
       {
         "id": 0,
         "maCanHo": "string",
+        "tenCanHo": "string",
         "tangId": 0,
         "tenTang": "string",
         "dienTich": 0,
@@ -795,6 +797,7 @@ Example Value
 Schema
 {
   "maCanHo": "string",
+  "tenCanHo": "string",
   "dienTich": 0,
   "tangId": 0,
   "soPhongNgu": 0,
@@ -816,6 +819,7 @@ Schema
   "result": {
     "id": 0,
     "maCanHo": "string",
+    "tenCanHo": "string",
     "tangId": 0,
     "tenTang": "string",
     "dienTich": 0,
@@ -877,8 +881,10 @@ Example Value
 Schema
 {
   "id": 0,
-  "dienTich": 0,
   "tangId": 0,
+  "maCanHo": "string",
+  "tenCanHo": "string",
+  "dienTich": 0,
   "soPhongNgu": 0,
   "soPhongTam": 0,
   "loaiCanHoId": 0,
@@ -899,6 +905,7 @@ Schema
   "result": {
     "id": 0,
     "maCanHo": "string",
+    "tenCanHo": "string",
     "tangId": 0,
     "tenTang": "string",
     "dienTich": 0,
@@ -980,6 +987,7 @@ Schema
     {
       "id": 0,
       "maCanHo": "string",
+      "tenCanHo": "string",
       "tangId": 0,
       "tenTang": "string",
       "dienTich": 0,
@@ -1066,6 +1074,7 @@ Schema
       {
         "id": 0,
         "maCanHo": "string",
+        "tenCanHo": "string",
         "tangId": 0,
         "tenTang": "string",
         "dienTich": 0,
@@ -1152,6 +1161,7 @@ Schema
     "id": 0,
     "tangId": 0,
     "tenTang": "string",
+    "tenCanHo": "string",
     "maCanHo": "string",
     "dienTich": 0,
     "soPhongNgu": 0,
@@ -1168,8 +1178,8 @@ Schema
         "fullName": "string",
         "loaiQuanHeCuTruId": 0,
         "tenLoaiQuanHeCuTru": "string",
-        "ngayBatDau": "2026-03-11T08:19:58.655Z",
-        "ngayKetThuc": "2026-03-11T08:19:58.655Z",
+        "ngayBatDau": "2026-03-17T01:46:17.292Z",
+        "ngayKetThuc": "2026-03-17T01:46:17.292Z",
         "isKetThuc": true
       }
     ]
@@ -1583,10 +1593,10 @@ Example Value
 Schema
 {
   "id": 0,
+  "toaNhaId": 0,
   "maTang": "string",
   "tenTang": "string",
-  "loaiTangId": 0,
-  "toaNhaId": 0
+  "loaiTangId": 0
 }
 Responses
 Code	Description	Links
@@ -1843,6 +1853,7 @@ Schema
       {
         "id": 0,
         "maCanHo": "string",
+        "tenCanHo": "string",
         "tangId": 0,
         "tenTang": "string",
         "dienTich": 0,
@@ -1854,6 +1865,499 @@ Schema
         "tenTinhTrangCanHo": "string"
       }
     ]
+  },
+  "warningMessages": [
+    "string"
+  ],
+  "errors": [
+    {
+      "code": "string",
+      "description": "string"
+    }
+  ],
+  "isOk": true
+}
+No links
+400
+Bad Request
+
+Media type
+
+text/plain
+Example Value
+Schema
+{
+  "result": "string",
+  "warningMessages": [
+    "string"
+  ],
+  "errors": [
+    {
+      "code": "string",
+      "description": "string"
+    }
+  ],
+  "isOk": true
+}
+
+
+
+
+
+Thiết lập cư trú - thêm cư dân vào căn hộ
+/api/quan-he-cu-tru
+API dùng để tạo một liên kết cư trú giữa một User và một CanHo. Yêu cầu cung cấp UserId, CanHoId, ID biểu thị loại quan hệ (LoaiQuanHeCuTruId) và Ngày bắt đầu (NgayBatDau).
+
+Parameters
+Try it out
+No parameters
+
+Request body
+
+application/json
+Example Value
+Schema
+{
+  "canHoId": 0,
+  "userId": 0,
+  "loaiQuanHeCuTruId": 0
+}
+Responses
+Code	Description	Links
+200
+OK
+
+Media type
+
+text/plain
+Controls Accept header.
+Example Value
+Schema
+{
+  "result": {
+    "quanHeCuTruId": 0,
+    "userId": 0,
+    "hoTen": "string",
+    "email": "string",
+    "phoneNumber": "string",
+    "loaiQuanHeCuTruId": 0,
+    "tenLoaiQuanHeCuTru": "string",
+    "ngayBatDau": "2026-03-13T08:35:40.966Z"
+  },
+  "warningMessages": [
+    "string"
+  ],
+  "errors": [
+    {
+      "code": "string",
+      "description": "string"
+    }
+  ],
+  "isOk": true
+}
+No links
+400
+Bad Request
+
+Media type
+
+text/plain
+Example Value
+Schema
+{
+  "result": "string",
+  "warningMessages": [
+    "string"
+  ],
+  "errors": [
+    {
+      "code": "string",
+      "description": "string"
+    }
+  ],
+  "isOk": true
+}
+
+
+
+
+Kết thúc cư trú - đánh dấu cư dân đã chuyển đi
+/api/quan-he-cu-tru/ket-thuc
+API dùng để kết thúc khoảng thời gian sinh sống của cư dân tại căn hộ. Yêu cầu truyền vào QuanHeCuTruId và NgayKetThuc. Hệ thống sẽ cập nhật trạng thái IsKetThuc thành true.
+
+Parameters
+Try it out
+No parameters
+
+Request body
+
+application/json
+Example Value
+Schema
+{
+  "quanHeCuTruId": 0
+}
+Responses
+Code	Description	Links
+200
+OK
+
+Media type
+
+text/plain
+Controls Accept header.
+Example Value
+Schema
+{
+  "result": true,
+  "warningMessages": [
+    "string"
+  ],
+  "errors": [
+    {
+      "code": "string",
+      "description": "string"
+    }
+  ],
+  "isOk": true
+}
+No links
+400
+Bad Request
+
+Media type
+
+text/plain
+Example Value
+Schema
+{
+  "result": "string",
+  "warningMessages": [
+    "string"
+  ],
+  "errors": [
+    {
+      "code": "string",
+      "description": "string"
+    }
+  ],
+  "isOk": true
+}
+
+
+
+
+Cập nhật quan hệ cư trú (loại quan hệ trong căn hộ)
+/api/quan-he-cu-tru/cap-nhat
+API dùng để sửa thông tin lịch sử cư trú hiện tại. Cho phép đổi loại quan hệ (LoaiQuanHeCuTruId) hoặc chỉnh sửa NgayBatDau, NgayKetThuc của bản ghi QuanHeCuTru đó.
+
+Parameters
+Try it out
+No parameters
+
+Request body
+
+application/json
+Example Value
+Schema
+{
+  "quanHeCuTruId": 0,
+  "loaiQuanHeCuTruId": 0
+}
+Responses
+Code	Description	Links
+200
+OK
+
+Media type
+
+text/plain
+Controls Accept header.
+Example Value
+Schema
+{
+  "result": true,
+  "warningMessages": [
+    "string"
+  ],
+  "errors": [
+    {
+      "code": "string",
+      "description": "string"
+    }
+  ],
+  "isOk": true
+}
+No links
+400
+Bad Request
+
+Media type
+
+text/plain
+Example Value
+Schema
+{
+  "result": "string",
+  "warningMessages": [
+    "string"
+  ],
+  "errors": [
+    {
+      "code": "string",
+      "description": "string"
+    }
+  ],
+  "isOk": true
+}
+
+
+Lấy danh sách cư dân với bộ lọc và tìm kiếm nâng cao
+/api/quan-he-cu-tru/cu-dan
+API truy vấn danh sách cư dân hỗ trợ các chức năng:
+Phạm vi (ID): Lọc chính xác theo ToaNhaId, TangId, CanHoId.
+Từ khóa: Tìm kiếm theo HoTen, MaToaNha, MaTang, MaCanHo (qua tham số Keyword).
+Bộ lọc:
+Mã định danh: MaToaNha, MaTang, MaCanHo.
+Trạng thái: LoaiQuanHeCuTruId, IsKetThuc.
+Thời gian: Khoảng ngày bắt đầu (NgayBatDauFrom/To) và khoảng ngày kết thúc (NgayKetThucFrom/To).
+Sắp xếp: Hỗ trợ sắp xếp theo MaToaNha, MaTang, MaCanHo, HoTen, LoaiQuanHeCuTruId, NgayBatDau, NgayKetThuc, IsKetThuc.
+Phân trang: PageNumber và PageSize.
+Parameters
+Try it out
+No parameters
+
+Request body
+
+application/json
+Example Value
+Schema
+{
+  "toaNhaId": 0,
+  "tangId": 0,
+  "canHoId": 0,
+  "keyword": "string",
+  "maToaNha": "string",
+  "maTang": "string",
+  "maCanHo": "string",
+  "loaiQuanHeCuTruId": 0,
+  "isKetThuc": true,
+  "ngayBatDauFrom": "2026-03-18",
+  "ngayBatDauTo": "2026-03-18",
+  "ngayKetThucFrom": "2026-03-18",
+  "ngayKetThucTo": "2026-03-18",
+  "sortCol": "string",
+  "isAsc": true,
+  "pageNumber": 0,
+  "pageSize": 0
+}
+Responses
+Code	Description	Links
+200
+OK
+
+Media type
+
+text/plain
+Controls Accept header.
+Example Value
+Schema
+{
+  "result": {
+    "items": [
+      {
+        "maToaNha": "string",
+        "maTang": "string",
+        "maCanHo": "string",
+        "quanHeCuTruId": 0,
+        "userId": 0,
+        "hoTen": "string",
+        "loaiQuanHeCuTruId": 0,
+        "tenLoaiQuanHeCuTru": "string",
+        "ngayBatDau": "2026-03-18T04:44:16.123Z",
+        "ngayKetThuc": "2026-03-18T04:44:16.123Z",
+        "isKetThuc": true
+      }
+    ],
+    "pagingInfo": {
+      "pageSize": 0,
+      "pageNumber": 0,
+      "totalItems": 0
+    }
+  },
+  "warningMessages": [
+    "string"
+  ],
+  "errors": [
+    {
+      "code": "string",
+      "description": "string"
+    }
+  ],
+  "isOk": true
+}
+No links
+400
+Bad Request
+
+Media type
+
+text/plain
+Example Value
+Schema
+{
+  "result": "string",
+  "warningMessages": [
+    "string"
+  ],
+  "errors": [
+    {
+      "code": "string",
+      "description": "string"
+    }
+  ],
+  "isOk": true
+}
+
+
+
+
+Lấy lịch sử cư trú theo căn hộ hoặc theo cư dân (phải truyền CanHoId hoặc UserId)
+Dùng để tra cứu lịch sử cư trú.
+
+Nếu truyền CanHoId: Trả về lịch sử tất cả cư dân (kể cả đã chuyển đi) của căn hộ đó.
+Nếu truyền UserId: Trả về lịch sử các căn hộ mà người đó đã/đang ở. Hỗ trợ tìm kiếm, lọc trạng thái, phân trang và sắp xếp.
+Parameters
+Try it out
+No parameters
+
+Request body
+
+application/json
+Example Value
+Schema
+{
+  "canHoId": 0,
+  "userId": 0,
+  "sortCol": "string",
+  "isAsc": true,
+  "pageNumber": 0,
+  "pageSize": 0
+}
+Responses
+Code	Description	Links
+200
+OK
+
+Media type
+
+text/plain
+Controls Accept header.
+Example Value
+Schema
+{
+  "result": {
+    "items": [
+      {
+        "quanHeCuTruId": 0,
+        "canHoId": 0,
+        "maCanHo": "string",
+        "toaNhaId": 0,
+        "tenToaNha": "string",
+        "userId": 0,
+        "hoTen": "string",
+        "loaiQuanHeCuTruId": 0,
+        "loaiQuanHeTen": "string",
+        "ngayBatDau": "2026-03-13T08:46:24.164Z",
+        "ngayKetThuc": "2026-03-13T08:46:24.164Z",
+        "isKetThuc": true
+      }
+    ],
+    "pagingInfo": {
+      "pageSize": 0,
+      "pageNumber": 0,
+      "totalItems": 0
+    }
+  },
+  "warningMessages": [
+    "string"
+  ],
+  "errors": [
+    {
+      "code": "string",
+      "description": "string"
+    }
+  ],
+  "isOk": true
+}
+No links
+400
+Bad Request
+
+Media type
+
+text/plain
+Example Value
+Schema
+{
+  "result": "string",
+  "warningMessages": [
+    "string"
+  ],
+  "errors": [
+    {
+      "code": "string",
+      "description": "string"
+    }
+  ],
+  "isOk": true
+}
+
+
+
+
+Tìm người dùng theo username (chỉ Resident hoặc Guest)
+/api/quan-he-cu-tru/search-user
+Dùng khi cần tra cứu nhanh người dùng trong hệ thống (nhằm thêm cư dân vào căn hộ). Chỉ trả về những user có quyền Resident/Guest, hỗ trợ tìm kiếm theo Username.
+
+Parameters
+Try it out
+No parameters
+
+Request body
+
+application/json
+Example Value
+Schema
+{
+  "username": "string"
+}
+Responses
+Code	Description	Links
+200
+OK
+
+Media type
+
+text/plain
+Controls Accept header.
+Example Value
+Schema
+{
+  "result": {
+    "id": 0,
+    "username": "string",
+    "email": "string",
+    "firstName": "string",
+    "lastName": "string",
+    "fullName": "string",
+    "phoneNumber": "string",
+    "idCard": "string",
+    "dob": "2026-03-13T08:46:24.171Z",
+    "gioiTinhId": 0,
+    "gioiTinhName": "string",
+    "roleId": 0,
+    "roleName": "string"
   },
   "warningMessages": [
     "string"

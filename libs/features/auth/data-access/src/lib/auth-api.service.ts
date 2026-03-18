@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { environment } from '@env/environment';
-import { ForgotPasswordRequest, LoginRequest, ResetPasswordRequest, ChangePasswordRequest, RefreshTokenRequest, ApiResponse, AuthUserResult } from './models';
+import { ForgotPasswordRequest, LoginRequest, ResetPasswordRequest, ChangePasswordRequest, RefreshTokenRequest, ApiResponse, AuthUserResult, RegisterResidentRequest } from './models';
 
 @Injectable({ providedIn: 'root' })
 export class AuthApiService {
@@ -22,6 +22,10 @@ export class AuthApiService {
 
   changePassword(payload: ChangePasswordRequest): Observable<ApiResponse<any>> {
     return this.http.post<ApiResponse<any>>(`${environment.apiBaseUrl}/api/auth/change-password`, payload);
+  }
+
+  registerResident(payload: RegisterResidentRequest): Observable<ApiResponse<AuthUserResult>> {
+    return this.http.post<ApiResponse<AuthUserResult>>(`${environment.apiBaseUrl}/api/auth/register`, payload);
   }
 
   refreshToken(payload: RefreshTokenRequest): Observable<ApiResponse<AuthUserResult>> {

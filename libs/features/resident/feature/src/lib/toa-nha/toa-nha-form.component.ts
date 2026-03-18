@@ -12,7 +12,8 @@ export class ToaNhaFormComponent implements OnInit {
   form: FormGroup;
   @Input() id?: number;
   @Input() inModal = false;
-  @Output() saved = new EventEmitter<void>();
+  @Output() saved = new EventEmitter<any>();
+  @Output() done = new EventEmitter<void>();
 
   statusOptions: any[] = [];
 
@@ -35,7 +36,6 @@ export class ToaNhaFormComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    // load catalog trạng thái cho dropdown
     this.svc.getTrangThaiToaNhaForSelector().subscribe(r => {
       if (r && r.isOk && Array.isArray(r.result)) {
         this.statusOptions = r.result;
@@ -61,13 +61,35 @@ export class ToaNhaFormComponent implements OnInit {
       });
     }
   }
-
   save(): void {
     const payload = { ...(this.form.value as any), id: this.id };
-    const obs = this.id ? this.svc.updateToaNha(payload) : this.svc.createToaNha(payload);
-    obs.subscribe(() => {
-      if (this.inModal) this.saved.emit();
-      else this.router.navigate(['../'], { relativeTo: this.route });
-    });
+    const finish = (success = false) => {
+      if (success) {
+        if (this.inModal) this.saved.emit();
+        else this.router.navigate(['../'], { relativeTo: this.route });
+      }
+      this.done.emit();
+    };
+
+    if (this.id) {
+      this.svc.updateToaNha(payload).subscribe(() => finish(true), () => finish(false));
+      return;
+    }
+
+    this.svc.createToaNha(payload).subscribe((res: any) => {
+      const desired = payload.trangThaiToaNhaId;
+      const actual = res?.result?.trangThaiToaNhaId;
+      if (typeof desired !== 'undefined' && actual !== desired) {
+        const id = res?.result?.id;
+        const update = (rec: any) => this.svc.updateToaNha({ ...rec, trangThaiToaNhaId: desired }).subscribe(() => finish(true), () => finish(false));
+        if (id > 0) { update(res.result); return; }
+        const kw = payload.maToaNha || payload.tenToaNha;
+        if (!kw) { finish(false); return; }
+        this.svc.getToaNhaList({ keyword: kw, pageNumber: 1, pageSize: 5 }).subscribe((lr: any) => {
+          const found = (lr?.result?.items || []).find((it: any) => it.maToaNha === payload.maToaNha || it.tenToaNha === payload.tenToaNha);
+          if (found) update(found); else finish(false);
+        }, () => finish(false));
+      } else finish(true);
+    }, () => finish(false));
   }
 }

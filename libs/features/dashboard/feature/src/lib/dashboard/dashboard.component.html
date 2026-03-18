@@ -5,11 +5,9 @@
 
     <div
       class="sidebar-logo flex items-center justify-center py-6 px-4 border-b border-gray-200 bg-gradient-to-r from-white via-blue-50 to-white shadow-sm">
-      <!-- <img src="assets/images/huit.png" alt="Logo" class="h-14 w-14 object-contain mr-4" /> -->
+      <img src="assets/images/logo.jpg" alt="Logo" class="h-20 w-18 object-contain mr-4" />
       <div *ngIf="!isCollapsed" class="flex flex-col">
-        <span class="text-xl font-extrabold text-blue-700 leading-tight">QUẢN LÝ CHUNG CƯ THÔNG MINH</span>
-        <span class="text-base font-medium text-gray-600 mt-1" style="text-shadow: 0 1px 1px rgba(0,0,0,0.05)">Hệ thống
-          quản lý tòa nhà thông minh</span>
+        <span class="text-xl font-extrabold text-blue-400 leading-tight">HỆ THỐNG QUẢN LÝ CHUNG CƯ THÔNG MINH</span>
       </div>
     </div>
 
@@ -66,14 +64,14 @@
           <div class="flex items-center gap-2 cursor-pointer">
             <img [src]="avatarUrl || defaultAvatar" (error)="onAvatarError($event)" alt="Avatar"
               class="w-8 h-8 rounded-full border" />
-            <span *ngIf="!isMobile" class="font-medium text-gray-700">Chào, {{ userName }}</span>
+            <span *ngIf="!isMobile" class="font-medium text-gray-700">Chào, {{ username }}</span>
             <i nz-icon nzType="down"></i>
           </div>
         </a>
 
         <nz-dropdown-menu #menu="nzDropdownMenu">
           <ul nz-menu class="w-48">
-            <li nz-menu-item class="text-gray-600">Vai trò: <strong>{{ userRole }}</strong></li>
+            <li nz-menu-item class="text-gray-600">Vai trò: <strong class="ml-1">{{ role }}</strong></li>
             <li nz-menu-divider></li>
             <li nz-menu-item (click)="goProfile()">Thông tin cá nhân</li>
             <li nz-menu-item (click)="goChangePassword()">Đổi mật khẩu</li>

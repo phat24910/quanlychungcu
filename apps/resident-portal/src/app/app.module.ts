@@ -9,12 +9,12 @@ import { NZ_I18N, en_US } from 'ng-zorro-antd/i18n';
 import { NzLayoutModule } from 'ng-zorro-antd/layout';
 import { NzMenuModule } from 'ng-zorro-antd/menu';
 import { NzModalModule } from 'ng-zorro-antd/modal';
-import { NzMessageModule } from 'ng-zorro-antd/message';
+import { NzNotificationModule } from 'ng-zorro-antd/notification';
 
 import { AppRoutingModule } from './app-routing.module';
 import { IconsProviderModule } from './icons-provider.module';
 import { ShellComponent } from './shell/shell.component';
-import { AuthInterceptor } from '@core/interceptors';
+import { AuthInterceptor, ResponseNotifierInterceptor } from '@core/interceptors';
 import { SharedUiModule } from '@shared/ui';
 
 registerLocaleData(en);
@@ -32,11 +32,12 @@ registerLocaleData(en);
     NzLayoutModule,
     NzMenuModule,
     NzModalModule,
-    NzMessageModule
+    NzNotificationModule
   ],
   providers: [
     { provide: NZ_I18N, useValue: en_US },
-    { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true }
+    { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true },
+    { provide: HTTP_INTERCEPTORS, useClass: ResponseNotifierInterceptor, multi: true }
   ],
   bootstrap: [ShellComponent]
 })

@@ -4,7 +4,8 @@
   <nz-modal [(nzVisible)]="isModalVisible" [nzTitle]="modalTitle" (nzOnCancel)="cancelModal()" (nzOnOk)="onModalOk()"
     [nzOkLoading]="saving" nzOkText="Lưu" nzCancelText="Hủy" nzWidth="480" nzWrapClassName="custom-modal">
     <ng-container *nzModalContent>
-      <app-can-ho-form [inModal]="true" [id]="editingId" [initialTangId]="tangId" (saved)="onSaved()"></app-can-ho-form>
+      <app-can-ho-form [inModal]="true" [id]="editingId" [initialTangId]="tangId" (saved)="onSaved()"
+        (done)="onDone()"></app-can-ho-form>
     </ng-container>
   </nz-modal>
 
@@ -34,78 +35,86 @@
   </div>
 
 
-  <nz-table #chTable [nzData]="items" [nzLoading]="loading" [nzShowPagination]="false"
-    (nzCurrentPageDataChange)="onCurrentPageDataChange($event)">
-    <thead>
-      <tr>
-        <th style="width:48px" [(nzChecked)]="checked" [nzIndeterminate]="indeterminate"
-          (nzCheckedChange)="onAllChecked($event)"></th>
-        <th style="width:64px; white-space:nowrap; text-align:center">Thao tác</th>
-        <th style="width:48px">STT</th>
-        <th style="width:120px; cursor:pointer" (click)="onSort('maCanHo')">
-          Mã căn hộ
-          <i *ngIf="sortCol === 'maCanHo'" nz-icon [nzType]="isAsc ? 'caret-up' : 'caret-down'" nzTheme="outline"
-            style="margin-left:6px"></i>
-        </th>
-        <th style="cursor:pointer" (click)="onSort('tenTang')">
-          Tầng
-          <i *ngIf="sortCol === 'tenTang'" nz-icon [nzType]="isAsc ? 'caret-up' : 'caret-down'" nzTheme="outline"
-            style="margin-left:6px"></i>
-        </th>
-        <th style="cursor:pointer" (click)="onSort('dienTich')">
-          Diện tích
-          <i *ngIf="sortCol === 'dienTich'" nz-icon [nzType]="isAsc ? 'caret-up' : 'caret-down'" nzTheme="outline"
-            style="margin-left:6px"></i>
-        </th>
-        <th style="width:30px; cursor:pointer" (click)="onSort('soPhongNgu')">Phòng ngủ
-          <i *ngIf="sortCol === 'soPhongNgu'" nz-icon [nzType]="isAsc ? 'caret-up' : 'caret-down'" nzTheme="outline"
-            style="margin-left:6px"></i>
-        </th>
-        <th style="width:30px; cursor:pointer" (click)="onSort('soPhongTam')">Phòng tắm
-          <i *ngIf="sortCol === 'soPhongTam'" nz-icon [nzType]="isAsc ? 'caret-up' : 'caret-down'" nzTheme="outline"
-            style="margin-left:6px"></i>
-        </th>
-        <th style="cursor:pointer" (click)="onSort('loaiCanHoId')">
-          Loại
-          <i *ngIf="sortCol === 'loaiCanHoId'" nz-icon [nzType]="isAsc ? 'caret-up' : 'caret-down'" nzTheme="outline"
-            style="margin-left:6px"></i>
-        </th>
-        <th>Trạng thái</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr *ngFor="let it of chTable.data; let i = index">
-        <td [nzChecked]="setOfCheckedId.has(it.id!)" (nzCheckedChange)="onItemChecked(it.id!, $event)"></td>
-        <td style="text-align:center">
-          <a nz-dropdown nzTrigger="hover" [nzDropdownMenu]="actionMenu">
-            <i nz-icon nzType="unordered-list" nzTheme="outline" class="text-lg cursor-pointer"></i>
-          </a>
-          <nz-dropdown-menu #actionMenu="nzDropdownMenu">
-            <ul nz-menu>
-              <li nz-menu-item [routerLink]="['/can-ho', it.id]"><i nz-icon nzType="search"
-                  nzTheme="outline"></i>&nbsp;Chi tiết</li>
-              <li nz-menu-item (click)="editCanHo(it.id)"><i nz-icon nzType="edit" nzTheme="outline"></i>&nbsp;Chỉnh sửa
-              </li>
-              <li nz-menu-item class="text-red-500" (click)="deleteOne(it.id)"><i nz-icon nzType="delete"
-                  nzTheme="outline"></i>&nbsp;Xóa</li>
-            </ul>
-          </nz-dropdown-menu>
-        </td>
-        <td>{{ (pageNumber - 1) * pageSize + i + 1 }}</td>
-        <td>{{ it.maCanHo }}</td>
-        <td>{{ it.tenTang || it.tangId || '-' }}</td>
-        <td>{{ it.dienTich ? (it.dienTich + 'm²') : '-' }}</td>
-        <td>{{ it.soPhongNgu != null ? it.soPhongNgu : '-' }}</td>
-        <td>{{ it.soPhongTam != null ? it.soPhongTam : '-' }}</td>
-        <td>{{ it.tenLoaiCanHo || (it.loaiCanHoId != null ? it.loaiCanHoId : '-') }}</td>
-        <td>
-          <span [ngClass]="['status-pill', getStatusClass(it.tinhTrangCanHoId)]">
-            {{ getTinhTrangName(it.tinhTrangCanHoId, it.tenTinhTrangCanHo) }}
-          </span>
-        </td>
-      </tr>
-    </tbody>
-  </nz-table>
+  <app-scroll-table [height]="'480px'">
+    <nz-table #chTable [nzData]="items" [nzLoading]="loading" [nzShowPagination]="false"
+      (nzCurrentPageDataChange)="onCurrentPageDataChange($event)">
+      <thead>
+        <tr>
+          <th style="width:48px" [(nzChecked)]="checked" [nzIndeterminate]="indeterminate"
+            (nzCheckedChange)="onAllChecked($event)"></th>
+          <th style="width:64px; white-space:nowrap; text-align:center">Thao tác</th>
+          <th style="width:48px">STT</th>
+          <th style="width:120px; cursor:pointer" (click)="onSort('maCanHo')">
+            Mã căn hộ
+            <i *ngIf="sortCol === 'maCanHo'" nz-icon [nzType]="isAsc ? 'caret-up' : 'caret-down'" nzTheme="outline"
+              style="margin-left:6px"></i>
+          </th>
+          <th style="cursor:pointer; max-width:240px;" (click)="onSort('tenCanHo')">
+            Tên căn hộ
+            <i *ngIf="sortCol === 'tenCanHo'" nz-icon [nzType]="isAsc ? 'caret-up' : 'caret-down'" nzTheme="outline"
+              style="margin-left:6px"></i>
+          </th>
+          <th style="cursor:pointer" (click)="onSort('tenTang')">
+            Tầng
+            <i *ngIf="sortCol === 'tenTang'" nz-icon [nzType]="isAsc ? 'caret-up' : 'caret-down'" nzTheme="outline"
+              style="margin-left:6px"></i>
+          </th>
+          <th style="cursor:pointer" (click)="onSort('dienTich')">
+            Diện tích
+            <i *ngIf="sortCol === 'dienTich'" nz-icon [nzType]="isAsc ? 'caret-up' : 'caret-down'" nzTheme="outline"
+              style="margin-left:6px"></i>
+          </th>
+          <th style="width:30px; cursor:pointer" (click)="onSort('soPhongNgu')">Phòng ngủ
+            <i *ngIf="sortCol === 'soPhongNgu'" nz-icon [nzType]="isAsc ? 'caret-up' : 'caret-down'" nzTheme="outline"
+              style="margin-left:6px"></i>
+          </th>
+          <th style="width:30px; cursor:pointer" (click)="onSort('soPhongTam')">Phòng tắm
+            <i *ngIf="sortCol === 'soPhongTam'" nz-icon [nzType]="isAsc ? 'caret-up' : 'caret-down'" nzTheme="outline"
+              style="margin-left:6px"></i>
+          </th>
+          <th style="cursor:pointer" (click)="onSort('loaiCanHoId')">
+            Loại
+            <i *ngIf="sortCol === 'loaiCanHoId'" nz-icon [nzType]="isAsc ? 'caret-up' : 'caret-down'" nzTheme="outline"
+              style="margin-left:6px"></i>
+          </th>
+          <th>Trạng thái</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let it of chTable.data; let i = index">
+          <td [nzChecked]="setOfCheckedId.has(it.id!)" (nzCheckedChange)="onItemChecked(it.id!, $event)"></td>
+          <td style="text-align:center">
+            <a nz-dropdown nzTrigger="hover" [nzDropdownMenu]="actionMenu">
+              <i nz-icon nzType="unordered-list" nzTheme="outline" class="text-lg cursor-pointer"></i>
+            </a>
+            <nz-dropdown-menu #actionMenu="nzDropdownMenu">
+              <ul nz-menu>
+                <li nz-menu-item (click)="editCanHo(it.id)"><i nz-icon nzType="edit" nzTheme="outline"></i>&nbsp;Chỉnh
+                  sửa
+                </li>
+                <li nz-menu-item class="text-red-500" (click)="deleteOne(it.id)"><i nz-icon nzType="delete"
+                    nzTheme="outline"></i>&nbsp;Xóa</li>
+              </ul>
+            </nz-dropdown-menu>
+          </td>
+          <td>{{ (pageNumber - 1) * pageSize + i + 1 }}</td>
+          <td>{{ it.maCanHo }}</td>
+          <td style="max-width:200px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis">{{ it.tenCanHo || '-'
+            }}</td>
+          <td>{{ it.tenTang || it.tangId || '-' }}</td>
+          <td>{{ it.dienTich ? (it.dienTich + 'm²') : '-' }}</td>
+          <td>{{ it.soPhongNgu != null ? it.soPhongNgu : '-' }}</td>
+          <td>{{ it.soPhongTam != null ? it.soPhongTam : '-' }}</td>
+          <td>{{ it.tenLoaiCanHo || (it.loaiCanHoId != null ? it.loaiCanHoId : '-') }}</td>
+          <td>
+            <span [ngClass]="['status-pill', getStatusClass(it.tinhTrangCanHoId)]">
+              {{ getTinhTrangName(it.tinhTrangCanHoId, it.tenTinhTrangCanHo) }}
+            </span>
+          </td>
+        </tr>
+      </tbody>
+    </nz-table>
+  </app-scroll-table>
 
   <div style="display:flex;justify-content:flex-end;margin-top:12px">
     <nz-pagination [nzPageIndex]="pageNumber" [nzPageSize]="pageSize" [nzTotal]="totalItems"

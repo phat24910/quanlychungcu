@@ -8,6 +8,11 @@
         </div>
 
         <div class="flex flex-col">
+          <label class="mb-2 font-medium text-gray-700">Tên căn hộ <span style="color:#e11d48">*</span></label>
+          <input nz-input formControlName="tenCanHo" />
+        </div>
+
+        <div class="flex flex-col">
           <label class="mb-2 font-medium text-gray-700">Diện tích (m²)</label>
           <nz-input-number formControlName="dienTich" [nzMin]="0" style="width:100%"></nz-input-number>
         </div>

@@ -2,6 +2,7 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ChungCuService, CanHo } from '@features/resident/data-access';
 import { NzModalService } from 'ng-zorro-antd/modal';
+import { NzNotificationService } from 'ng-zorro-antd/notification';
 import { CanHoFormComponent } from './can-ho-form.component';
 
 @Component({
@@ -39,7 +40,13 @@ export class CanHoListComponent implements OnInit {
   editingId?: number;
   saving = false;
 
-  constructor(private svc: ChungCuService, private route: ActivatedRoute, private router: Router, private modal: NzModalService) {}
+  constructor(
+    private svc: ChungCuService,
+    private route: ActivatedRoute,
+    private router: Router,
+    private modal: NzModalService,
+    private notification: NzNotificationService
+  ) {}
 
   ngOnInit(): void {
     this.route.queryParams.subscribe((q: any) => {
@@ -72,6 +79,16 @@ export class CanHoListComponent implements OnInit {
     return name || fallbackName || 'Không rõ';
   }
   getStatusClass(id?: number): string {
+    if (id != null) {
+      switch (id) {
+        case 1: return 'status-chua-ban-giao';
+        case 2: return 'status-dang-trong';
+        case 3: return 'status-co-cu-dan';
+        case 4: return 'status-dang-thi-cong';
+        default: break;
+      }
+    }
+
     const st = id != null ? this.statusDict[id] : null;
     const raw = (st && (st.name || st.ten || st.label)) as string | undefined || '';
     const name = (raw || '').toLowerCase();
@@ -82,9 +99,10 @@ export class CanHoListComponent implements OnInit {
       .replace(/[\u0300-\u036f]/g, '')
       .replace(/đ/g, 'd');
 
-    if (normalized.includes('trong') || normalized.includes('empty')) return 'status-empty';
-    if (normalized.includes('thue') || normalized.includes('da thue') || normalized.includes('dat thue')) return 'status-rented';
-    if (normalized.includes('da ban') || normalized.includes('ban') || normalized.includes('daban')) return 'status-sold';
+    if (normalized.includes('trong') || normalized.includes('empty')) return 'status-dang-trong';
+    if (normalized.includes('thue') || normalized.includes('da thue') || normalized.includes('dat thue')) return 'status-co-cu-dan';
+    if (normalized.includes('ban') || normalized.includes('daban')) return 'status-chua-ban-giao';
+    if (normalized.includes('thi cong') || normalized.includes('baotri') || normalized.includes('bao tri')) return 'status-dang-thi-cong';
     return 'status-unknown';
   }
 
@@ -165,6 +183,26 @@ export class CanHoListComponent implements OnInit {
     this.saving = false;
     this.isModalVisible = false;
     this.load();
+    if (this.editingId) {
+      this.notification.success('Thành công', 'Cập nhật căn hộ thành công');
+    } else {
+      this.notification.success('Thành công', 'Tạo căn hộ thành công');
+    }
+  }
+
+  // onSavedNotify(): void {
+  //   this.saving = false;
+  //   this.isModalVisible = false;
+  //   this.load();
+  //   if (this.editingId) {
+  //     this.notification.success('Thành công', 'Cập nhật căn hộ thành công');
+  //   } else {
+  //     this.notification.success('Thành công', 'Tạo căn hộ thành công');
+  //   }
+  // }
+
+  onDone(): void {
+    this.saving = false;
   }
 
   onSort(col: string): void {
@@ -218,13 +256,26 @@ export class CanHoListComponent implements OnInit {
       nzOkType: 'primary',
       nzOkDanger: true,
       nzCancelText: 'Hủy',
-      nzOnOk: () => this.svc.deleteCanHo([id!]).subscribe(() => this.load())
+      nzOnOk: () => this.svc.deleteCanHo([id!]).subscribe({
+        next: (res: any) => {
+          if (res && res.isOk) {
+            this.notification.success('Thành công', 'Xóa căn hộ thành công');
+            this.load();
+          } else {
+            this.notification.error('Lỗi', 'Xóa căn hộ thất bại');
+          }
+        },
+        error: () => this.notification.error('Lỗi', 'Xóa căn hộ thất bại')
+      })
     });
   }
 
   deleteSelectedMultiple(): void {
     const ids = Array.from(this.setOfCheckedId);
-    if (!ids.length) return alert('Chưa chọn căn hộ nào');
+    if (!ids.length) {
+      this.notification.warning('Thông báo', 'Chưa chọn căn hộ nào');
+      return;
+    }
     this.modal.confirm({
       nzTitle: 'Xóa căn hộ đã chọn',
       nzContent: `Bạn có chắc chắn muốn xóa ${ids.length} căn hộ đã chọn?`,
@@ -232,9 +283,17 @@ export class CanHoListComponent implements OnInit {
       nzOkType: 'primary',
       nzOkDanger: true,
       nzCancelText: 'Hủy',
-      nzOnOk: () => this.svc.deleteCanHo(ids).subscribe(() => {
-        this.setOfCheckedId.clear();
-        this.load();
+      nzOnOk: () => this.svc.deleteCanHo(ids).subscribe({
+        next: (res: any) => {
+          if (res && res.isOk) {
+            this.notification.success('Thành công', `Xóa ${ids.length} căn hộ thành công`);
+          } else {
+            this.notification.warning('Cảnh báo', 'Một số căn hộ có thể chưa được xóa');
+          }
+          this.setOfCheckedId.clear();
+          this.load();
+        },
+        error: () => this.notification.error('Lỗi', 'Xóa căn hộ thất bại')
       })
     });
   }

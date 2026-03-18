@@ -1,8 +1,8 @@
 <div>
   <nz-modal [(nzVisible)]="isModalVisible" [nzTitle]="modalTitle" (nzOnCancel)="cancelModal()" (nzOnOk)="onModalOk()"
     [nzOkLoading]="saving" nzOkText="Lưu" nzCancelText="Hủy" nzWidth="420" nzWrapClassName="custom-modal">
-    <ng-container *nzModalContent>
-      <app-toa-nha-form [inModal]="true" [id]="editingId" (saved)="onSaved()"></app-toa-nha-form>
+      <ng-container *nzModalContent>
+      <app-toa-nha-form [inModal]="true" [id]="editingId" (saved)="onSaved()" (done)="onDone()"></app-toa-nha-form>
     </ng-container>
   </nz-modal>
   <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px">
@@ -30,62 +30,70 @@
     </div>
   </div>
 
-  <nz-table #tnTable [nzData]="items" [nzShowPagination]="false"
-    (nzCurrentPageDataChange)="onCurrentPageDataChange($event)">
-    <thead>
-      <tr>
-        <th style="width:48px" [(nzChecked)]="checked" [nzIndeterminate]="indeterminate"
-          (nzCheckedChange)="onAllChecked($event)"></th>
-        <th style="width:64px; white-space:nowrap; text-align:center">Thao tác</th>
-        <th style="width:48px">STT</th>
-        <th (click)="onSort('maToaNha')" style="cursor:pointer; width:100px">
-          Mã tòa
-          <i *ngIf="sortCol === 'maToaNha'" nz-icon [nzType]="isAsc ? 'caret-up' : 'caret-down'" nzTheme="outline"
-            style="margin-left:6px"></i>
-        </th>
-        <th (click)="onSort('tenToaNha')" style="cursor:pointer; width:150px">
-          Tên tòa
-          <i *ngIf="sortCol === 'tenToaNha'" nz-icon [nzType]="isAsc ? 'caret-up' : 'caret-down'" nzTheme="outline"
-            style="margin-left:6px"></i>
-        </th>
-        <th style="width:360px">Mô tả</th>
-        <th style="width:100px">Số căn</th>
-        <th style="width:120px">Trạng thái</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr *ngFor="let it of tnTable.data; let i = index">
-        <td [nzChecked]="setOfCheckedId.has(it.id!)" (nzCheckedChange)="onItemChecked(it.id!, $event)"></td>
-        <td style="text-align:center">
-          <a nz-dropdown nzTrigger="hover" [nzDropdownMenu]="actionMenu">
-            <i nz-icon nzType="unordered-list" nzTheme="outline" class="text-lg cursor-pointer"></i>
-          </a>
-          <nz-dropdown-menu #actionMenu="nzDropdownMenu">
-            <ul nz-menu>
-              <li nz-menu-item (click)="editToaNha(it.id)"><i nz-icon nzType="edit" nzTheme="outline"></i>&nbsp;Chỉnh
-                sửa</li>
-              <li nz-menu-item class="text-red-500" (click)="deleteSelected(it.id)"><i nz-icon nzType="delete"
-                  nzTheme="outline"></i>&nbsp;Xóa</li>
-            </ul>
-          </nz-dropdown-menu>
-        </td>
-        <td>{{ i + 1 }}</td>
-        <td>{{ it.maToaNha }}</td>
-        <td>
-          <a [routerLink]="['/can-ho']" [queryParams]="{ toaNhaId: it.id, toaNhaName: it.tenToaNha }">
-            {{ it.tenToaNha }}
-          </a>
-        </td>
-        <td style="white-space:normal">{{ it.moTa || '-' }}</td>
-        <td>{{ it.soCanHo || '-' }}</td>
-        <td>
-          <span class="status-pill" [ngClass]="getStatusClass(it.trangThaiToaNhaId)">
-            {{ getStatusName(it.trangThaiToaNhaId, it.tenTrangThaiToaNha) }}
-          </span>
-        </td>
-      </tr>
-    </tbody>
-  </nz-table>
+  <app-scroll-table [height]="'480px'">
+    <nz-table #tnTable [nzData]="items" [nzShowPagination]="false" [nzLoading]="loading"
+      (nzCurrentPageDataChange)="onCurrentPageDataChange($event)">
+      <thead>
+        <tr>
+          <th style="width:48px" [(nzChecked)]="checked" [nzIndeterminate]="indeterminate"
+            (nzCheckedChange)="onAllChecked($event)"></th>
+          <th style="width:64px; white-space:nowrap; text-align:center">Thao tác</th>
+          <th style="width:48px">STT</th>
+          <th (click)="onSort('maToaNha')" style="cursor:pointer; width:100px">
+            Mã tòa
+            <i *ngIf="sortCol === 'maToaNha'" nz-icon [nzType]="isAsc ? 'caret-up' : 'caret-down'" nzTheme="outline"
+              style="margin-left:6px"></i>
+          </th>
+          <th (click)="onSort('tenToaNha')" style="cursor:pointer; width:150px">
+            Tên tòa
+            <i *ngIf="sortCol === 'tenToaNha'" nz-icon [nzType]="isAsc ? 'caret-up' : 'caret-down'" nzTheme="outline"
+              style="margin-left:6px"></i>
+          </th>
+          <th (click)="onSort('diaChi')" style="cursor:pointer; width:220px">
+            Địa chỉ
+            <i *ngIf="sortCol === 'diaChi'" nz-icon [nzType]="isAsc ? 'caret-up' : 'caret-down'" nzTheme="outline"
+              style="margin-left:6px"></i>
+          </th>
+          <th style="width:350px">Mô tả</th>
+          <th style="width:100px">Số căn</th>
+          <th style="width:150px">Trạng thái</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let it of tnTable.data; let i = index">
+          <td [nzChecked]="setOfCheckedId.has(it.id!)" (nzCheckedChange)="onItemChecked(it.id!, $event)"></td>
+          <td style="text-align:center">
+            <a nz-dropdown nzTrigger="hover" [nzDropdownMenu]="actionMenu">
+              <i nz-icon nzType="unordered-list" nzTheme="outline" class="text-lg cursor-pointer"></i>
+            </a>
+            <nz-dropdown-menu #actionMenu="nzDropdownMenu">
+              <ul nz-menu>
+                <li nz-menu-item (click)="editToaNha(it.id)"><i nz-icon nzType="edit" nzTheme="outline"></i>&nbsp;Chỉnh
+                  sửa</li>
+                <li nz-menu-item class="text-red-500" (click)="deleteSelected(it.id)"><i nz-icon nzType="delete"
+                    nzTheme="outline"></i>&nbsp;Xóa</li>
+              </ul>
+            </nz-dropdown-menu>
+          </td>
+          <td>{{ i + 1 }}</td>
+          <td>{{ it.maToaNha }}</td>
+          <td>
+            <a [routerLink]="['/can-ho']" [queryParams]="{ toaNhaId: it.id, toaNhaName: it.tenToaNha }">
+              {{ it.tenToaNha }}
+            </a>
+          </td>
+          <td style="white-space:normal">{{ it.diaChi || '-' }}</td>
+          <td style="white-space:normal">{{ it.moTa || '-' }}</td>
+          <td>{{ it.soCanHo || '-' }}</td>
+          <td>
+            <span class="status-pill" [ngClass]="getStatusClass(it.trangThaiToaNhaId)">
+              {{ getStatusName(it.trangThaiToaNhaId, it.tenTrangThaiToaNha) }}
+            </span>
+          </td>
+        </tr>
+      </tbody>
+    </nz-table>
+  </app-scroll-table>
   <div style="display:flex;justify-content:flex-end;margin-top:12px">
     <nz-pagination [nzPageIndex]="pageNumber" [nzPageSize]="pageSize" [nzTotal]="totalItems"
       (nzPageIndexChange)="onPageChange($event)" (nzPageSizeChange)="onPageSizeChange($event)"></nz-pagination>

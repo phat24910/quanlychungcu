@@ -42,6 +42,7 @@ export interface Tang {
 export interface CanHo {
   id?: number;
   maCanHo?: string;
+  tenCanHo?: string;
   tangId?: number;
   tenTang?: string;
   dienTich?: number;

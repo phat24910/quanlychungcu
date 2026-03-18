@@ -19,6 +19,19 @@ export interface AuthUserResult {
   refreshToken?: string;
 }
 
+export interface RegisterResidentRequest {
+  username: string;
+  email: string;
+  password: string;
+  firstName: string;
+  lastName: string;
+  phoneNumber: string;
+  idCard: string;
+  dob: string;
+  gioiTinhId: number;
+  diaChi: string;
+}
+
 export interface ApiResponse<T = any> {
   result?: T;
   warningMessages?: string[];

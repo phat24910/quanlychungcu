@@ -14,9 +14,11 @@ export class CanHoFormComponent implements OnInit, OnChanges {
   @Input() inModal = false;
   @Input() initialTangId?: number;
   @Output() saved = new EventEmitter<void>();
+  @Output() done = new EventEmitter<void>();
 
   constructor(private fb: FormBuilder, private svc: ChungCuService, private route: ActivatedRoute, private router: Router) {
     this.form = this.fb.group({
+      tenCanHo: ['', Validators.required],
       maCanHo: [''],
       dienTich: [0],
       tangId: [null],
@@ -48,14 +50,7 @@ export class CanHoFormComponent implements OnInit, OnChanges {
     if (this.inModal && changes['id'] && this.id) {
       this.svc.getCanHoById(this.id).subscribe((r: any) => {
         if (r && r.isOk) {
-          const val: any = {
-            ...r.result,
-            tangId: r.result.tangId ?? r.result.tang,
-            soPhongNgu: r.result.soPhongNgu,
-            soPhongTam: r.result.soPhongTam,
-            loaiCanHoId: r.result.loaiCanHoId,
-            tinhTrangCanHoId: r.result.tinhTrangCanHoId
-          };
+          const val: any = { ...r.result, tangId: r.result.tangId ?? r.result.tang };
           this.form.patchValue(val);
         }
       });
@@ -67,21 +62,36 @@ export class CanHoFormComponent implements OnInit, OnChanges {
 
   save(): void {
     const fv: any = this.form.getRawValue();
-    const payload: any = {
-      id: this.id,
-      maCanHo: fv.maCanHo,
-      dienTich: fv.dienTich,
-      tangId: fv.tangId,
-      soPhongNgu: fv.soPhongNgu,
-      soPhongTam: fv.soPhongTam,
-      loaiCanHoId: fv.loaiCanHoId,
-      tinhTrangCanHoId: fv.tinhTrangCanHoId
+    const payload: any = { id: this.id, ...fv };
+
+    const finish = (success = false) => {
+      if (success) {
+        if (this.inModal) this.saved.emit();
+        else this.router.navigate(['../'], { relativeTo: this.route });
+      }
+      this.done.emit();
     };
-    const obs = this.id ? this.svc.updateCanHo(payload) : this.svc.createCanHo(payload);
-    obs.subscribe(() => {
-      if (this.inModal) this.saved.emit();
-      else this.router.navigate(['../'], { relativeTo: this.route });
-    });
+
+    if (this.id) {
+      this.svc.updateCanHo(payload).subscribe(() => finish(true), () => finish(false));
+      return;
+    }
+
+    this.svc.createCanHo(payload).subscribe((res: any) => {
+      const desired = payload.tinhTrangCanHoId;
+      const actual = res?.result?.tinhTrangCanHoId;
+      if (typeof desired !== 'undefined' && actual !== desired) {
+        const id = res?.result?.id;
+        const update = (rec: any) => this.svc.updateCanHo({ ...rec, tinhTrangCanHoId: desired }).subscribe(() => finish(true), () => finish(false));
+        if (id > 0) { update(res.result); return; }
+        const kw = payload.maCanHo || payload.tenCanHo;
+        if (!kw) { finish(false); return; }
+        this.svc.getCanHoList({ keyword: kw, pageNumber: 1, pageSize: 5 }).subscribe((lr: any) => {
+          const found = (lr?.result?.items || []).find((it: any) => it.maCanHo === payload.maCanHo || it.tenCanHo === payload.tenCanHo);
+          if (found) update(found); else finish(false);
+        }, () => finish(false));
+      } else finish(true);
+    }, () => finish(false));
   }
 
   tinhTrangOptions: any[] = [];

@@ -96,10 +96,7 @@
               <nz-form-control nzSpan="18">
                 <nz-select id="gioitinh" name="gioitinh" class="gioitinh-select" style="width:100%"
                   [(ngModel)]="editModel.gioiTinhId">
-                  <nz-option [nzValue]="null" nzLabel="Chưa chọn"></nz-option>
-                  <nz-option [nzValue]="0" nzLabel="Không xác định"></nz-option>
-                  <nz-option [nzValue]="1" nzLabel="Nam"></nz-option>
-                  <nz-option [nzValue]="2" nzLabel="Nữ"></nz-option>
+                  <nz-option *ngFor="let g of genders" [nzValue]="g.id" [nzLabel]="g.name || g.ten || g.label"></nz-option>
                 </nz-select>
               </nz-form-control>
             </nz-form-item>

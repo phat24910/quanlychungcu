@@ -2,6 +2,7 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ChungCuService, Tang } from '@features/resident/data-access';
 import { NzModalService } from 'ng-zorro-antd/modal';
+import { NzNotificationService } from 'ng-zorro-antd/notification';
 import { TangFormComponent } from './tang-form.component';
 
 @Component({
@@ -38,7 +39,13 @@ export class TangListComponent implements OnInit {
   editingId?: number;
   saving = false;
 
-  constructor(private svc: ChungCuService, private route: ActivatedRoute, private router: Router, private modal: NzModalService) {}
+  constructor(
+    private svc: ChungCuService,
+    private route: ActivatedRoute,
+    private router: Router,
+    private modal: NzModalService,
+    private notification: NzNotificationService
+  ) {}
 
   ngOnInit(): void {
     this.route.queryParams.subscribe((q: any) => {
@@ -156,6 +163,12 @@ export class TangListComponent implements OnInit {
     this.saving = false;
     this.isModalVisible = false;
     this.load();
+    if (this.editingId) this.notification.success('Thành công', 'Cập nhật tầng thành công');
+    else this.notification.success('Thành công', 'Tạo tầng thành công');
+  }
+
+  onDone(): void {
+    this.saving = false;
   }
 
   load(): void {
@@ -199,13 +212,26 @@ export class TangListComponent implements OnInit {
       nzOkType: 'primary',
       nzOkDanger: true,
       nzCancelText: 'Hủy',
-      nzOnOk: () => this.svc.deleteTang([id!]).subscribe(() => this.load())
+      nzOnOk: () => this.svc.deleteTang([id!]).subscribe({
+        next: (res: any) => {
+          if (res && res.isOk) {
+            this.notification.success('Thành công', 'Xóa tầng thành công');
+            this.load();
+          } else {
+            this.notification.error('Lỗi', 'Xóa tầng thất bại');
+          }
+        },
+        error: () => this.notification.error('Lỗi', 'Xóa tầng thất bại')
+      })
     });
   }
 
   deleteSelectedMultiple(): void {
     const ids = Array.from(this.setOfCheckedId);
-    if (!ids.length) return alert('Chưa chọn tầng nào');
+    if (!ids.length) {
+      this.notification.warning('Thông báo', 'Chưa chọn tầng nào');
+      return;
+    }
     this.modal.confirm({
       nzTitle: 'Xóa tầng đã chọn',
       nzContent: `Bạn có chắc chắn muốn xóa ${ids.length} tầng đã chọn?`,
@@ -213,9 +239,14 @@ export class TangListComponent implements OnInit {
       nzOkType: 'primary',
       nzOkDanger: true,
       nzCancelText: 'Hủy',
-      nzOnOk: () => this.svc.deleteTang(ids).subscribe(() => {
-        this.setOfCheckedId.clear();
-        this.load();
+      nzOnOk: () => this.svc.deleteTang(ids).subscribe({
+        next: (res: any) => {
+          if (res && res.isOk) this.notification.success('Thành công', `Xóa ${ids.length} tầng thành công`);
+          else this.notification.warning('Cảnh báo', 'Một số tầng có thể chưa được xóa');
+          this.setOfCheckedId.clear();
+          this.load();
+        },
+        error: () => this.notification.error('Lỗi', 'Xóa tầng thất bại')
       })
     });
   }

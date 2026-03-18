@@ -34,6 +34,7 @@ interface FlatNode {
   styleUrls: ['./cau-truc-chung-cu-tree.component.scss']
 })
 export class CauTrucChungCuTreeComponent implements OnInit {
+  keyword = '';
   private transformer = (node: TreeNode, level: number): FlatNode => ({
     expandable: !!node.children && node.children.length > 0,
     name: node.name,
@@ -65,10 +66,20 @@ export class CauTrucChungCuTreeComponent implements OnInit {
 
   ngOnInit(): void {
     this.loadTree();
+    this.svc.refresh$.subscribe(() => this.loadTree(this.keyword));
   }
 
-  private loadTree(): void {
-    this.svc.getCauTrucChungCu().subscribe(r => {
+  search(): void {
+    this.loadTree(this.keyword);
+  }
+
+  clear(): void {
+    this.keyword = '';
+    this.loadTree();
+  }
+
+  private loadTree(keyword?: string): void {
+    this.svc.getCauTrucChungCu(keyword).subscribe(r => {
       if (!r || !r.isOk || !Array.isArray(r.result)) {
         this.dataSource.setData([]);
         return;
@@ -141,6 +152,8 @@ export class CauTrucChungCuTreeComponent implements OnInit {
         relativeTo: this.route,
         queryParams: { tangId: node.tangId, tangName: node.name }
       });
+    } else if (node.type === 'apartment' && node.canHoId != null) {
+      this.router.navigate(['can-ho', node.canHoId], { relativeTo: this.route });
     }
   }
 }

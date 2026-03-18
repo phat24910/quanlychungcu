@@ -27,6 +27,7 @@ export class LoginComponent {
   forgotErrors: string[] = [];
   forgotMessages: string[] = [];
   forgotUsername = '';
+  private errorClearTimer: any = null;
 
 
   constructor(private fb: FormBuilder, private router: Router, private auth: AuthService) {
@@ -131,10 +132,7 @@ export class LoginComponent {
     if (confirmNewPasswordCtrl && confirmNewPassword !== confirmNewPasswordCtrl.value) confirmNewPasswordCtrl.setValue(confirmNewPassword, { emitEvent: false });
     this.forgotFormStep2.markAllAsTouched();
 
-    if (newPassword && confirmNewPassword && newPassword !== confirmNewPassword) {
-      this.forgotErrors.push('Mật khẩu xác nhận không khớp.');
-      return;
-    }
+    
     this.forgotLoading = true;
     this.auth.resetPassword(this.forgotUsername, resetCode, newPassword, confirmNewPassword).subscribe({
       next: (res: any) => {
@@ -203,10 +201,19 @@ export class LoginComponent {
           const errs = this.extractErrors(res);
           errs.forEach((desc: string) => {
             const lower = desc.toLowerCase();
-            if (lower.includes('username') || lower.includes('tài khoản')) this.usernameErrors.push(desc);
-            else if (lower.includes('password') || lower.includes('mật khẩu')) this.passwordErrors.push(desc);
-            else this.errorMessages.push(desc);
+            const hasUsername = lower.includes('username') || lower.includes('tài khoản') || lower.includes('tên đăng nhập');
+            const hasPassword = lower.includes('password') || lower.includes('mật khẩu');
+            if (hasUsername && hasPassword) {
+              this.errorMessages.push(desc);
+            } else if (hasUsername) {
+              this.usernameErrors.push(desc);
+            } else if (hasPassword) {
+              this.passwordErrors.push(desc);
+            } else {
+              this.errorMessages.push(desc);
+            }
           });
+          this.scheduleClearErrors(5000);
           return;
         }
         if (res.isOk === false && res.result && typeof res.result === 'string') {
@@ -229,13 +236,35 @@ export class LoginComponent {
           this.errorMessages = [];
           errs.forEach((desc: string) => {
             const lower = desc.toLowerCase();
-            if (lower.includes('username') || lower.includes('tài khoản')) this.usernameErrors.push(desc);
-            else if (lower.includes('password') || lower.includes('mật khẩu')) this.passwordErrors.push(desc);
-            else this.errorMessages.push(desc);
+            const hasUsername = lower.includes('username') || lower.includes('tài khoản') || lower.includes('tên đăng nhập');
+            const hasPassword = lower.includes('password') || lower.includes('mật khẩu');
+            if (hasUsername && hasPassword) {
+              this.errorMessages.push(desc);
+            } else if (hasUsername) {
+              this.usernameErrors.push(desc);
+            } else if (hasPassword) {
+              this.passwordErrors.push(desc);
+            } else {
+              this.errorMessages.push(desc);
+            }
           });
+          this.scheduleClearErrors(3000);
         }
       }
     });
+  }
+
+  private scheduleClearErrors(ms: number) {
+    if (this.errorClearTimer) {
+      clearTimeout(this.errorClearTimer);
+      this.errorClearTimer = null;
+    }
+    this.errorClearTimer = setTimeout(() => {
+      this.usernameErrors = [];
+      this.passwordErrors = [];
+      this.errorMessages = [];
+      this.errorClearTimer = null;
+    }, ms);
   }
 
   togglePassword() {
