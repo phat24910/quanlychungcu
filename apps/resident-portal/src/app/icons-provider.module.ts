@@ -29,7 +29,13 @@ import {
   DeleteOutline,
   CommentOutline,
   StopOutline,
-  ClearOutline
+  ClearOutline,
+  EnvironmentOutline,
+  ArrowDownOutline,
+  ArrowUpOutline,
+  CarOutline,
+  CreditCardOutline,
+  FileTextOutline
 } from '@ant-design/icons-angular/icons';
 
 const icons = [
@@ -60,7 +66,13 @@ const icons = [
   DownOutline,
   CommentOutline,
   StopOutline,
-  ClearOutline
+  ClearOutline,
+  EnvironmentOutline,
+  ArrowDownOutline,
+  ArrowUpOutline,
+  CarOutline,
+  CreditCardOutline,
+  FileTextOutline
 ];
 
 @NgModule({

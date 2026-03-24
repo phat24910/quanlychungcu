@@ -46,7 +46,7 @@ export class CauTrucChungCuTreeComponent implements OnInit {
     canHoId: node.canHoId
   });
 
-  selectListSelection = new SelectionModel<FlatNode>(true);
+  selectListSelection = new SelectionModel<FlatNode>(false);
 
   treeControl = new FlatTreeControl<FlatNode>(
     node => node.level,
@@ -138,8 +138,48 @@ export class CauTrucChungCuTreeComponent implements OnInit {
   hasChild = (_: number, node: FlatNode): boolean => node.expandable;
 
   onNodeClick(node: FlatNode): void {
-    this.selectListSelection.toggle(node);
+    this.selectListSelection.select(node);
+    const currentUrl = this.router.url || '';
 
+    // Khi đang ở màn quản lý quan hệ cư trú hoặc quản lý phương tiện, dùng cây như bộ lọc
+    if (currentUrl.startsWith('/dashboard/resident/quan-he-cu-tru') || currentUrl.startsWith('/dashboard/resident/phuong-tien')) {
+      if (node.type === 'root') {
+        this.router.navigate([], {
+          relativeTo: this.route,
+          queryParams: { filterScope: 'root' }
+        });
+      } else if (node.type === 'building' && node.buildingId != null) {
+        this.router.navigate([], {
+          relativeTo: this.route,
+          queryParams: {
+            filterScope: 'building',
+            toaNhaId: node.buildingId,
+            toaNhaName: node.name
+          }
+        });
+      } else if (node.type === 'floor' && node.tangId != null) {
+        this.router.navigate([], {
+          relativeTo: this.route,
+          queryParams: {
+            filterScope: 'floor',
+            tangId: node.tangId,
+            tangName: node.name
+          }
+        });
+      } else if (node.type === 'apartment' && node.canHoId != null) {
+        this.router.navigate([], {
+          relativeTo: this.route,
+          queryParams: {
+            filterScope: 'apartment',
+            canHoId: node.canHoId
+          }
+        });
+      }
+
+      return;
+    }
+
+    // Mặc định: điều hướng như cũ cho màn quản lý chung cư
     if (node.type === 'root') {
       this.router.navigate(['toa-nha'], { relativeTo: this.route });
     } else if (node.type === 'building' && node.buildingId != null) {

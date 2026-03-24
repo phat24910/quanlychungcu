@@ -90,6 +90,15 @@ export class ChungCuService {
 	return this.http.post<ApiResponse<CauTrucToaNha[]>>(`${this.base}/catalog/cau-truc-chung-cu`, body);
   }
 
+  // Catalog - phuong tien
+  getLoaiPhuongTienForSelector(): Observable<ApiResponse<any[]>> {
+    return this.http.post<ApiResponse<any[]>>(`${this.base}/catalog/loai-phuong-tien-for-selector`, {});
+  }
+
+  getTrangThaiPhuongTienForSelector(): Observable<ApiResponse<any[]>> {
+    return this.http.post<ApiResponse<any[]>>(`${this.base}/catalog/trang-thai-phuong-tien-for-selector`, {});
+  }
+
   // Can ho
   createCanHo(payload: CanHo): Observable<ApiResponse<CanHo>> {
     return this.http.post<ApiResponse<CanHo>>(`${this.base}/can-ho`, payload)
@@ -141,5 +150,47 @@ export class ChungCuService {
     return this.http.request<ApiResponse<any[]>>('delete', `${this.base}/quan-he-cu-tru`, { body: { ids } })
       .pipe(tap((res: any) => { if (res && res.isOk) this.refreshSubject.next(); }));
   }
-}
 
+  // Phuong tien
+  createPhuongTien(payload: any): Observable<ApiResponse<any>> {
+    return this.http.post<ApiResponse<any>>(`${this.base}/phuong-tien`, payload)
+      .pipe(tap((res: any) => { if (res && res.isOk) this.refreshSubject.next(); }));
+  }
+
+  updatePhuongTien(payload: any): Observable<ApiResponse<any>> {
+    return this.http.put<ApiResponse<any>>(`${this.base}/phuong-tien`, payload)
+      .pipe(tap((res: any) => { if (res && res.isOk) this.refreshSubject.next(); }));
+  }
+
+  deletePhuongTien(ids: number[]): Observable<ApiResponse<any>> {
+    return this.http.request<ApiResponse<any>>('delete', `${this.base}/phuong-tien`, { body: { ids } })
+      .pipe(tap((res: any) => { if (res && res.isOk) this.refreshSubject.next(); }));
+  }
+
+  updateTrangThaiPhuongTien(payload: any): Observable<ApiResponse<any>> {
+    return this.http.put<ApiResponse<any>>(`${this.base}/phuong-tien/trang-thai`, payload)
+      .pipe(tap((res: any) => { if (res && res.isOk) this.refreshSubject.next(); }));
+  }
+
+  taoThePhuongTien(payload: any): Observable<ApiResponse<any>> {
+    return this.http.post<ApiResponse<any>>(`${this.base}/phuong-tien/tao-the`, payload)
+      .pipe(tap((res: any) => { if (res && res.isOk) this.refreshSubject.next(); }));
+  }
+
+  goiYMaThe(phuongTienId: number): Observable<ApiResponse<any>> {
+    return this.http.post<ApiResponse<any>>(`${this.base}/phuong-tien/goi-y-ma-the`, { phuongTienId });
+  }
+
+  getPhuongTienList(query: any): Observable<ApiResponse<any>> {
+    return this.http.post<ApiResponse<any>>(`${this.base}/phuong-tien/get-list`, query || {});
+  }
+
+  getPhuongTienById(id: number): Observable<ApiResponse<any>> {
+    return this.http.post<ApiResponse<any>>(`${this.base}/phuong-tien/get-by-id`, { id });
+  }
+
+  khoaThePhuongTien(theIds: number[]): Observable<ApiResponse<any>> {
+    return this.http.put<ApiResponse<any>>(`${this.base}/phuong-tien/khoa-the`, { theIds })
+      .pipe(tap((res: any) => { if (res && res.isOk) this.refreshSubject.next(); }));
+  }
+}

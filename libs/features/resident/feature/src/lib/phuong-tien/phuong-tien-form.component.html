@@ -1,0 +1,36 @@
+<div class="phuong-tien-form-wrapper">
+  <form [formGroup]="form" (ngSubmit)="submit()" class="pt-2 pb-1">
+    <div class="form-card" style="max-width:480px;margin:0 auto;">
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-4 md:gap-6">
+        <div class="flex flex-col">
+          <label class="mb-2 font-medium text-gray-700">Căn hộ (ID)</label>
+          <input nz-input formControlName="canHoId" style="flex:1;border-radius:6px;padding:6px 12px;border:1px solid #e5e7eb;height:36px;box-sizing:border-box" placeholder="ID căn hộ" />
+        </div>
+
+        <div class="flex flex-col">
+          <label class="mb-2 font-medium text-gray-700">Tên phương tiện</label>
+          <input nz-input formControlName="tenPhuongTien" style="flex:1;border-radius:6px;padding:6px 12px;border:1px solid #e5e7eb;height:36px;box-sizing:border-box" placeholder="Nhập tên phương tiện" />
+        </div>
+
+        <div class="flex flex-col">
+          <label class="mb-2 font-medium text-gray-700">Loại phương tiện</label>
+          <nz-select formControlName="loaiPhuongTienId" nzAllowClear nzPlaceHolder="-- Chọn loại phương tiện --"
+            style="width:100%" class="rounded-[10px]">
+            <nz-option *ngFor="let o of loaiPhuongTienOptions" [nzValue]="o.id"
+              [nzLabel]="o.name || o.ten || o.label"></nz-option>
+          </nz-select>
+        </div>
+
+        <div class="flex flex-col">
+          <label class="mb-2 font-medium text-gray-700">Biển số</label>
+          <input nz-input formControlName="bienSo" style="flex:1;border-radius:6px;padding:6px 12px;border:1px solid #e5e7eb;height:36px;box-sizing:border-box" placeholder="Nhập biển số" />
+        </div>
+
+        <div class="flex flex-col md:col-span-2">
+          <label class="mb-2 font-medium text-gray-700">Màu xe</label>
+          <input nz-input formControlName="mauXe" style="flex:1;border-radius:6px;padding:6px 12px;border:1px solid #e5e7eb;height:36px;box-sizing:border-box" placeholder="Nhập màu xe" />
+        </div>
+      </div>
+    </div>
+  </form>
+</div>

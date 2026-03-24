@@ -7,14 +7,14 @@
       class="sidebar-logo flex items-center justify-center py-6 px-4 border-b border-gray-200 bg-gradient-to-r from-white via-blue-50 to-white shadow-sm">
       <img src="assets/images/logo.jpg" alt="Logo" class="h-20 w-18 object-contain mr-4" />
       <div *ngIf="!isCollapsed" class="flex flex-col">
-        <span class="text-xl font-extrabold text-blue-400 leading-tight">HỆ THỐNG QUẢN LÝ CHUNG CƯ THÔNG MINH</span>
+        <span class="text-xl font-extrabold text-blue-900 leading-tight">HỆ THỐNG QUẢN LÝ CHUNG CƯ THÔNG MINH</span>
       </div>
     </div>
 
     <div class="scroll-area" [style.height]="'calc(100vh - 140px)'" style="overflow:auto">
       <ul nz-menu nzMode="inline" [nzInlineCollapsed]="isCollapsed" nzTheme="light" [@.disabled]="true">
         <ng-container *ngFor="let item of menuItems">
-          <li *ngIf="item.children && item.title !== 'Trang chủ' && item.title !== 'Nhật ký hệ thống'; else normalItem"
+          <li *ngIf="item.children && item.title !== 'Trang chủ'; else normalItem"
             nz-submenu [nzTitle]="submenuTitle">
             <ng-template #submenuTitle>
               <span class="ant-menu-item-icon"><span nz-icon [nzType]="item.icon || 'file-text'"
@@ -27,7 +27,7 @@
             </ng-template>
             <ul>
               <li *ngFor="let child of item.children" nz-menu-item [routerLink]="child.route"
-                routerLinkActive="ant-menu-item-selected" [routerLinkActiveOptions]="{ exact: true }">
+                routerLinkActive="ant-menu-item-selected">
                 <span class="ant-menu-item-icon"><span nz-icon [nzType]="child.icon || 'file-text'"
                     nzTheme="outline"></span></span>
                 <span class="ant-menu-title-content">{{ child.title }}</span>
@@ -36,8 +36,7 @@
           </li>
 
           <ng-template #normalItem>
-            <li nz-menu-item [routerLink]="item.route" routerLinkActive="ant-menu-item-selected"
-              [routerLinkActiveOptions]="{ exact: true }">
+            <li nz-menu-item [routerLink]="item.route" routerLinkActive="ant-menu-item-selected">
               <span class="ant-menu-item-icon"><span nz-icon [nzType]="item.icon || 'file-text'"
                   nzTheme="outline"></span></span>
               <span class="ant-menu-title-content">{{ item.title }}</span>

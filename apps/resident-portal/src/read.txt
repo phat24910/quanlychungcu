@@ -2392,3 +2392,640 @@ Schema
   ],
   "isOk": true
 }
+
+
+
+Đăng ký phương tiện mới cho căn hộ
+/api/phuong-tien
+API dùng để tạo một bản ghi phương tiện mới thuộc về một CanHo. Yêu cầu cung cấp CanHoId, TenPhuongTien, ID loại phương tiện (LoaiPhuongTienId), BienSo và MauXe.
+
+Parameters
+Try it out
+No parameters
+
+Request body
+
+application/json
+Example Value
+Schema
+{
+  "canHoId": 0,
+  "tenPhuongTien": "string",
+  "loaiPhuongTienId": 0,
+  "bienSo": "string",
+  "mauXe": "string"
+}
+Responses
+Code	Description	Links
+200
+OK
+
+Media type
+
+text/plain
+Controls Accept header.
+Example Value
+Schema
+{
+  "result": {
+    "id": 0,
+    "maToaNha": "string",
+    "maTang": "string",
+    "maCanHo": "string",
+    "tenPhuongTien": "string",
+    "loaiPhuongTienId": 0,
+    "tenLoaiPhuongTien": "string",
+    "bienSo": "string",
+    "mauXe": "string",
+    "trangThaiPhuongTienId": 0,
+    "tenTrangThaiPhuongTien": "string",
+    "thePhuongTiens": [
+      {
+        "id": 0,
+        "phuongTienId": 0,
+        "maThe": "string",
+        "ngayBatDau": "2026-03-19T03:24:09.539Z",
+        "ngayKetThuc": "2026-03-19T03:24:09.539Z",
+        "isActive": true
+      }
+    ]
+  },
+  "warningMessages": [
+    "string"
+  ],
+  "errors": [
+    {
+      "code": "string",
+      "description": "string"
+    }
+  ],
+  "isOk": true
+}
+No links
+400
+Bad Request
+
+Media type
+
+text/plain
+Example Value
+Schema
+{
+  "result": "string",
+  "warningMessages": [
+    "string"
+  ],
+  "errors": [
+    {
+      "code": "string",
+      "description": "string"
+    }
+  ],
+  "isOk": true
+}
+
+
+
+Cập nhật thông tin phương tiện
+/api/phuong-tien
+API dùng để sửa thông tin cơ bản của phương tiện như tên, loại, biển số, màu xe.
+
+Parameters
+Try it out
+No parameters
+
+Request body
+
+application/json
+Example Value
+Schema
+{
+  "phuongTienId": 0,
+  "tenPhuongTien": "string",
+  "loaiPhuongTienId": 0,
+  "bienSo": "string",
+  "mauXe": "string"
+}
+Responses
+Code	Description	Links
+200
+OK
+
+Media type
+
+text/plain
+Controls Accept header.
+Example Value
+Schema
+{
+  "result": {
+    "id": 0,
+    "maToaNha": "string",
+    "maTang": "string",
+    "maCanHo": "string",
+    "tenPhuongTien": "string",
+    "loaiPhuongTienId": 0,
+    "tenLoaiPhuongTien": "string",
+    "bienSo": "string",
+    "mauXe": "string",
+    "trangThaiPhuongTienId": 0,
+    "tenTrangThaiPhuongTien": "string",
+    "thePhuongTiens": [
+      {
+        "id": 0,
+        "phuongTienId": 0,
+        "maThe": "string",
+        "ngayBatDau": "2026-03-19T03:26:19.747Z",
+        "ngayKetThuc": "2026-03-19T03:26:19.747Z",
+        "isActive": true
+      }
+    ]
+  },
+  "warningMessages": [
+    "string"
+  ],
+  "errors": [
+    {
+      "code": "string",
+      "description": "string"
+    }
+  ],
+  "isOk": true
+}
+No links
+400
+Bad Request
+
+Media type
+
+text/plain
+Example Value
+Schema
+{
+  "result": "string",
+  "warningMessages": [
+    "string"
+  ],
+  "errors": [
+    {
+      "code": "string",
+      "description": "string"
+    }
+  ],
+  "isOk": true
+}
+
+
+
+Xóa phương tiện (xóa mềm)
+/api/phuong-tien
+Parameters
+Try it out
+No parameters
+
+Request body
+
+application/json
+Danh sách ID phương tiện cần xóa
+
+Example Value
+Schema
+{
+  "ids": [
+    0
+  ]
+}
+Responses
+Code	Description	Links
+200
+OK
+
+Media type
+
+text/plain
+Controls Accept header.
+Example Value
+Schema
+{
+  "result": true,
+  "warningMessages": [
+    "string"
+  ],
+  "errors": [
+    {
+      "code": "string",
+      "description": "string"
+    }
+  ],
+  "isOk": true
+}
+No links
+400
+Bad Request
+
+Media type
+
+text/plain
+Example Value
+Schema
+{
+  "result": "string",
+  "warningMessages": [
+    "string"
+  ],
+  "errors": [
+    {
+      "code": "string",
+      "description": "string"
+    }
+  ],
+  "isOk": true
+}
+
+
+
+
+Cập nhật trạng thái cho ds phương tiện
+/api/phuong-tien/trang-thai
+API dùng để duyệt hoặc từ chối một hoặc nhiều phương tiện bằng cách truyền vào danh sách PhuongTienIds và TrangThaiPhuongTienId.
+
+Parameters
+Try it out
+No parameters
+
+Request body
+
+application/json
+Example Value
+Schema
+{
+  "phuongTienIds": [
+    0
+  ],
+  "trangThaiPhuongTienId": 0
+}
+Responses
+Code	Description	Links
+200
+OK
+
+Media type
+
+text/plain
+Controls Accept header.
+Example Value
+Schema
+{
+  "result": true,
+  "warningMessages": [
+    "string"
+  ],
+  "errors": [
+    {
+      "code": "string",
+      "description": "string"
+    }
+  ],
+  "isOk": true
+}
+No links
+400
+Bad Request
+
+Media type
+
+text/plain
+Example Value
+Schema
+{
+  "result": "string",
+  "warningMessages": [
+    "string"
+  ],
+  "errors": [
+    {
+      "code": "string",
+      "description": "string"
+    }
+  ],
+  "isOk": true
+}
+
+
+
+Tạo thẻ phương tiện (gán mã thẻ cho phương tiện)
+/api/phuong-tien/tao-the
+API dùng để gán một mã thẻ (MaThe) cho một phương tiện (PhuongTienId) đã có.
+
+Parameters
+Try it out
+No parameters
+
+Request body
+
+application/json
+Example Value
+Schema
+{
+  "phuongTienId": 0,
+  "maThe": "string"
+}
+Responses
+Code	Description	Links
+200
+OK
+
+Media type
+
+text/plain
+Controls Accept header.
+Example Value
+Schema
+{
+  "result": {
+    "id": 0,
+    "phuongTienId": 0,
+    "maThe": "string",
+    "ngayBatDau": "2026-03-19T03:28:55.640Z",
+    "ngayKetThuc": "2026-03-19T03:28:55.640Z",
+    "isActive": true
+  },
+  "warningMessages": [
+    "string"
+  ],
+  "errors": [
+    {
+      "code": "string",
+      "description": "string"
+    }
+  ],
+  "isOk": true
+}
+No links
+400
+Bad Request
+
+Media type
+
+text/plain
+Example Value
+Schema
+{
+  "result": "string",
+  "warningMessages": [
+    "string"
+  ],
+  "errors": [
+    {
+      "code": "string",
+      "description": "string"
+    }
+  ],
+  "isOk": true
+}
+
+
+
+Lấy ds phương tiện trong chung cư với bộ lọc và tìm kiếm nâng cao
+/api/phuong-tien/get-list
+API truy vấn danh sách phương tiện hỗ trợ các chức năng:
+
+Phạm vi (ID): Lọc chính xác theo ToaNhaId, TangId, CanHoId.
+Từ khóa: Tìm kiếm theo TenPhuongTien, BienSo, MauXe (qua tham số Keyword).
+Bộ lọc:
+Mã định danh: MaToaNha, MaTang, MaCanHo.
+Thông tin xe: LoaiPhuongTienId, MauXe, TrangThaiPhuongTienId.
+Sắp xếp: Hỗ trợ sắp xếp theo MaToaNha, MaTang, MaCanHo, TenPhuongTien, BienSo, MauXe, TrangThaiPhuongTienId.
+Phân trang: PageNumber và PageSize.
+Parameters
+Try it out
+No parameters
+
+Request body
+
+application/json
+Example Value
+Schema
+{
+  "toaNhaId": 0,
+  "tangId": 0,
+  "canHoId": 0,
+  "keyword": "string",
+  "maToaNha": "string",
+  "maTang": "string",
+  "maCanHo": "string",
+  "loaiPhuongTienId": 0,
+  "mauXe": "string",
+  "trangThaiPhuongTienId": 0,
+  "sortCol": "string",
+  "isAsc": true,
+  "pageNumber": 0,
+  "pageSize": 0
+}
+Responses
+Code	Description	Links
+200
+OK
+
+Media type
+
+text/plain
+Controls Accept header.
+Example Value
+Schema
+{
+  "result": {
+    "items": [
+      {
+        "id": 0,
+        "maToaNha": "string",
+        "maTang": "string",
+        "maCanHo": "string",
+        "tenPhuongTien": "string",
+        "loaiPhuongTienId": 0,
+        "tenLoaiPhuongTien": "string",
+        "bienSo": "string",
+        "mauXe": "string",
+        "trangThaiPhuongTienId": 0,
+        "tenTrangThaiPhuongTien": "string",
+        "thePhuongTiens": [
+          {
+            "id": 0,
+            "phuongTienId": 0,
+            "maThe": "string",
+            "ngayBatDau": "2026-03-19T03:30:02.350Z",
+            "ngayKetThuc": "2026-03-19T03:30:02.350Z",
+            "isActive": true
+          }
+        ]
+      }
+    ],
+    "pagingInfo": {
+      "pageSize": 0,
+      "pageNumber": 0,
+      "totalItems": 0
+    }
+  },
+  "warningMessages": [
+    "string"
+  ],
+  "errors": [
+    {
+      "code": "string",
+      "description": "string"
+    }
+  ],
+  "isOk": true
+}
+
+
+
+Lấy thông tin chi tiết phương tiện cùng ds thẻ
+/api/phuong-tien/get-by-id
+Parameters
+Try it out
+No parameters
+
+Request body
+
+application/json
+Dữ liệu yêu cầu (Id)
+
+Example Value
+Schema
+{
+  "id": 0
+}
+Responses
+Code	Description	Links
+200
+OK
+
+Media type
+
+text/plain
+Controls Accept header.
+Example Value
+Schema
+{
+  "result": {
+    "id": 0,
+    "maToaNha": "string",
+    "maTang": "string",
+    "maCanHo": "string",
+    "tenPhuongTien": "string",
+    "loaiPhuongTienId": 0,
+    "tenLoaiPhuongTien": "string",
+    "bienSo": "string",
+    "mauXe": "string",
+    "trangThaiPhuongTienId": 0,
+    "tenTrangThaiPhuongTien": "string",
+    "thePhuongTiens": [
+      {
+        "id": 0,
+        "phuongTienId": 0,
+        "maThe": "string",
+        "ngayBatDau": "2026-03-19T03:31:08.705Z",
+        "ngayKetThuc": "2026-03-19T03:31:08.705Z",
+        "isActive": true
+      }
+    ]
+  },
+  "warningMessages": [
+    "string"
+  ],
+  "errors": [
+    {
+      "code": "string",
+      "description": "string"
+    }
+  ],
+  "isOk": true
+}
+No links
+404
+Not Found
+
+Media type
+
+text/plain
+Example Value
+Schema
+{
+  "result": "string",
+  "warningMessages": [
+    "string"
+  ],
+  "errors": [
+    {
+      "code": "string",
+      "description": "string"
+    }
+  ],
+  "isOk": true
+}
+
+
+
+Khóa thẻ phương tiện (cho phép khóa nhiều thẻ cùng 1 lúc)
+/api/phuong-tien/khoa-the
+Parameters
+Try it out
+No parameters
+
+Request body
+
+application/json
+Example Value
+Schema
+{
+  "theIds": [
+    0
+  ]
+}
+Responses
+Code	Description	Links
+200
+OK
+
+Media type
+
+text/plain
+Controls Accept header.
+Example Value
+Schema
+{
+  "result": true,
+  "warningMessages": [
+    "string"
+  ],
+  "errors": [
+    {
+      "code": "string",
+      "description": "string"
+    }
+  ],
+  "isOk": true
+}
+No links
+400
+Bad Request
+
+Media type
+
+text/plain
+Example Value
+Schema
+{
+  "result": "string",
+  "warningMessages": [
+    "string"
+  ],
+  "errors": [
+    {
+      "code": "string",
+      "description": "string"
+    }
+  ],
+  "isOk": true
+}

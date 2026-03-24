@@ -254,7 +254,7 @@ export class CanHoResidentsComponent implements OnInit, OnDestroy {
           if (res && res.isOk && res.result) {
             this.searchError = '';
             this.foundUser = res.result;
-            this.currentUserId = res.result.userId || res.result.id;
+            this.currentUserId = res.result.userId;
             this.selectedLoaiQuanHeCuTruId = null;
             this.ngayBatDau = new Date().toISOString().substring(0, 10);
             this.searchState = 'found';

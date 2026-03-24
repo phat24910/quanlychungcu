@@ -19,6 +19,7 @@ import { NzDropDownModule } from 'ng-zorro-antd/dropdown';
 import { NzMenuModule } from 'ng-zorro-antd/menu';
 import { NzTreeViewModule } from 'ng-zorro-antd/tree-view';
 import { NzNotificationModule } from 'ng-zorro-antd/notification';
+import { NzTagModule } from 'ng-zorro-antd/tag';
 import { QuanLyCuDanComponent } from './quan-ly-cu-dan/quan-ly-cu-dan.component';
 import { ToaNhaListComponent } from './toa-nha/toa-nha-list.component';
 import { ToaNhaFormComponent } from './toa-nha/toa-nha-form.component';
@@ -29,6 +30,10 @@ import { TangFormComponent } from './tang/tang-form.component';
 import { CauTrucChungCuTreeComponent } from './cau-truc-chung-cu-tree/cau-truc-chung-cu-tree.component';
 import { ResidentLayoutComponent } from './resident-layout/resident-layout.component';
 import { TangListComponent } from './tang/tang-list.component';
+import { QuanHeCuTruComponent } from './quan-he-cu-tru/quan-he-cu-tru.component';
+import { PhuongTienListComponent } from './phuong-tien/phuong-tien-list.component';
+import { PhuongTienFormComponent } from './phuong-tien/phuong-tien-form.component';
+import { TaoTheFormComponent } from './phuong-tien/tao-the-form.component';
 import { SharedUiModule } from '@shared/ui';
 
 const routes: Routes = [
@@ -37,6 +42,10 @@ const routes: Routes = [
     component: ResidentLayoutComponent,
     children: [
       { path: '', component: QuanLyCuDanComponent },
+      { path: 'quan-he-cu-tru', component: QuanHeCuTruComponent },
+      { path: 'phuong-tien', component: PhuongTienListComponent },
+      { path: 'phuong-tien/create', component: PhuongTienFormComponent },
+      { path: 'phuong-tien/:id/edit', component: PhuongTienFormComponent },
       { path: 'toa-nha', component: ToaNhaListComponent },
       { path: 'tang', component: TangListComponent },
       { path: 'toa-nha/create', component: ToaNhaFormComponent },
@@ -60,7 +69,11 @@ const routes: Routes = [
     TangFormComponent,
     CauTrucChungCuTreeComponent,
     ResidentLayoutComponent,
-    TangListComponent
+    TangListComponent,
+    QuanHeCuTruComponent,
+    PhuongTienListComponent,
+    PhuongTienFormComponent,
+    TaoTheFormComponent
   ],
   imports: [
     CommonModule,
@@ -82,7 +95,8 @@ const routes: Routes = [
     NzCheckboxModule,
     NzTreeViewModule,
     FormsModule,
-    NzNotificationModule
+    NzNotificationModule,
+    NzTagModule
     ,
     SharedUiModule
   ],

@@ -90,3 +90,61 @@
 .overlay-open { overflow: hidden; }
 .sidebar-logo img { display: inline-block; }
 .inner-content { background: transparent; }
+
+
+
+
+/* Light sidebar with blue accent */
+.menu-sidebar {
+	display: flex;
+	flex-direction: column;
+	height: 100vh;
+	background: #eff6ff; /* blue-50 */
+	color: #1e3a8a; /* blue-900 */
+	border-right: 1px solid #dbeafe; /* blue-100 */
+}
+
+.menu-sidebar .sidebar-logo {
+	background: transparent;
+	flex: 0 0 auto;
+}
+
+.menu-sidebar .scroll-area {
+	flex: 1 1 auto;
+	min-height: 0;
+	overflow: auto;
+	background: #eff6ff;
+}
+
+.menu-sidebar ::ng-deep .ant-menu-item,
+.menu-sidebar ::ng-deep .ant-menu-submenu-title {
+	color: #070a14fb;
+}
+
+/* Slightly bolder menu text for better readability */
+.menu-sidebar ::ng-deep .ant-menu-item,
+.menu-sidebar ::ng-deep .ant-menu-submenu-title,
+.menu-sidebar ::ng-deep .ant-menu-item .ant-menu-title-content {
+  font-weight: 600;
+}
+
+/* Make the underlying nz-menu background transparent so the sidebar background shows through */
+.menu-sidebar ::ng-deep .ant-menu,
+.menu-sidebar ::ng-deep .ant-menu-root,
+.menu-sidebar ::ng-deep .ant-menu-inline {
+	background: transparent !important;
+}
+
+.menu-sidebar ::ng-deep .ant-menu-submenu-popup {
+	background: #ffffff !important;
+}
+
+.menu-sidebar ::ng-deep .ant-menu-item:hover {
+	background: rgba(59,130,246,0.06) !important; /* blue-500 6% */
+}
+
+.menu-sidebar ::ng-deep .ant-menu-item-selected {
+	background: rgba(59,130,246,0.12) !important; /* blue-500 12% */
+	border-left: 3px solid #3b82f6 !important; /* blue-500 */
+	color: #1e3a8a !important;
+}

@@ -38,6 +38,7 @@ export class ProfileComponent implements OnInit {
     private auth: AuthService
   ) {}
 
+
   ngOnInit(): void {
     this.load();
     this.loadGenders();
@@ -73,6 +74,7 @@ export class ProfileComponent implements OnInit {
 
   private initForm(): void {
     this.profileForm = this.fb.group({
+      email: [this.profile?.email || '', [Validators.required, Validators.email]],
       firstName: [this.profile?.firstName || '', Validators.required],
       lastName: [this.profile?.lastName || '', Validators.required],
       phoneNumber: [this.profile?.phoneNumber || ''],
@@ -86,6 +88,7 @@ export class ProfileComponent implements OnInit {
     this.editMode = true;
     if (!this.profileForm) this.initForm();
     else this.profileForm.patchValue({
+      email: this.profile?.email,
       firstName: this.profile?.firstName,
       lastName: this.profile?.lastName,
       phoneNumber: this.profile?.phoneNumber,
@@ -116,6 +119,7 @@ export class ProfileComponent implements OnInit {
 
   save(): void {
     const payload: any = {
+      Email: this.editModel.email,
       firstName: this.editModel.firstName,
       lastName: this.editModel.lastName,
       phoneNumber: this.editModel.phoneNumber,

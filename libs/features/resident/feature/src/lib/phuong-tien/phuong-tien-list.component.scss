@@ -1,0 +1,37 @@
+.p-4 { padding: 1rem; }
+.mb-4 { margin-bottom: 1rem; }
+.flex { display:flex; }
+.justify-between { justify-content: space-between; }
+.items-center { align-items: center; }
+.text-lg { font-size: 1.125rem; }
+.font-semibold { font-weight: 600; }
+
+/* Status tag styles */
+.status-tag {
+	display: inline-block;
+	padding: 2px 8px;
+	border-radius: 12px;
+	font-size: 12px;
+	line-height: 20px;
+	border: 1px solid transparent;
+}
+.status--green {
+	background-color: #ecf9f0;
+	color: #1f8a3f;
+	border-color: #bff0c6;
+}
+.status--red {
+	background-color: #fff5f5;
+	color: #d93025;
+	border-color: #ffcccc;
+}
+.status--orange {
+	background-color: #fff8ec;
+	color: #d97706;
+	border-color: #ffe5b8;
+}
+.status--default {
+	background-color: #f3f4f6;
+	color: #374151;
+	border-color: #e5e7eb;
+}

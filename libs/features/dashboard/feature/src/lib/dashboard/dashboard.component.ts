@@ -70,13 +70,15 @@ export class DashboardComponent implements OnInit {
   buildDefaultMenu() {
     this.menuItems = [
       { title: 'Trang chủ', route: '/dashboard/home', icon: 'home' },
-      { title: 'Quản lý chung cư', route: '/dashboard/resident', icon: 'team' },
-      { title: 'Dịch vụ', children: [
-        { title: 'Bảo trì', route: '/dashboard/services/maintenance', icon: 'tool' },
-        { title: 'Thanh toán', route: '/dashboard/services/billing', icon: 'pay-circle' }
-      ], icon: 'appstore' },
-      { title: 'Thông báo', route: '/dashboard/notifications', icon: 'notification' },
-      { title: 'Cài đặt', route: '/dashboard/settings', icon: 'setting' }
+      { title: 'Quản lý chung cư', route: '/dashboard/resident', icon: 'bank' },
+      { title: 'Quản lý quan hệ cư trú', route: '/dashboard/resident/quan-he-cu-tru', icon: 'team' },
+      { title: 'Quản lý phương tiện', route: '/dashboard/resident/phuong-tien', icon: 'car' },
+      // { title: 'Dịch vụ', children: [
+      //   { title: 'Bảo trì', route: '/dashboard/services/maintenance', icon: 'tool' },
+      //   { title: 'Thanh toán', route: '/dashboard/services/billing', icon: 'pay-circle' }
+      // ], icon: 'appstore' },
+      // { title: 'Thông báo', route: '/dashboard/notifications', icon: 'notification' },
+      // { title: 'Cài đặt', route: '/dashboard/settings', icon: 'setting' }
     ];
   }
 
@@ -99,14 +101,25 @@ export class DashboardComponent implements OnInit {
 
   private findTitleByUrl(url: string, items: any[]): string | null {
     if (!items) return null;
-    for (const it of items) {
-      if (it.route && url.startsWith(it.route)) return it.title;
-      if (it.children) {
-        const childMatch = this.findTitleByUrl(url, it.children);
-        if (childMatch) return childMatch;
+    let bestTitle: string | null = null;
+    let bestLen = -1;
+
+    const walk = (arr: any[]) => {
+      if (!arr) return;
+      for (const it of arr) {
+        if (it.route && typeof it.route === 'string' && url.startsWith(it.route)) {
+          const l = it.route.length;
+          if (l > bestLen) {
+            bestLen = l;
+            bestTitle = it.title || null;
+          }
+        }
+        if (it.children) walk(it.children);
       }
-    }
-    return null;
+    };
+
+    walk(items);
+    return bestTitle;
   }
 
   logout() {
