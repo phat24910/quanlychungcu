@@ -56,11 +56,10 @@
           </div>
           <div class="flex flex-col">
             <label class="mb-2 font-medium text-gray-700">Giới tính</label>
-            <nz-select formControlName="gioiTinhId" nzAllowClear nzPlaceHolder="-- Chọn giới tính --" style="width:100%"
-              class="rounded-[10px]">
-              <nz-option *ngFor="let g of gioiTinhOptions" [nzValue]="g.id"
-                [nzLabel]="g.name || g.ten || g.label"></nz-option>
-            </nz-select>
+            <nz-radio-group formControlName="gioiTinhId" style="display:flex;gap:8px;flex-wrap:wrap">
+              <label nz-radio *ngFor="let g of gioiTinhOptions" [nzValue]="g.id">{{ g.name || g.ten || g.label
+                }}</label>
+            </nz-radio-group>
           </div>
           <div class="flex flex-col md:col-span-2">
             <label class="mb-2 font-medium text-gray-700">Địa chỉ</label>
@@ -137,51 +136,54 @@
       </button>
     </div>
   </div>
-  <nz-table #rTable [nzData]="filtered" [nzLoading]="loading" [nzShowPagination]="false"
-    (nzCurrentPageDataChange)="onCurrentPageDataChange($event)">
-    <thead>
-      <tr>
-        <th style="width:48px">
-          <label nz-checkbox [(ngModel)]="checked" [nzIndeterminate]="indeterminate"
-            (ngModelChange)="onAllChecked($event)"></label>
-        </th>
-        <th style="width:64px; text-align:center">Thao tác</th>
-        <th style="width:48px">STT</th>
-        <th>Họ tên</th>
-        <th>Điện thoại</th>
-        <th>Quan hệ</th>
-        <th>Ngày bắt đầu</th>
-        <th>Ngày kết thúc</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr *ngFor="let it of rTable.data; let i = index">
-        <td>
-          <label nz-checkbox [ngModel]="setOfCheckedId.has(it.quanHeCuTruId || it.userId)"
-            (ngModelChange)="onItemChecked(it.quanHeCuTruId || it.userId, $event)"></label>
-        </td>
-        <td style="text-align:center">
-          <a nz-dropdown nzTrigger="hover" [nzDropdownMenu]="actionMenu">
-            <i nz-icon nzType="unordered-list" nzTheme="outline" class="text-lg cursor-pointer"></i>
-          </a>
-          <nz-dropdown-menu #actionMenu="nzDropdownMenu">
-            <ul nz-menu>
-              <li nz-menu-item (click)="editResident(it)"><i nz-icon nzType="edit" nzTheme="outline"></i>&nbsp;Chỉnh sửa
-              </li>
-              <li nz-menu-item class="text-red-500" (click)="deleteOne(it.quanHeCuTruId || it.userId)"><i nz-icon
-                  nzType="stop" nzTheme="outline"></i>&nbsp;Kết thúc cư trú</li>
-            </ul>
-          </nz-dropdown-menu>
-        </td>
-        <td>{{ (pageNumber - 1) * pageSize + i + 1 }}</td>
-        <td>{{ it.hoTen || '-' }}</td>
-        <td>{{ it.phoneNumber || '-' }}</td>
-        <td>{{ it.tenLoaiQuanHeCuTru || (it.loaiQuanHeCuTruId ? it.loaiQuanHeCuTruId : '-') }}</td>
-        <td>{{ it.ngayBatDau ? (it.ngayBatDau | date:'dd/MM/yyyy') : '-' }}</td>
-        <td>{{ it.ngayKetThuc ? (it.ngayKetThuc | date:'dd/MM/yyyy') : '-' }}</td>
-      </tr>
-    </tbody>
-  </nz-table>
+  <app-scroll-table [height]="'450px'">
+    <nz-table #rTable [nzData]="filtered" [nzLoading]="loading" [nzShowPagination]="false"
+      (nzCurrentPageDataChange)="onCurrentPageDataChange($event)">
+      <thead>
+        <tr>
+          <th style="width:48px">
+            <label nz-checkbox [(ngModel)]="checked" [nzIndeterminate]="indeterminate"
+              (ngModelChange)="onAllChecked($event)"></label>
+          </th>
+          <th style="width:64px; text-align:center">Thao tác</th>
+          <th style="width:48px">STT</th>
+          <th>Họ tên</th>
+          <th>Điện thoại</th>
+          <th>Quan hệ</th>
+          <th>Ngày bắt đầu</th>
+          <th>Ngày kết thúc</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let it of rTable.data; let i = index">
+          <td>
+            <label nz-checkbox [ngModel]="setOfCheckedId.has(it.quanHeCuTruId || it.userId)"
+              (ngModelChange)="onItemChecked(it.quanHeCuTruId || it.userId, $event)"></label>
+          </td>
+          <td style="text-align:center">
+            <a nz-dropdown nzTrigger="hover" [nzDropdownMenu]="actionMenu">
+              <i nz-icon nzType="unordered-list" nzTheme="outline" class="text-lg cursor-pointer"></i>
+            </a>
+            <nz-dropdown-menu #actionMenu="nzDropdownMenu">
+              <ul nz-menu>
+                <li nz-menu-item (click)="editResident(it)"><i nz-icon nzType="edit" nzTheme="outline"></i>&nbsp;Chỉnh
+                  sửa
+                </li>
+                <li nz-menu-item class="text-red-500" (click)="deleteOne(it.quanHeCuTruId || it.userId)"><i nz-icon
+                    nzType="stop" nzTheme="outline"></i>&nbsp;Kết thúc cư trú</li>
+              </ul>
+            </nz-dropdown-menu>
+          </td>
+          <td>{{ (pageNumber - 1) * pageSize + i + 1 }}</td>
+          <td style="max-width:200px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis">{{ it.hoTen }}</td>
+          <td>{{ it.phoneNumber || '-' }}</td>
+          <td style="max-width:200px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis">{{ it.tenLoaiQuanHeCuTru || (it.loaiQuanHeCuTruId ? it.loaiQuanHeCuTruId : '-') }}</td>
+          <td>{{ it.ngayBatDau ? (it.ngayBatDau | date:'dd/MM/yyyy') : '-' }}</td>
+          <td>{{ it.ngayKetThuc ? (it.ngayKetThuc | date:'dd/MM/yyyy') : '-' }}</td>
+        </tr>
+      </tbody>
+    </nz-table>
+  </app-scroll-table>
 
   <div style="display:flex;justify-content:flex-end;margin-top:12px">
     <nz-pagination [nzPageIndex]="pageNumber" [nzPageSize]="pageSize" [nzTotal]="totalItems"

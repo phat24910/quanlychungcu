@@ -1,13 +1,12 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, ViewChild, TemplateRef } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { ChungCuService } from '@features/resident/data-access';
 import { NzNotificationService } from 'ng-zorro-antd/notification';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { NzModalService } from 'ng-zorro-antd/modal';
-import { AuthApiService } from '@features/auth/data-access';
-import { ProfileApiService } from '@features/profile/data-access';
 import { Subject, forkJoin } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
+import { QuanHeCuTruFormComponent } from './quan-he-cu-tru-form.component';
+import { HoSoCuDanComponent } from './ho-so-cu-dan.component';
 
 @Component({
   selector: 'app-quan-he-cu-tru',
@@ -43,6 +42,7 @@ export class QuanHeCuTruComponent implements OnInit, OnDestroy {
   ngayKetThucTo = '';
 
   loaiQuanHeOptions: any[] = [];
+  trangThaiCuTruOptions: any[] = [];
 
   // selection / bulk actions
   setOfCheckedId = new Set<number | string>();
@@ -51,23 +51,16 @@ export class QuanHeCuTruComponent implements OnInit, OnDestroy {
   listOfCurrentPageData: readonly any[] = [];
 
   // add / edit resident
-  registerForm!: FormGroup;
-  registerLoading = false;
-  searchLoading = false;
-  foundUser: any | null = null;
-  currentUserId?: number;
-  searchError = '';
-  gioiTinhOptions: any[] = [];
+  // form handled in child component
+  @ViewChild('formComp') formComp?: QuanHeCuTruFormComponent;
+  @ViewChild('identifyTpl') identifyTpl?: TemplateRef<any>;
 
-  isAddingResident = false;
-  selectedLoaiQuanHeCuTruId: number | null = null;
-  ngayBatDau: string = '';
-  setResidenceLoading = false;
-
-  editingResident: any | null = null;
-  editModalVisible = false;
-  editForm!: FormGroup;
-  editLoading = false;
+  selectedProfile: any | null = null;
+  identifyModalRef: any = null;
+  identifyEmail = '';
+  identifyLoading = false;
+  identifyDirectLoading = false;
+  identifyUserId: number | null = null;
 
   private destroy$ = new Subject<void>();
 
@@ -82,33 +75,14 @@ export class QuanHeCuTruComponent implements OnInit, OnDestroy {
     private route: ActivatedRoute,
     private chungCu: ChungCuService,
     private notification: NzNotificationService,
-    private fb: FormBuilder,
-    private modal: NzModalService,
-    private authApi: AuthApiService,
-    private profileApi: ProfileApiService
+    private modal: NzModalService
   ) {
-    this.registerForm = this.fb.group({
-      username: ['', [Validators.required]],
-      email: ['', [Validators.required, Validators.email]],
-      password: ['', [Validators.required, Validators.minLength(6)]],
-      firstName: ['', [Validators.required]],
-      lastName: ['', [Validators.required]],
-      phoneNumber: ['', [Validators.required]],
-      idCard: ['', [Validators.required]],
-      dob: ['', [Validators.required]],
-      gioiTinhId: [null, [Validators.required]],
-      diaChi: ['', [Validators.required]]
-    });
-
-    this.editForm = this.fb.group({
-      quanHeCuTruId: [null, [Validators.required]],
-      loaiQuanHeCuTruId: [null, [Validators.required]]
-    });
   }
 
   ngOnInit(): void {
     this.loadLoaiQuanHeCuTruOptions();
-
+    this.loadTrangThaiCuTruOptions();
+    this.chungCu.refresh$.pipe(takeUntil(this.destroy$)).subscribe(() => this.loadResidents());
     this.route.queryParams.subscribe(params => {
       const scope = params['filterScope'] as any;
       this.filterScope = scope === 'building' || scope === 'floor' || scope === 'apartment' ? scope : 'root';
@@ -122,20 +96,34 @@ export class QuanHeCuTruComponent implements OnInit, OnDestroy {
       this.pageNumber = 1;
       this.loadResidents();
     });
-    this.loadGioiTinhOptions();
   }
 
+  private loadTrangThaiCuTruOptions(): void {
+    this.chungCu.getTrangThaiCuTruForSelector().pipe(takeUntil(this.destroy$)).subscribe(r => {
+      if (r && r.isOk && Array.isArray(r.result)) {
+        this.trangThaiCuTruOptions = r.result;
+      }
+    });
+  }
+
+  getTrangThaiLabel(val: any): string {
+    if (this.trangThaiCuTruOptions && this.trangThaiCuTruOptions.length) {
+      const found = this.trangThaiCuTruOptions.find(o => {
+        if (o == null) return false;
+        return o.id === val || o.value === val || o.key === val || String(o.id) === String(val) || o === val;
+      });
+      if (found) return found.name || found.label || found.ten || String(found.id);
+    }
+    if (val == null) return '-';
+    return String(val);
+  }
   ngOnDestroy(): void {
     this.destroy$.next();
     this.destroy$.complete();
   }
 
-  private loadGioiTinhOptions(): void {
-    this.profileApi.getGioiTinhForSelector()
-      .pipe(takeUntil(this.destroy$))
-      .subscribe(r => {
-        if (r && r.isOk && Array.isArray(r.result)) this.gioiTinhOptions = r.result;
-      });
+  openAddForm(): void {
+    try { this.formComp?.openAdd(); } catch (e) { }
   }
 
   private loadLoaiQuanHeCuTruOptions(): void {
@@ -231,6 +219,23 @@ export class QuanHeCuTruComponent implements OnInit, OnDestroy {
     this.loadResidents();
   }
 
+  onSortSelect(col: string | null): void {
+    if (!col) {
+      this.sortCol = null;
+      this.isAsc = true;
+      this.pageNumber = 1;
+      this.loadResidents();
+      return;
+    }
+    if (this.sortCol === col) this.isAsc = !this.isAsc;
+    else {
+      this.sortCol = col;
+      this.isAsc = true;
+    }
+    this.pageNumber = 1;
+    this.loadResidents();
+  }
+
   onPageChange(page: number): void {
     this.pageNumber = page;
     this.loadResidents();
@@ -292,146 +297,64 @@ export class QuanHeCuTruComponent implements OnInit, OnDestroy {
     this.indeterminate = this.listOfCurrentPageData.some(item => this.setOfCheckedId.has(item.quanHeCuTruId || item.userId)) && !this.checked;
   }
 
-  onSearchUserByPhone(): void {
-    const phone = (this.registerForm.get('phoneNumber')?.value || '').trim();
-    if (!phone) { this.searchError = 'Vui lòng nhập số điện thoại.'; return; }
-    this.searchError = '';
-    this.searchLoading = true;
-    this.foundUser = null;
-    this.currentUserId = undefined;
+  // onSearchUserByIdCard(): void {
+  //   // moved to form component
+  // }
 
-    this.chungCu.searchUserForQuanHeCuTru(phone).pipe(takeUntil(this.destroy$)).subscribe({
-      next: (res: any) => {
-        this.searchLoading = false;
-        if (res && res.isOk && res.result) {
-          this.foundUser = res.result;
-          const u: any = res.result;
-          this.currentUserId = u.userId ?? u.id;
-          try {
-            this.registerForm.patchValue({
-              username: u.username || '',
-              email: u.email || '',
-              firstName: u.firstName || u.fullName || '',
-              lastName: u.lastName || '',
-              phoneNumber: u.phoneNumber || '',
-              idCard: u.idCard || '',
-              dob: u.dob ? (new Date(u.dob).toISOString().substring(0, 10)) : '',
-              gioiTinhId: u.gioiTinhId ?? null,
-              diaChi: u.diaChi || ''
-            });
-          } catch (e) {
-          }
-          this.selectedLoaiQuanHeCuTruId = null;
-          this.ngayBatDau = new Date().toISOString().substring(0, 10);
-        } else {
-          this.searchError = 'Không tìm thấy người dùng';
-        }
-      },
-      error: () => { this.searchLoading = false; this.searchError = 'Không tìm thấy người dùng'; }
-    });
-  }
+  // cancelRegister(): void {
+  //   // moved to form component
+  // }
 
-  cancelRegister(): void {
-    this.isAddingResident = false;
-    this.searchError = '';
-    this.foundUser = null;
-    this.currentUserId = undefined;
-    this.selectedLoaiQuanHeCuTruId = null;
-    this.registerForm.reset();
-  }
+  // addDocumentCard(): void {
+  //   // moved to form component
+  // }
 
-  submitRegister(): void {
-    if (this.registerForm.invalid) { this.registerForm.markAllAsTouched(); return; }
-    const val = this.registerForm.value;
-    const dobIso = val.dob ? new Date(val.dob).toISOString() : new Date().toISOString();
+  // removeDocumentCard(index: number): void {
+  //   // moved to form component
+  // }
 
-    this.registerLoading = true;
-    this.authApi.registerResident({
-      username: val.username,
-      email: val.email,
-      password: val.password,
-      firstName: val.firstName,
-      lastName: val.lastName,
-      phoneNumber: val.phoneNumber,
-      idCard: val.idCard,
-      dob: dobIso,
-      gioiTinhId: val.gioiTinhId,
-      diaChi: val.diaChi
-    }).pipe(takeUntil(this.destroy$)).subscribe(res => {
-      this.registerLoading = false;
-      if (res && res.isOk && res.result) {
-          this.foundUser = res.result;
-          const u: any = res.result;
-          this.currentUserId = u.userId ?? u.id;
-          try {
-            this.registerForm.patchValue({
-              username: u.username || '',
-              email: u.email || '',
-              firstName: u.firstName || u.fullName || '',
-              lastName: u.lastName || '',
-              phoneNumber: u.phoneNumber || '',
-              idCard: u.idCard || '',
-              dob: u.dob ? (new Date(u.dob).toISOString().substring(0, 10)) : '',
-              gioiTinhId: u.gioiTinhId ?? null,
-              diaChi: u.diaChi || ''
-            });
-          } catch (e) {}
-      }
-    }, _ => { this.registerLoading = false; });
-  }
+  // removeDocumentFile(cardIndex: number, fileIndex: number): void {
+  //   // moved to form component
+  // }
 
-  setResidence(): void {
-    if (!this.currentUserId || !this.selectedLoaiQuanHeCuTruId) { this.searchError = 'Vui lòng chọn loại quan hệ trước khi thiết lập cư trú.'; return; }
-    this.searchError = '';
-    const payload: any = {
-      canHoId: this.canHoId,
-      userId: this.currentUserId,
-      loaiQuanHeCuTruId: this.selectedLoaiQuanHeCuTruId
-    };
-    if (this.ngayBatDau) payload.ngayBatDau = new Date(this.ngayBatDau).toISOString();
+  // startAddFileToCard(index: number, inputEl: HTMLInputElement): void {
+  //   // moved to form component
+  // }
 
-    this.setResidenceLoading = true;
-    this.chungCu.createQuanHeCuTru(payload).pipe(takeUntil(this.destroy$)).subscribe(res => {
-      this.setResidenceLoading = false;
-      if (res && res.isOk) {
-        this.notification.success('Thành công', 'Thiết lập cư trú thành công');
-        this.isAddingResident = false;
-        this.registerForm.reset();
-        this.loadResidents();
-      } else {
-        this.notification.error('Lỗi', 'Thiết lập cư trú thất bại');
-      }
-    }, _ => { this.setResidenceLoading = false; this.notification.error('Lỗi', 'Thiết lập cư trú thất bại'); });
-  }
+  // onCardFileInput(evt: Event): void {
+  //   // moved to form component
+  // }
 
-  // edit / end residence
-  editResident(item: any): void {
-    this.editingResident = item;
-    this.editForm.reset();
-    this.editForm.patchValue({
-      quanHeCuTruId: item.quanHeCuTruId || item.userId,
-      loaiQuanHeCuTruId: item.loaiQuanHeCuTruId || null
-    });
-    this.editModalVisible = true;
-  }
+  // submitRegister(): void {
+  //   // moved to form component
+  // }
 
-  submitEdit(): void {
-    if (this.editForm.invalid) { this.editForm.markAllAsTouched(); return; }
-    const val = this.editForm.value;
-    const payload: any = { quanHeCuTruId: val.quanHeCuTruId, loaiQuanHeCuTruId: val.loaiQuanHeCuTruId };
-    this.editLoading = true;
-    this.chungCu.updateQuanHeCuTru(payload).pipe(takeUntil(this.destroy$)).subscribe(res => {
-      this.editLoading = false;
-      if (res && res.isOk) {
-        this.notification.success('Thành công', 'Cập nhật thành công');
-        this.editModalVisible = false;
-        this.editingResident = null;
-        this.loadResidents();
-      } else this.notification.error('Lỗi', 'Cập nhật thất bại');
-    }, _ => { this.editLoading = false; this.notification.error('Lỗi', 'Cập nhật thất bại'); });
-  }
+  // // upload helpers moved to form component
 
-  closeEdit(): void { this.editModalVisible = false; this.editingResident = null; }
+  // setResidence(): void {
+  //   // moved to form component
+  // }
+
+  // // định danh cư dân: gửi mã định danh qua email
+  // sendMaDinhDanh(): void {
+  //   // moved to form component
+  // }
+
+  // // định danh cư dân: liên kết tài khoản trực tiếp (dành cho BQL/quầy tiếp tân)
+  // lienKetTaiKhoanTrucTiep(): void {
+  //   // moved to form component
+  // }
+
+  // // edit / end residence
+  // editResident(item: any): void {
+  //   //
+  // }
+
+  // submitEdit(): void {
+  //   // moved to form component
+  // }
+
+  closeEdit(): void { try { this.formComp?.closeEdit(); } catch (e) { } }
 
   deleteOne(id?: number | string): void {
     if (id == null) return;
@@ -459,4 +382,83 @@ export class QuanHeCuTruComponent implements OnInit, OnDestroy {
       nzOnOk: () => forkJoin(ids.map(id => this.chungCu.ketThucQuanHeCuTru(id))).pipe(takeUntil(this.destroy$)).subscribe(() => this.loadResidents())
     });
   }
+
+  viewHoSo(item: any): void {
+    const id = item?.quanHeCuTruId ?? item?.userId;
+    if (!id) { this.notification.warning('Thông báo', 'Không có id quan hệ cư trú'); return; }
+    this.chungCu.getCuDanThongTin(Number(id)).pipe(takeUntil(this.destroy$)).subscribe({
+      next: (res: any) => {
+        if (res && res.isOk && res.result) {
+          this.selectedProfile = res.result;
+          try {
+            this.modal.create({
+              nzTitle: 'Hồ sơ cư dân',
+              nzContent: HoSoCuDanComponent,
+              nzComponentParams: { profile: this.selectedProfile },
+              nzFooter: null,
+              nzWidth: 740,
+              nzBodyStyle: { 'max-height': '80vh', 'overflow': 'auto' },
+              nzWrapClassName: 'ho-so-modal'
+            });
+          } catch (e) {
+            this.notification.info('Hồ sơ cư dân', JSON.stringify(res.result));
+          }
+        } else {
+          this.notification.error('Lỗi', 'Không lấy được hồ sơ cư dân');
+        }
+      },
+      error: () => this.notification.error('Lỗi', 'Không lấy được hồ sơ cư dân')
+    });
+  }
+
+    openIdentify(item: any): void {
+      const id = item?.quanHeCuTruId ?? item?.userId;
+      if (!id) { this.notification.warning('Thông báo', 'Không có id quan hệ cư trú'); return; }
+      this.identifyUserId = Number(id);
+      this.identifyEmail = '';
+      try {
+        this.identifyModalRef = this.modal.create({ nzTitle: 'Định danh cư dân', nzContent: this.identifyTpl, nzFooter: null });
+      } catch (e) {
+        this.notification.info('Định danh', 'Không thể mở modal');
+      }
+    }
+
+    sendMaDinhDanhForList(): void {
+      if (!this.identifyUserId) { this.notification.warning('Thông báo', 'Không có id cư dân'); return; }
+      const email = (this.identifyEmail || '').trim();
+      if (!email) { this.notification.warning('Thông báo', 'Vui lòng nhập email'); return; }
+      this.identifyLoading = true;
+      this.chungCu.taoMaDinhDanh({ quanHeCuTruId: this.identifyUserId as number, email }).pipe(takeUntil(this.destroy$)).subscribe({
+        next: res => {
+          this.identifyLoading = false;
+          if (res && res.isOk) {
+            this.notification.success('Thành công', 'Đã gửi mã định danh qua email');
+            try { this.identifyModalRef?.destroy(); } catch (e) { }
+          } else {
+            this.notification.error('Lỗi', 'Gửi mã định danh thất bại');
+          }
+        },
+        error: () => { this.identifyLoading = false; this.notification.error('Lỗi', 'Gửi mã định danh thất bại'); }
+      });
+    }
+
+    lienKetTaiKhoanTrucTiepForList(): void {
+      if (!this.identifyUserId) { this.notification.warning('Thông báo', 'Không có id cư dân'); return; }
+      const email = (this.identifyEmail || '').trim();
+      if (!email) { this.notification.warning('Thông báo', 'Vui lòng nhập email'); return; }
+      this.identifyDirectLoading = true;
+      this.chungCu.lienKetTaiKhoanCuDan({ userId: this.identifyUserId, email }).pipe(takeUntil(this.destroy$)).subscribe({
+        next: res => {
+          this.identifyDirectLoading = false;
+          if (res && res.isOk) {
+            this.notification.success('Thành công', 'Đã định danh trực tiếp');
+            try { this.identifyModalRef?.destroy(); } catch (e) { }
+            this.loadResidents();
+          } else {
+            this.notification.error('Lỗi', 'Định danh trực tiếp thất bại');
+          }
+        },
+        error: () => { this.identifyDirectLoading = false; this.notification.error('Lỗi', 'Định danh trực tiếp thất bại'); }
+      });
+    }
 }

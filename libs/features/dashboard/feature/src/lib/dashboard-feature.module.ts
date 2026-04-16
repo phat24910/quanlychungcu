@@ -8,6 +8,19 @@ import { NzLayoutModule } from 'ng-zorro-antd/layout';
 import { NzMenuModule } from 'ng-zorro-antd/menu';
 import { NzIconModule } from 'ng-zorro-antd/icon';
 import { NzDropDownModule } from 'ng-zorro-antd/dropdown';
+import { NzInputModule } from 'ng-zorro-antd/input';
+import { NzSelectModule } from 'ng-zorro-antd/select';
+import { NzTagModule } from 'ng-zorro-antd/tag';
+import { NzPaginationModule } from 'ng-zorro-antd/pagination';
+import { NzCardModule } from 'ng-zorro-antd/card';
+import { NotificationBellComponent } from './notification-bell/notification-bell.component';
+import { NotificationsComponent } from './notifications/notifications.component';
+import { NzBadgeModule } from 'ng-zorro-antd/badge';
+import { NzListModule } from 'ng-zorro-antd/list';
+import { NzEmptyModule } from 'ng-zorro-antd/empty';
+import { NzButtonModule } from 'ng-zorro-antd/button';
+import { NzAvatarModule } from 'ng-zorro-antd/avatar';
+import { FormsModule } from '@angular/forms';
 
 const routes: Routes = [
   {
@@ -16,22 +29,36 @@ const routes: Routes = [
     children: [
       { path: '', redirectTo: 'home', pathMatch: 'full' },
       { path: 'home', component: DashboardHomeComponent },
+      { path: 'notifications', component: NotificationsComponent },
       { path: 'resident', loadChildren: () => import('@features/resident/feature').then((m) => m.ResidentFeatureModule) },
-      { path: 'profile', loadChildren: () => import('@features/profile/feature').then((m) => m.ProfileFeatureModule) }
+      { path: 'profile', loadChildren: () => import('@features/profile/feature').then((m) => m.ProfileFeatureModule) },
+      { path: 'doi-tac', loadChildren: () => import('@features/doi-tac/feature').then((m) => m.DoiTacFeatureModule) },
+      { path: 'dich-vu', loadChildren: () => import('@features/dich-vu/feature').then((m) => m.DichVuFeatureModule) }
     ]
   }
 ];
 
 @NgModule({
-  declarations: [DashboardComponent, DashboardHomeComponent],
+  declarations: [DashboardComponent, DashboardHomeComponent, NotificationBellComponent, NotificationsComponent],
   imports: [
     CommonModule,
     RouterModule.forChild(routes),
     SharedUiModule,
+    FormsModule,
     NzLayoutModule,
     NzMenuModule,
     NzIconModule,
-    NzDropDownModule
+    NzDropDownModule,
+    NzBadgeModule,
+    NzListModule,
+    NzEmptyModule,
+    NzButtonModule,
+    NzAvatarModule,
+    NzInputModule,
+    NzSelectModule,
+    NzTagModule,
+    NzPaginationModule,
+    NzCardModule
   ]
 })
 export class DashboardFeatureModule {}

@@ -49,6 +49,9 @@ export class TangFormComponent implements OnInit, OnChanges {
         this.loaiTangOptions = r.result;
       }
     });
+
+    this.form.get('loaiTangId')?.valueChanges.subscribe(() => this.goiYMaTang());
+    this.form.get('toaNhaId')?.valueChanges.subscribe(() => this.goiYMaTang());
   }
 
   ngOnChanges(changes: SimpleChanges): void {
@@ -57,6 +60,20 @@ export class TangFormComponent implements OnInit, OnChanges {
         if (r && r.isOk) this.form.patchValue(r.result);
       });
     }
+  }
+
+  goiYMaTang(): void {
+    if (this.id) return;
+    const fv: any = this.form.getRawValue();
+    const toaNhaId = fv.toaNhaId;
+    const loaiTangId = fv.loaiTangId;
+    if (!toaNhaId || !loaiTangId) return;
+    this.svc.goiYMaTang(toaNhaId, loaiTangId).subscribe((r: any) => {
+      if (r && r.isOk && r.result) {
+        const value = typeof r.result === 'string' ? r.result : (r.result.result || r.result);
+        this.form.patchValue({ maTang: value });
+      }
+    });
   }
 
   save(): void {

@@ -35,7 +35,11 @@ import {
   ArrowUpOutline,
   CarOutline,
   CreditCardOutline,
-  FileTextOutline
+  FileTextOutline,
+  LinkOutline,
+  BellOutline,
+  CaretRightOutline,
+  PlayCircleOutline
 } from '@ant-design/icons-angular/icons';
 
 const icons = [
@@ -72,7 +76,11 @@ const icons = [
   ArrowUpOutline,
   CarOutline,
   CreditCardOutline,
-  FileTextOutline
+  FileTextOutline,
+  LinkOutline,
+  BellOutline,
+  CaretRightOutline,
+  PlayCircleOutline
 ];
 
 @NgModule({

@@ -1,34 +1,43 @@
+
 :host {
   display: block;
+  padding: 0.75rem;
 }
 
-/* Local styles for apartment list status pills */
+/* Local styles for apartment list status pills - aligned with vehicle look */
 .status-pill {
-  display: inline-flex;
-  align-items: center;
-  padding: 2px 10px;
-  border-radius: 999px;
+  display: inline-block;
+  padding: 4px 12px;
+  border-radius: 12px;
   font-size: 12px;
-  font-weight: 600;
+  line-height: 20px;
+  font-weight: 800;
+  border: 1px solid transparent;
+  min-width: 72px;
+  text-align: center;
+  box-sizing: border-box;
 }
-
 
 .status-chua-ban-giao {
-  background-color: #fff1f2 !important;
-  color: #f40909 !important;
+  background-color: #fff5f5 !important;
+  color: #d93025 !important;
+  border-color: #ffcccc !important;
 }
 
 .status-dang-trong {
-  background-color: #ecfdf5 !important;
+  background-color: #ecf9f0 !important;
   color: #036d4f !important;
+  border-color: #bff0c6 !important;
 }
 
 .status-co-cu-dan {
   background-color: #eff6ff !important;
   color: #3061e6 !important;
+  border-color: #dbeafe !important;
 }
 
 .status-dang-thi-cong {
-  background-color: #fff7ed !important;
+  background-color: #fff8ec !important;
   color: #d56904 !important;
+  border-color: #ffe5b8 !important;
 }

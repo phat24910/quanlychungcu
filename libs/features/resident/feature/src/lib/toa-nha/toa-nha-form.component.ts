@@ -52,6 +52,22 @@ export class ToaNhaFormComponent implements OnInit {
         }
       });
     }
+
+    if (!this.id) {
+      const cur = this.form.get('maToaNha')?.value;
+      if (!cur) this.goiYMaToaNha();
+    }
+  }
+
+  goiYMaToaNha(): void {
+    const cur = this.form.get('maToaNha')?.value;
+    if (cur) return;
+    this.svc.goiYMaToaNha().subscribe((r: any) => {
+      if (r && r.isOk && r.result) {
+        const value = typeof r.result === 'string' ? r.result : (r.result.result || r.result);
+        if (!this.form.get('maToaNha')?.value) this.form.patchValue({ maToaNha: value });
+      }
+    });
   }
 
   ngOnChanges(changes: SimpleChanges): void {

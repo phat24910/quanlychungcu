@@ -1,0 +1,42 @@
+<div class="khung-gio-edit">
+  <h2 *ngIf="!id">Thêm khung giờ</h2>
+  <h2 *ngIf="id">Sửa khung giờ</h2>
+
+  <form nz-form>
+    <nz-form-item>
+      <nz-form-label [nzSpan]="6">Tên khung giờ</nz-form-label>
+      <nz-form-control [nzSpan]="14">
+        <input nz-input [(ngModel)]="model.tenKhungGio" name="tenKhungGio" />
+      </nz-form-control>
+    </nz-form-item>
+
+    <nz-form-item>
+      <nz-form-label [nzSpan]="6">Giờ bắt đầu</nz-form-label>
+      <nz-form-control [nzSpan]="14">
+        <input nz-input [(ngModel)]="model.gioBatDau" name="gioBatDau" placeholder="HH:mm" />
+      </nz-form-control>
+    </nz-form-item>
+
+    <nz-form-item>
+      <nz-form-label [nzSpan]="6">Giờ kết thúc</nz-form-label>
+      <nz-form-control [nzSpan]="14">
+        <input nz-input [(ngModel)]="model.gioKetThuc" name="gioKetThuc" placeholder="HH:mm" />
+      </nz-form-control>
+    </nz-form-item>
+
+    <nz-form-item>
+      <nz-form-label [nzSpan]="6">Ngày trong tuần</nz-form-label>
+      <nz-form-control [nzSpan]="14">
+        <nz-select [(ngModel)]="model.ngayTrongTuan" name="ngayTrongTuan">
+          <nz-option [nzValue]="null" nzLabel="Mọi ngày"></nz-option>
+          <nz-option *ngFor="let i of [0,1,2,3,4,5,6]" [nzValue]="i" [nzLabel]="i"></nz-option>
+        </nz-select>
+      </nz-form-control>
+    </nz-form-item>
+
+    <div class="actions">
+      <button nz-button (click)="save()" nzType="primary">Lưu</button>
+      <button nz-button (click)="cancel()">Hủy</button>
+    </div>
+  </form>
+</div>

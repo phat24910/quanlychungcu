@@ -17,6 +17,7 @@ import { NzInputModule } from 'ng-zorro-antd/input';
 import { NzInputNumberModule } from 'ng-zorro-antd/input-number';
 import { NzSpinModule } from 'ng-zorro-antd/spin';
 import { NzSelectModule } from 'ng-zorro-antd/select';
+import { NzRadioModule } from 'ng-zorro-antd/radio';
 import { FormsModule } from '@angular/forms';
 import { ChangePasswordComponent } from './change-password/change-password.component';
 import { ChangePasswordModalService } from './change-password/change-password-modal.service';
@@ -45,6 +46,7 @@ const routes: Routes = [
     NzInputNumberModule
     ,
     NzSelectModule,
+    NzRadioModule,
     NzSpinModule,
     FormsModule
   ]

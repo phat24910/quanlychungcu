@@ -1,0 +1,32 @@
+<div class="dich-vu-edit">
+  <h2 *ngIf="!inModal && !id">Thêm dịch vụ</h2>
+  <h2 *ngIf="!inModal && id">Sửa dịch vụ</h2>
+
+  <form nz-form>
+    <nz-form-item>
+      <nz-form-label [nzSpan]="6">Tên</nz-form-label>
+      <nz-form-control [nzSpan]="14">
+        <input nz-input [(ngModel)]="model.ten" name="ten" />
+      </nz-form-control>
+    </nz-form-item>
+
+    <nz-form-item>
+      <nz-form-label [nzSpan]="6">Mô tả</nz-form-label>
+      <nz-form-control [nzSpan]="14">
+        <textarea nz-input [(ngModel)]="model.moTa" name="moTa"></textarea>
+      </nz-form-control>
+    </nz-form-item>
+
+    <nz-form-item>
+      <nz-form-label [nzSpan]="6">Trạng thái</nz-form-label>
+      <nz-form-control [nzSpan]="14">
+        <nz-checkbox [(ngModel)]="model.trangThai" name="trangThai">Kích hoạt</nz-checkbox>
+      </nz-form-control>
+    </nz-form-item>
+
+    <div class="actions">
+      <button nz-button (click)="save()" nzType="primary">Lưu</button>
+      <button nz-button (click)="cancel()">Hủy</button>
+    </div>
+  </form>
+</div>

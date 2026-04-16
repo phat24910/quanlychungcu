@@ -16,6 +16,7 @@ import { IconsProviderModule } from './icons-provider.module';
 import { ShellComponent } from './shell/shell.component';
 import { AuthInterceptor, ResponseNotifierInterceptor } from '@core/interceptors';
 import { SharedUiModule } from '@shared/ui';
+import { environment } from '@env/environment';
 
 registerLocaleData(en);
 
@@ -36,6 +37,7 @@ registerLocaleData(en);
   ],
   providers: [
     { provide: NZ_I18N, useValue: en_US },
+    { provide: 'API_BASE', useValue: environment.apiBaseUrl },
     { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true },
     { provide: HTTP_INTERCEPTORS, useClass: ResponseNotifierInterceptor, multi: true }
   ],

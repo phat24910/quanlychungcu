@@ -1,0 +1,120 @@
+.custom-modal .ant-modal-body {
+  padding: 16px 20px;
+}
+
+.detail-header h3 { margin: 0; }
+.doc-link { color: #2563eb; text-decoration: none; display:inline-block; margin:4px 0 }
+.doc-link:hover { text-decoration: underline }
+.doc-item { background: #fbfdff }
+
+/* Tighter, cleaner layout */
+.detail-header { padding-bottom: 8px; border-bottom: 1px solid #eef2f6 }
+.detail-header .text-sm { font-size: 12px }
+.section-title { font-size:13px; margin-bottom:8px; color:#111827 }
+
+.doc-item { padding:10px }
+.doc-meta { min-width:180px }
+.doc-link { margin-left:6px }
+
+.modal-actions { display:flex; justify-content:flex-end; gap:8px; margin-top:8px }
+.modal-actions button { min-width:88px }
+
+.btn-approve {
+  background-color: #4c81f5;
+  border-color: #4c81f5;
+  color: #ffffff;
+}
+
+.btn-approve:hover,
+.btn-approve:focus {
+  background-color: #4c81f5;
+  border-color: #4c81f5;
+  color: #ffffff;
+}
+
+.status-pill {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 4px 14px;
+  border-radius: 999px;
+  font-size: 13px;
+  font-weight: 700;
+  color: #ffffff;
+  min-width: 80px;
+  text-align: center;
+  line-height: 1.1;
+  white-space: nowrap;
+}
+
+
+.type-label {
+  font-weight: 600;
+}
+
+.type-add-text {
+  color: #16a34a;
+}
+
+.type-edit-text {
+  color: #2563eb;
+}
+
+.type-delete-text {
+  color: #dc2626;
+}
+
+/* meta label/value styles */
+.meta-label { font-weight:500; color:#111827; font-size:13px; margin-right:6px }
+
+/* Info cards to separate sections */
+.info-card {
+  background: #ffffff;
+  border: 1px solid #e6eef6;
+  border-radius: 10px;
+  padding: 12px;
+  box-shadow: 0 1px 2px rgba(16,24,40,0.03);
+  min-height: 0;
+}
+
+
+/* Make the inner grid fill available space so labels/fields align top and bottom */
+.info-card .grid {
+  flex: 1 1 auto;
+  display: grid;
+  gap: 8px;
+  grid-auto-rows: auto;
+}
+
+.info-card .grid > div {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+}
+
+.info-card .section-title {
+  font-size: 13px;
+  font-weight: 700;
+  margin-bottom: 8px;
+  padding-bottom: 6px;
+  border-bottom: 1px solid #f1f5f9;
+}
+
+.info-card input[nz-input][readonly],
+.info-card textarea[nz-input][readonly] {
+  background: #fbfcfe;
+  border: 1px solid #eef2f7;
+  padding: 6px 8px;
+  border-radius: 6px;
+}
+
+.content-textarea[nz-input][readonly] {
+  resize: vertical;
+  max-height: 320px;
+  overflow: auto;
+  line-height: 1.4;
+}
+
+.highlight-row {
+  background: #E6F1FC;
+}

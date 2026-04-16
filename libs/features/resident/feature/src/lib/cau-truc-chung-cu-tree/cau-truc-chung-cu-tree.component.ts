@@ -142,7 +142,12 @@ export class CauTrucChungCuTreeComponent implements OnInit {
     const currentUrl = this.router.url || '';
 
     // Khi đang ở màn quản lý quan hệ cư trú hoặc quản lý phương tiện, dùng cây như bộ lọc
-    if (currentUrl.startsWith('/dashboard/resident/quan-he-cu-tru') || currentUrl.startsWith('/dashboard/resident/phuong-tien')) {
+    if (
+      currentUrl.startsWith('/dashboard/resident/quan-he-cu-tru') ||
+      currentUrl.startsWith('/dashboard/resident/phuong-tien') ||
+      currentUrl.startsWith('/dashboard/resident/yeu-cau-cu-tru') ||
+      currentUrl.startsWith('/dashboard/resident/requests')
+    ) {
       if (node.type === 'root') {
         this.router.navigate([], {
           relativeTo: this.route,

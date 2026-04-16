@@ -61,6 +61,18 @@
       "@features/resident/data-access": [
         "libs/features/resident/data-access/src/lib/index.ts"
       ],
+      "@features/doi-tac/feature": [
+        "libs/features/doi-tac/feature/src/lib/index.ts"
+      ],
+      "@features/doi-tac/data-access": [
+        "libs/features/doi-tac/data-access/src/lib/index.ts"
+      ],
+      "@features/dich-vu/feature": [
+        "libs/features/dich-vu/feature/src/lib/index.ts"
+      ],
+      "@features/dich-vu/data-access": [
+        "libs/features/dich-vu/data-access/src/lib/index.ts"
+      ],
       "@shared/ui": [
         "libs/shared/ui/src/lib/index.ts"
       ],
@@ -69,6 +81,20 @@
       ],
       "@shared/models": [
         "libs/shared/models/src/lib/index.ts"
+      ]
+      ,
+      "@core/signalr": [
+        "libs/core/signalr/src/lib/index.ts"
+      ],
+      "@core/signalr/*": [
+        "libs/core/signalr/src/lib/*"
+      ]
+      ,
+      "@core/notification": [
+        "libs/core/notification/src/lib/index.ts"
+      ],
+      "@core/notification/*": [
+        "libs/core/notification/src/lib/*"
       ]
     }
   }

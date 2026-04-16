@@ -73,6 +73,10 @@ export class DashboardComponent implements OnInit {
       { title: 'Quản lý chung cư', route: '/dashboard/resident', icon: 'bank' },
       { title: 'Quản lý quan hệ cư trú', route: '/dashboard/resident/quan-he-cu-tru', icon: 'team' },
       { title: 'Quản lý phương tiện', route: '/dashboard/resident/phuong-tien', icon: 'car' },
+      { title: 'Quản lý nhân viên', route: '/dashboard/resident/nhan-vien', icon: 'user' },
+      { title: 'Yêu cầu cư dân', route: '/dashboard/resident/requests', icon: 'form' },
+      { title: 'Đối tác', route: '/dashboard/doi-tac', icon: 'appstore' },
+      { title: 'Dịch vụ', route: '/dashboard/dich-vu', icon: 'tool' },
       // { title: 'Dịch vụ', children: [
       //   { title: 'Bảo trì', route: '/dashboard/services/maintenance', icon: 'tool' },
       //   { title: 'Thanh toán', route: '/dashboard/services/billing', icon: 'pay-circle' }

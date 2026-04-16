@@ -99,6 +99,7 @@ export class ToaNhaListComponent implements OnInit {
     this.load();
   }
 
+
   onSort(col: string): void {
     if (this.sortCol === col) this.isAsc = !this.isAsc;
     else {
@@ -228,6 +229,14 @@ export class ToaNhaListComponent implements OnInit {
     this.isModalVisible = false;
     const msg = this.editingId ? 'Cập nhật tòa nhà thành công' : 'Tạo tòa nhà thành công';
     this.load(() => this.notification.success('Thành công', msg));
+  }
+
+  expandedIds = new Set<number>();
+
+  toggleRow(id?: number | null): void {
+    if (id == null) return;
+    if (this.expandedIds.has(id)) this.expandedIds.delete(id);
+    else this.expandedIds.add(id);
   }
 
   updateCheckedSet(id: number | undefined, checked: boolean): void {

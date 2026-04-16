@@ -1,0 +1,61 @@
+import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute, Router } from '@angular/router';
+import { DichVuService } from '@features/dich-vu/data-access';
+
+@Component({
+  selector: 'app-bang-gia-list',
+  templateUrl: './bang-gia-list.component.html',
+  styleUrls: ['./bang-gia-list.component.scss']
+})
+export class BangGiaListComponent implements OnInit {
+  list: any[] = [];
+  loading = false;
+  dichVuId: number | null = null;
+
+  constructor(public route: ActivatedRoute, public router: Router, public dichVuService: DichVuService) {}
+
+  ngOnInit(): void {
+    const dv = this.route.snapshot.paramMap.get('dichVuId');
+    this.dichVuId = dv ? Number(dv) : null;
+    this.load();
+  }
+
+  load() {
+    this.loading = true;
+    this.dichVuService.getBangGiaList({ dichVuId: this.dichVuId }).subscribe({
+      next: (res: any) => {
+        let items: any[] = [];
+        if (!res) {
+          items = [];
+        } else if (Array.isArray(res)) {
+          items = res;
+        } else if (Array.isArray(res.result)) {
+          items = res.result;
+        } else if (res.result && Array.isArray(res.result.items)) {
+          items = res.result.items;
+        } else if (Array.isArray(res.data)) {
+          items = res.data;
+        } else if (Array.isArray(res.items)) {
+          items = res.items;
+        } else {
+          const maybe = res.result ?? res.data ?? res;
+          items = Array.isArray(maybe) ? maybe : [];
+        }
+
+        this.list = items;
+        this.loading = false;
+      },
+      error: () => (this.loading = false)
+    });
+  }
+
+  delete(id: number) {
+    if (this.dichVuId == null) return;
+    this.dichVuService.deleteBangGia({ dichVuId: this.dichVuId, ids: [id] }).subscribe({ next: () => this.load() });
+  }
+
+  revoke(id: number) {
+    if (this.dichVuId == null) return;
+    this.dichVuService.revokeBangGia({ dichVuId: this.dichVuId, ids: [id] }).subscribe({ next: () => this.load() });
+  }
+}

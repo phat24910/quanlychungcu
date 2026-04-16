@@ -146,16 +146,35 @@
               <div class="flex flex-col gap-1.5">
                 <label class="text-sm font-semibold text-slate-700 ml-1">Mật khẩu mới<span
                     class="text-red-600">*</span></label>
-                <input type="password" formControlName="newPassword"
-                  class="w-full h-12 px-4 bg-slate-50 border border-slate-200 rounded-xl focus:ring-2 focus:ring-primary outline-none"
-                  placeholder="Mật khẩu mới" />
+                <div class="relative flex items-center">
+                  <input [type]="showNewPassword ? 'text' : 'password'" formControlName="newPassword"
+                    class="w-full h-12 px-4 bg-slate-50 border border-slate-200 rounded-xl focus:ring-2 focus:ring-primary outline-none"
+                    placeholder="Mật khẩu mới" />
+                  <button type="button" class="absolute right-3 text-slate-400 hover:text-primary"
+                    (click)="toggleNewPassword(); $event.stopPropagation(); $event.preventDefault();"
+                    aria-label="Toggle new password visibility">
+                    <i *ngIf="!showNewPassword" nz-icon nzType="eye-invisible" nzTheme="outline"
+                      class="text-slate-400"></i>
+                    <i *ngIf="showNewPassword" nz-icon nzType="eye" nzTheme="outline" class="text-slate-400"></i>
+                  </button>
+                </div>
               </div>
               <div class="flex flex-col gap-1.5">
                 <label class="text-sm font-semibold text-slate-700 ml-1">Xác nhận mật khẩu mới<span
                     class="text-red-600">*</span></label>
-                <input type="password" formControlName="confirmNewPassword"
-                  class="w-full h-12 px-4 bg-slate-50 border border-slate-200 rounded-xl focus:ring-2 focus:ring-primary outline-none"
-                  placeholder="Nhập lại mật khẩu mới" />
+                <div class="relative flex items-center">
+                  <input [type]="showConfirmNewPassword ? 'text' : 'password'" formControlName="confirmNewPassword"
+                    class="w-full h-12 px-4 bg-slate-50 border border-slate-200 rounded-xl focus:ring-2 focus:ring-primary outline-none"
+                    placeholder="Nhập lại mật khẩu mới" />
+                  <button type="button" class="absolute right-3 text-slate-400 hover:text-primary"
+                    (click)="toggleConfirmNewPassword(); $event.stopPropagation(); $event.preventDefault();"
+                    aria-label="Toggle confirm new password visibility">
+                    <i *ngIf="!showConfirmNewPassword" nz-icon nzType="eye-invisible" nzTheme="outline"
+                      class="text-slate-400"></i>
+                    <i *ngIf="showConfirmNewPassword" nz-icon nzType="eye" nzTheme="outline"
+                      class="text-slate-400"></i>
+                  </button>
+                </div>
               </div>
               <div class="flex justify-between gap-2 mt-2">
                 <button type="button"

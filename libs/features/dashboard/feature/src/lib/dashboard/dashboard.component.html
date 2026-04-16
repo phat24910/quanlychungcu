@@ -57,7 +57,9 @@
       </div>
 
       <div class="flex items-center gap-5 flex-nowrap min-w-max">
-        <i nz-icon nzType="home" class="text-xl text-gray-600 cursor-pointer" title="Trang chủ" (click)="goHome()"></i>
+        <i nz-icon nzType="home" class="text-xl text-gray-600 cursor-pointer icon-center" title="Trang chủ" (click)="goHome()"></i>
+
+        <app-notification-bell></app-notification-bell>
 
         <a nz-dropdown nzTrigger="click" [nzDropdownMenu]="menu">
           <div class="flex items-center gap-2 cursor-pointer">

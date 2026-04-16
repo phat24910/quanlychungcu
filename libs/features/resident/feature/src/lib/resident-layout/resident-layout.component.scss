@@ -4,6 +4,10 @@
   gap: 16px;
 }
 
+.resident-layout.no-tree {
+  grid-template-columns: 1fr;
+}
+
 .resident-layout__tree {
   max-height: calc(100vh - 160px);
   overflow: auto;

@@ -1,0 +1,39 @@
+<div class="bang-gia-edit">
+  <h2 *ngIf="!id">Thêm bảng giá</h2>
+  <h2 *ngIf="id">Sửa bảng giá</h2>
+
+  <form nz-form>
+    <nz-form-item>
+      <nz-form-label [nzSpan]="6">Tên bảng giá</nz-form-label>
+      <nz-form-control [nzSpan]="14">
+        <input nz-input [(ngModel)]="model.tenBangGia" name="tenBangGia" />
+      </nz-form-control>
+    </nz-form-item>
+
+    <nz-form-item>
+      <nz-form-label [nzSpan]="6">Ngày áp dụng</nz-form-label>
+      <nz-form-control [nzSpan]="14">
+        <input nz-input type="date" [(ngModel)]="model.ngayApDung" name="ngayApDung" />
+      </nz-form-control>
+    </nz-form-item>
+
+    <nz-form-item>
+      <nz-form-label [nzSpan]="6">Ngày kết thúc</nz-form-label>
+      <nz-form-control [nzSpan]="14">
+        <input nz-input type="date" [(ngModel)]="model.ngayKetThuc" name="ngayKetThuc" />
+      </nz-form-control>
+    </nz-form-item>
+
+    <nz-form-item>
+      <nz-form-label [nzSpan]="6">Đơn giá cố định</nz-form-label>
+      <nz-form-control [nzSpan]="14">
+        <input nz-input type="number" [(ngModel)]="model.donGiaCoDinh" name="donGiaCoDinh" />
+      </nz-form-control>
+    </nz-form-item>
+
+    <div class="actions">
+      <button nz-button (click)="save()" nzType="primary">Lưu</button>
+      <button nz-button (click)="cancel()">Hủy</button>
+    </div>
+  </form>
+</div>

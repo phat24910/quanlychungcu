@@ -27,6 +27,8 @@ export class LoginComponent {
   forgotErrors: string[] = [];
   forgotMessages: string[] = [];
   forgotUsername = '';
+  showNewPassword = false;
+  showConfirmNewPassword = false;
   private errorClearTimer: any = null;
 
 
@@ -269,5 +271,13 @@ export class LoginComponent {
 
   togglePassword() {
     this.showPassword = !this.showPassword;
+  }
+
+  toggleNewPassword() {
+    this.showNewPassword = !this.showNewPassword;
+  }
+
+  toggleConfirmNewPassword() {
+    this.showConfirmNewPassword = !this.showConfirmNewPassword;
   }
 }

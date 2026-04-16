@@ -1,0 +1,37 @@
+<div class="khung-gio-list">
+  <div class="header">
+    <h3>Khung giờ</h3>
+    <button nz-button nzType="primary" routerLink="create">Thêm khung giờ</button>
+  </div>
+
+  <nz-table [nzData]="list" [nzLoading]="loading">
+    <thead>
+      <tr>
+        <th>Tên</th>
+        <th>Bắt đầu</th>
+        <th>Kết thúc</th>
+        <th>Ngày</th>
+        <th>Trạng thái</th>
+        <th>Hành động</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let item of list">
+        <td>{{ item.tenKhungGio ?? item.ten }}</td>
+        <td>{{ item.gioBatDau }}</td>
+        <td>{{ item.gioKetThuc }}</td>
+        <td>{{ item.ngayTrongTuan == null ? 'Mọi ngày' : item.ngayTrongTuan }}</td>
+        <td>{{ item.isActive ? 'Hoạt động' : 'Đã thu hồi' }}</td>
+        <td>
+          <a [routerLink]="[item.id, 'edit']">Sửa</a>
+          <nz-popconfirm nzTitle="Xác nhận xóa?" (nzOnConfirm)="delete(item.id)">
+            <a nz-popconfirm> Xóa</a>
+          </nz-popconfirm>
+          <nz-popconfirm *ngIf="item.isActive" nzTitle="Thu hồi khung giờ?" (nzOnConfirm)="revoke(item.id)">
+            <a nz-popconfirm> Thu hồi</a>
+          </nz-popconfirm>
+        </td>
+      </tr>
+    </tbody>
+  </nz-table>
+</div>

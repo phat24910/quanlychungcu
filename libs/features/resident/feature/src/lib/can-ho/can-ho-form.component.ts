@@ -42,6 +42,29 @@ export class CanHoFormComponent implements OnInit, OnChanges {
     }
     if (this.initialTangId) this.form.patchValue({ tangId: this.initialTangId });
     this.form.get('tangId')?.disable();
+
+    this.form.get('tangId')?.valueChanges.subscribe((v: any) => {
+      if (this.id) return;
+      if (!v) return;
+      const cur = this.form.get('maCanHo')?.value;
+      if (cur) return;
+      this.svc.goiYMaCanHo(v).subscribe((r: any) => {
+        if (r && r.isOk && r.result) {
+          const value = typeof r.result === 'string' ? r.result : (r.result.result || r.result);
+          if (!this.form.get('maCanHo')?.value) this.form.patchValue({ maCanHo: value });
+        }
+      });
+    });
+
+    if (!this.id && this.initialTangId) {
+      const cur = this.form.get('maCanHo')?.value;
+      if (!cur) this.svc.goiYMaCanHo(this.initialTangId).subscribe((r: any) => {
+        if (r && r.isOk && r.result) {
+          const value = typeof r.result === 'string' ? r.result : (r.result.result || r.result);
+          if (!this.form.get('maCanHo')?.value) this.form.patchValue({ maCanHo: value });
+        }
+      });
+    }
     this.loadTinhTrangOptions();
     this.loadLoaiCanHoOptions();
   }
@@ -58,6 +81,20 @@ export class CanHoFormComponent implements OnInit, OnChanges {
     if (this.inModal && !this.id) {
       if (changes['initialTangId'] && this.initialTangId) this.form.patchValue({ tangId: this.initialTangId });
     }
+  }
+
+  goiYMaCanHo(): void {
+    const fv: any = this.form.getRawValue();
+    const tangId = fv.tangId;
+    if (!tangId) return;
+    const cur = this.form.get('maCanHo')?.value;
+    if (cur) return;
+    this.svc.goiYMaCanHo(tangId).subscribe((r: any) => {
+      if (r && r.isOk && r.result) {
+        const value = typeof r.result === 'string' ? r.result : (r.result.result || r.result);
+        if (!this.form.get('maCanHo')?.value) this.form.patchValue({ maCanHo: value });
+      }
+    });
   }
 
   save(): void {

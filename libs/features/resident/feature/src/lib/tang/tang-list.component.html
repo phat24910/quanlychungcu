@@ -34,7 +34,7 @@
     </div>
   </div>
 
-  <app-scroll-table [height]="'480px'">
+  <app-scroll-table [height]="'410px'">
     <nz-table #tgTable [nzData]="items" [nzLoading]="loading" [nzShowPagination]="false"
       (nzCurrentPageDataChange)="onCurrentPageDataChange($event)">
       <thead>
@@ -45,17 +45,18 @@
           <th style="width:48px">STT</th>
           <th style="cursor:pointer;" (click)="toggleSort('maTang')">
             Mã tầng
-            <i *ngIf="sortCol === 'maTang'" nz-icon [nzType]="isAsc ? 'caret-up' : 'caret-down'" nzTheme="outline"
-              style="margin-left:6px"></i>
+            <i nz-icon [nzType]="sortCol === 'maTang' ? (isAsc ? 'caret-up' : 'caret-down') : 'caret-down'" nzTheme="outline" [ngStyle]="{'margin-left':'6px','color': sortCol === 'maTang' ? '#000' : '#c7c7c7'}"></i>
           </th>
           <th style="cursor:pointer;" (click)="toggleSort('tenTang')">
             Tên tầng
-            <i *ngIf="sortCol === 'tenTang'" nz-icon [nzType]="isAsc ? 'caret-up' : 'caret-down'" nzTheme="outline"
-              style="margin-left:6px"></i>
+            <i nz-icon [nzType]="sortCol === 'tenTang' ? (isAsc ? 'caret-up' : 'caret-down') : 'caret-down'" nzTheme="outline" [ngStyle]="{'margin-left':'6px','color': sortCol === 'tenTang' ? '#000' : '#c7c7c7'}"></i>
           </th>
-          <th>Loại tầng</th>
+          <th style="cursor:pointer;" (click)="toggleSort('loaiTang')">
+            Loại tầng
+            <i nz-icon [nzType]="sortCol === 'loaiTang' ? (isAsc ? 'caret-up' : 'caret-down') : 'caret-down'" nzTheme="outline" [ngStyle]="{'margin-left':'6px','color': sortCol === 'loaiTang' ? '#000' : '#c7c7c7'}"></i>
+          </th>
         </tr>
-      </thead>
+       </thead>
       <tbody>
         <tr *ngFor="let it of tgTable.data; let i = index">
           <td [nzChecked]="setOfCheckedId.has(it.id!)" (nzCheckedChange)="onItemChecked(it.id!, $event)"></td>

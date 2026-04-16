@@ -26,6 +26,12 @@ const routes: Routes = [
   },
 
   {
+    path: 'doi-tac',
+    canActivate: [AuthGuard],
+    loadChildren: () => import('../../../../libs/features/doi-tac/feature/src/lib').then((m) => m.DoiTacFeatureModule)
+  },
+
+  {
     path: 'profile',
     canActivate: [AuthGuard],
     loadChildren: () =>

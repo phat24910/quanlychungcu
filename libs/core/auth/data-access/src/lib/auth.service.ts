@@ -22,6 +22,49 @@ export class AuthService {
 
   constructor(private http: HttpClient, private api: AuthApiService) {}
 
+  private refreshInProgress: Promise<string | null> | null = null;
+
+  /**
+   * Ensure access token is valid. Returns access token or null if cannot refresh.
+   * Uses single-flight Promise to avoid concurrent refresh requests.
+   */
+  ensureValidAccessToken(): Promise<string | null> {
+    const access = this.getAccessToken();
+    if (access && !this.isTokenExpired(access)) return Promise.resolve(access);
+
+    if (this.refreshInProgress) return this.refreshInProgress;
+
+    this.refreshInProgress = (async () => {
+      try {
+        const res: any = await this.refreshToken().toPromise();
+        const newAccess = res?.result?.accessToken || null;
+        const newRefresh = res?.result?.refreshToken || null;
+        if (newAccess) this.setTokens(newAccess, newRefresh);
+        return newAccess;
+      } catch (e) {
+        this.clearTokens();
+        return null;
+      } finally {
+        this.refreshInProgress = null;
+      }
+    })();
+
+    return this.refreshInProgress;
+  }
+
+  private isTokenExpired(token: string | null): boolean {
+    if (!token) return true;
+    try {
+      const parts = token.split('.');
+      if (parts.length < 2) return true;
+      const payload = JSON.parse(atob(parts[1]));
+      const exp = (payload.exp || 0) * 1000;
+      return Date.now() > (exp - 5000);
+    } catch {
+      return true;
+    }
+  }
+
   login(username: string, password: string): Observable<any> {
     this.clearTokens();
     const payload = { username, password };
@@ -50,7 +93,7 @@ export class AuthService {
   refreshToken(): Observable<any> {
     const token = this.getRefreshToken();
     if (!token) return of(null);
-    return this.api.refreshToken({ token }).pipe(
+    return this.api.refreshToken({ refreshToken: token }).pipe(
       tap((res: any) => {
         const access = res?.result?.accessToken;
         const refresh = res?.result?.refreshToken;

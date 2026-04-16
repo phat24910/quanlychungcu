@@ -1,0 +1,219 @@
+<div class="doi-tac-list">
+  <div class="toolbar" style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px">
+    <div style="display:flex;gap:8px;align-items:center">
+      <input nz-input placeholder="Nhập tên đối tác/ tên công ty/ điện thoại/ email" [(ngModel)]="keyword" (keydown.enter)="onSearch()"
+        style="width:360px;border-radius:6px;padding:6px 12px;border:1px solid #e5e7eb;height:40px;box-sizing:border-box" />
+      <button nz-button nzType="primary" (click)="onSearch()" style="height:40px;padding:6px 12px;border-radius:6px;display:flex;align-items:center;gap:8px;font-weight:600">
+        <i nz-icon nzType="search" nzTheme="outline"></i>
+        <span>Tìm kiếm</span>
+      </button>
+    </div>
+
+    <div style="margin-left:auto;display:flex;align-items:center;gap:8px">
+      <button *ngIf="setOfCheckedId.size > 0" nz-button nzType="primary" nzDanger (click)="deleteSelectedMultiple()"
+        style="display:flex;align-items:center;border-radius:8px;padding:6px 12px;font-weight:600;height:40px;box-sizing:border-box">
+        <i nz-icon nzType="delete" nzTheme="outline"></i>&nbsp;Xóa đã chọn</button>
+      <button nz-button type="button" (click)="onRefresh()"
+        style="height:40px;padding:6px 12px;border-radius:6px;display:flex;align-items:center;justify-content:center;gap:8px;font-weight:600;border:1px solid #60a5fa;background:#eff6ff;color:#1e3a8a">
+        <i nz-icon nzType="reload" nzTheme="outline"
+          style="font-size:20px;line-height:20px;transform:scale(1.06);display:inline-block;color:#1e3a8a"></i>
+      </button>
+      <button nz-button nzType="primary" (click)="openCreateModal()"
+        style="height:40px;padding:6px 12px;border-radius:8px;display:flex;align-items:center;gap:8px;font-weight:700;box-shadow:0 2px 6px rgba(0,0,0,0.06)">
+        <i nz-icon nzType="plus" nzTheme="outline"></i>
+        <span>Thêm đối tác</span>
+      </button>
+    </div>
+  </div>
+
+  <app-scroll-table [height]="'420px'">
+    <nz-table #dt [nzData]="items" [nzLoading]="loading" nzBordered [nzShowPagination]="false" style="min-width:600px" (nzCurrentPageDataChange)="onCurrentPageDataChange($event)">
+      <thead>
+        <tr>
+          <th style="width:48px">
+            <label nz-checkbox [(ngModel)]="checked" [nzIndeterminate]="indeterminate" (ngModelChange)="onAllChecked($event)"></label>
+          </th>
+          <th style="width:90px; text-align:center; vertical-align:middle">Thao tác</th>
+          <th style="width:48px">STT</th>
+          <th style="cursor:pointer" (click)="onSortSelect('TenDoiTac')">Tên đối tác
+            <i nz-icon [nzType]="sortCol === 'TenDoiTac' ? (isAsc ? 'caret-up' : 'caret-down') : 'caret-down'" nzTheme="outline" [ngStyle]="{'margin-left':'6px','color': sortCol === 'TenDoiTac' ? '#000' : '#c7c7c7'}"></i>
+          </th>
+          <th style="cursor:pointer" (click)="onSortSelect('NguoiDaiDien')">Người đại diện
+            <i nz-icon [nzType]="sortCol === 'NguoiDaiDien' ? (isAsc ? 'caret-up' : 'caret-down') : 'caret-down'" nzTheme="outline" [ngStyle]="{'margin-left':'6px','color': sortCol === 'NguoiDaiDien' ? '#000' : '#c7c7c7'}"></i>
+          </th>
+          <th style="cursor:pointer" (click)="onSortSelect('SoDienThoai')">Điện thoại
+            <i nz-icon [nzType]="sortCol === 'SoDienThoai' ? (isAsc ? 'caret-up' : 'caret-down') : 'caret-down'" nzTheme="outline" [ngStyle]="{'margin-left':'6px','color': sortCol === 'SoDienThoai' ? '#000' : '#c7c7c7'}"></i>
+          </th>
+          <th style="cursor:pointer" (click)="onSortSelect('TenCongTy')">Tên công ty
+            <i nz-icon [nzType]="sortCol === 'TenCongTy' ? (isAsc ? 'caret-up' : 'caret-down') : 'caret-down'" nzTheme="outline" [ngStyle]="{'margin-left':'6px','color': sortCol === 'TenCongTy' ? '#000' : '#c7c7c7'}"></i>
+          </th>
+          <th style="cursor:pointer" (click)="onSortSelect('Email')">Email
+            <i nz-icon [nzType]="sortCol === 'Email' ? (isAsc ? 'caret-up' : 'caret-down') : 'caret-down'" nzTheme="outline" [ngStyle]="{'margin-left':'6px','color': sortCol === 'Email' ? '#000' : '#c7c7c7'}"></i>
+          </th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let it of items; let i = index">
+          <td>
+            <label nz-checkbox [ngModel]="setOfCheckedId.has(it.id || it.doiTacId)" (ngModelChange)="onItemChecked(it.id || it.doiTacId, $event)"></label>
+          </td>
+          <td style="text-align:center">
+            <a nz-dropdown nzTrigger="hover" [nzDropdownMenu]="actionMenu" style="display:inline-flex;align-items:center;justify-content:center;width:100%">
+              <i nz-icon nzType="unordered-list" nzTheme="outline" class="cursor-pointer" style="font-size:18px;line-height:1;display:block"></i>
+            </a>
+            <nz-dropdown-menu #actionMenu="nzDropdownMenu">
+              <ul nz-menu>
+                <li nz-menu-item (click)="openContracts(it)">
+                  <i nz-icon nzType="file-text" nzTheme="outline"></i>&nbsp;Quản lý hợp đồng
+                </li>
+                <li nz-menu-item (click)="edit(it)"><i nz-icon nzType="edit" nzTheme="outline"></i>&nbsp;Chỉnh sửa</li>
+                <li nz-menu-item class="text-red-500" (click)="deleteOne(it.id || it.doiTacId)"><i nz-icon nzType="delete" nzTheme="outline"></i>&nbsp;Xóa</li>
+              </ul>
+            </nz-dropdown-menu>
+          </td>
+          <td>{{ (pageNumber - 1) * pageSize + i + 1 }}</td>
+          <td>{{ it.tenDoiTac }}</td>
+          <td>{{ it.nguoiDaiDien }}</td>
+          <td>{{ it.soDienThoai }}</td>
+          <td>{{ it.tenCongTy }}</td>
+          <td>
+            <a *ngIf="it.email" href="mailto:{{ it.email }}">{{ it.email }}</a>
+          </td>
+        </tr>
+      </tbody>
+    </nz-table>
+  </app-scroll-table>
+
+  <div style="display:flex;justify-content:flex-end;margin-top:12px">
+    <nz-pagination [nzPageIndex]="pageNumber" [nzPageSize]="pageSize" [nzTotal]="total"
+      (nzPageIndexChange)="onPageChange($event)" (nzPageSizeChange)="onPageSizeChange($event)"></nz-pagination>
+  </div>
+
+  <nz-modal [(nzVisible)]="isModalVisible" [nzTitle]="modalTitle" (nzOnCancel)="cancelModal()" (nzOnOk)="onModalOk()" [nzOkLoading]="saving" nzOkText="Lưu" nzCancelText="Hủy" nzWidth="720" nzWrapClassName="custom-modal wide-modal">
+    <ng-container *nzModalContent>
+      <app-doi-tac-form #formComp [inModal]="true" [id]="editingId" (saved)="onSaved()"></app-doi-tac-form>
+    </ng-container>
+  </nz-modal>
+
+  <!-- Contracts modal -->
+  <nz-modal [(nzVisible)]="contractModalVisible" [nzTitle]="'Quản lý hợp đồng' + (contractPartnerName ? ' - ' + contractPartnerName : '')" (nzOnCancel)="closeContracts()" [nzFooter]="null" nzWidth="820" nzWrapClassName="custom-modal wide-modal">
+    <ng-container *nzModalContent>
+      <app-scroll-table [height]="'420px'" [noBorder]="true">
+        <div style="display:flex;justify-content:space-between;align-items:center">
+          <div style="font-weight:700">Danh sách hợp đồng</div>
+          <button nz-button nzType="dashed" type="button" (click)="addContract()" style="border-color:#60a5fa;color:#0ea5e9;border-radius:6px;padding:6px 12px;font-weight:600;height:36px;box-sizing:border-box;display:flex;align-items:center;gap:8px">
+            <i nz-icon nzType="plus" nzTheme="outline" style="font-size:16px;line-height:1;color:currentColor"></i>
+            <span style="font-weight:600;color:currentColor">Thêm hợp đồng</span>
+          </button>
+        </div>
+
+        <div *ngIf="contractList?.length; else noContracts">
+          <div *ngFor="let c of contractList; let i = index" style="margin-top:12px;border:1px solid #e5e7eb;border-radius:8px;padding:12px;display:flex;gap:12px;align-items:start;background:#fff">
+            <div style="flex:1">
+              <div style="display:flex;justify-content:space-between;align-items:center">
+                <div>
+                  <div>
+                    <ng-container *ngIf="c.editing; else showSoHopDong">
+                      <label class="mb-1 text-sm text-gray-700">Số hợp đồng <span style="color:#e11d48">*</span></label>
+                      <input nz-input [(ngModel)]="c.soHopDong" [ngModelOptions]="{standalone:true}" class="w-full rounded-md border border-gray-200 px-3 py-2" />
+                      <div *ngIf="c.editing && (!c.soHopDong || (c.soHopDong + '').trim() === '')" style="color:#e11d48;font-size:12px;margin-top:4px">Số hợp đồng là bắt buộc</div>
+                    </ng-container>
+                    <ng-template #showSoHopDong>
+                      <div style="font-weight:600">{{ c.soHopDong || ('Hợp đồng ' + (i + 1)) }}</div>
+                    </ng-template>
+                    <div style="font-size:13px;color:#6b7280;margin-top:6px">{{ c.tenDichVu }}</div>
+                  </div>
+                </div>
+                <div style="display:flex;gap:8px;align-items:center">
+                  <button nz-button nzType="default" nzDanger (click)="deleteContract(c.id, i)" type="button" style="display:flex;align-items:center;gap:8px">
+                    <i nz-icon nzType="delete" nzTheme="outline"></i>
+                    <span>Xóa</span>
+                  </button>
+                  <input type="file" #fileInput style="display:none" (change)="onContractFilesSelected($event, i)" multiple />
+                  <button nz-button nzType="default" type="button" (click)="fileInput.click()" [disabled]="!c.editing" style="display:flex;align-items:center;gap:8px">
+                    <i nz-icon nzType="upload" nzTheme="outline"></i>
+                    <span>Chọn tệp ({{ (c.teps?.length || c.tepFileIds?.length || 0) }})</span>
+                  </button>
+                </div>
+              </div>
+
+                <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:12px">
+                <div>
+                  <label class="mb-1 text-sm text-gray-700">Ngày ký</label>
+                  <input nz-input type="date" [(ngModel)]="c.ngayKyInput" [ngModelOptions]="{standalone:true}" [readonly]="!c.editing" class="w-full rounded-md border border-gray-200 px-3 py-2" />
+                </div>
+                <div>
+                  <label class="mb-1 text-sm text-gray-700">Ngày hết hạn</label>
+                  <input nz-input type="date" [(ngModel)]="c.ngayHetHanInput" [ngModelOptions]="{standalone:true}" [readonly]="!c.editing" class="w-full rounded-md border border-gray-200 px-3 py-2" />
+                </div>
+                <div>
+                  <label class="mb-1 text-sm text-gray-700">Giá trị</label>
+                  <input nz-input type="number" [(ngModel)]="c.giaTriHopDong" [ngModelOptions]="{standalone:true}" [readonly]="!c.editing" class="w-full rounded-md border border-gray-200 px-3 py-2" />
+                </div>
+              </div>
+
+              <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:12px">
+                <div>
+                  <label class="mb-1 text-sm text-gray-700">Mã dịch vụ <span *ngIf="c.editing" style="color:#e11d48">*</span></label>
+                  <input nz-input [(ngModel)]="c.maDichVu" [ngModelOptions]="{standalone:true}" [readonly]="!c.editing" class="w-full rounded-md border border-gray-200 px-3 py-2" />
+                </div>
+                <div>
+                  <label class="mb-1 text-sm text-gray-700">Tên dịch vụ <span *ngIf="c.editing" style="color:#e11d48">*</span></label>
+                  <input nz-input [(ngModel)]="c.tenDichVu" [ngModelOptions]="{standalone:true}" [readonly]="!c.editing" class="w-full rounded-md border border-gray-200 px-3 py-2" />
+                </div>
+                <div>
+                  <label class="mb-1 text-sm text-gray-700">Nội dung</label>
+                  <textarea nz-input rows="2" [(ngModel)]="c.noiDung" [ngModelOptions]="{standalone:true}" [readonly]="!c.editing" class="w-full rounded-md border border-gray-200 px-3 py-2"></textarea>
+                </div>
+              </div>
+
+              <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:12px">
+                <div>
+                  <label class="mb-1 text-sm text-gray-700">Loại dịch vụ</label>
+                  <select [(ngModel)]="c.loaiDichVuId" [ngModelOptions]="{standalone:true}" [disabled]="!c.editing" class="w-full rounded-md border border-gray-200 px-3 py-2">
+                    <option [ngValue]="null">-- Chọn --</option>
+                    <option *ngFor="let s of dichVuOptions" [ngValue]="s.id">{{ s.tenDichVu || s.tenLoaiDichVu || s.name || s.ten }}</option>
+                  </select>
+                </div>
+                <div>
+                  <label class="mb-1 text-sm text-gray-700">Đơn vị tính</label>
+                  <input nz-input [(ngModel)]="c.donViTinh" [ngModelOptions]="{standalone:true}" [readonly]="!c.editing" class="w-full rounded-md border border-gray-200 px-3 py-2" />
+                </div>
+                <div>
+                  <label class="mb-1 text-sm text-gray-700">Trạng thái</label>
+                  <ng-container *ngIf="c.editing; else showStatusText">
+                    <select [(ngModel)]="c.trangThaiHopDongId" (ngModelChange)="onTrangThaiHopDongChange(c, $event)" [disabled]="!c.editing" class="w-full rounded-md border border-gray-200 px-3 py-2">
+                      <option [ngValue]="null">-- Chọn --</option>
+                      <option *ngFor="let s of trangThaiHopDongOptions" [ngValue]="s.id">{{ s.ten || s.name || s.label || s.text }}</option>
+                    </select>
+                  </ng-container>
+                  <ng-template #showStatusText>
+                    <input nz-input [(ngModel)]="c.trangThaiHopDongTen" [ngModelOptions]="{standalone:true}" [readonly]="true" class="w-full rounded-md border border-gray-200 px-3 py-2" />
+                  </ng-template>
+                </div>
+              </div>
+
+              <div *ngIf="(c.teps && c.teps.length) || (c.files && c.files.length)" style="margin-top:8px">
+                <div *ngIf="c.teps?.length">
+                    <div *ngFor="let f of c.teps; let fi = index" style="padding:6px 8px;border:1px dashed #e5e7eb;border-radius:6px;background:#fff;margin-bottom:6px;display:flex;align-items:center;justify-content:space-between;gap:8px">
+                      <a *ngIf="f.fileUrl" [href]="f.fileUrl" target="_blank" class="text-sm truncate text-blue-600">{{ f.fileName || f.fileUrl }}</a>
+                      <div *ngIf="!f.fileUrl" class="text-sm truncate">{{ f.fileName || f.name }}</div>
+                      <button nz-button nzType="text" nzDanger type="button" (click)="removeContractFile(i, fi)" [disabled]="!c.editing"> <i nz-icon nzType="delete" nzTheme="outline"></i> </button>
+                    </div>
+                  </div>
+              </div>
+
+                <div style="display:flex;justify-content:flex-end;gap:8px;margin-top:12px">
+                  <button *ngIf="c.editing" nz-button nzType="primary" type="button" (click)="saveContract(i)" [disabled]="!c.soHopDong || !c.maDichVu || !c.tenDichVu || contractLoading" style="min-width:96px">Lưu</button>
+                  <button *ngIf="c.editing" nz-button type="button" (click)="cancelEditContract(i)" style="min-width:96px">Hủy</button>
+                </div>
+            </div>
+          </div>
+        </div>
+        <ng-template #noContracts>
+          <div style="color:#6b7280;margin-top:6px">Không có hợp đồng.</div>
+        </ng-template>
+      </app-scroll-table>
+    </ng-container>
+  </nz-modal>
+</div>

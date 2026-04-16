@@ -1,0 +1,37 @@
+<div class="bang-gia-list">
+  <div class="header">
+    <h3>Bảng giá</h3>
+    <button nz-button nzType="primary" routerLink="create">Thêm bảng giá</button>
+  </div>
+
+  <nz-table [nzData]="list" [nzLoading]="loading">
+    <thead>
+      <tr>
+        <th>Tên</th>
+        <th>Ngày áp dụng</th>
+        <th>Ngày kết thúc</th>
+        <th>Loại định giá</th>
+        <th>Trạng thái</th>
+        <th>Hành động</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let item of list">
+        <td>{{ item.tenBangGia }}</td>
+        <td>{{ item.ngayApDung | date }}</td>
+        <td>{{ item.ngayKetThuc | date }}</td>
+        <td>{{ item.loaiDinhGiaTen }}</td>
+        <td>{{ item.isActive ? 'Hoạt động' : 'Đã thu hồi' }}</td>
+        <td>
+          <a [routerLink]="[item.id, 'edit']">Sửa</a>
+          <nz-popconfirm nzTitle="Xác nhận xóa?" (nzOnConfirm)="delete(item.id)">
+            <a nz-popconfirm> Xóa</a>
+          </nz-popconfirm>
+          <nz-popconfirm *ngIf="item.isActive" nzTitle="Thu hồi bảng giá?" (nzOnConfirm)="revoke(item.id)">
+            <a nz-popconfirm> Thu hồi</a>
+          </nz-popconfirm>
+        </td>
+      </tr>
+    </tbody>
+  </nz-table>
+</div>

@@ -57,5 +57,5 @@ export interface ChangePasswordRequest {
 }
 
 export interface RefreshTokenRequest {
-  token: string;
+  refreshToken: string;
 }

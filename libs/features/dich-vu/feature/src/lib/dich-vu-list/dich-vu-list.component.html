@@ -1,0 +1,29 @@
+<div class="dich-vu-list">
+  <div class="header">
+    <button nz-button nzType="primary" routerLink="create">Thêm dịch vụ</button>
+  </div>
+
+  <nz-table [nzData]="list" [nzLoading]="loading">
+    <thead>
+      <tr>
+        <th>Tên</th>
+        <th>Mô tả</th>
+        <th>Trạng thái</th>
+        <th>Hành động</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let item of list">
+        <td>{{ item.tenDichVu }}</td>
+        <td>{{ item.moTa }}</td>
+        <td>{{ item.trangThaiDichVuTen }}</td>
+        <td>
+          <a [routerLink]="[item.id, 'edit']">Sửa</a>
+          <nz-popconfirm nzTitle="Xác nhận xóa?" (nzOnConfirm)="delete(item.id)">
+            <a nz-popconfirm> Xóa</a>
+          </nz-popconfirm>
+        </td>
+      </tr>
+    </tbody>
+  </nz-table>
+</div>

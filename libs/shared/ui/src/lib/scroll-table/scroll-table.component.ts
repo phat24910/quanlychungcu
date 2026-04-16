@@ -8,5 +8,6 @@ import { Component, Input } from '@angular/core';
 export class ScrollTableComponent {
   @Input() data: any[] = [];
   @Input() height: string = '240px';
+  @Input() noBorder: boolean = false;
   @Input() columns: Array<{ key: string; header: string }> = [];
 }
