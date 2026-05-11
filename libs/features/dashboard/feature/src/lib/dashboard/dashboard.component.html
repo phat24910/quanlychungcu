@@ -1,18 +1,22 @@
 <nz-layout class="app-layout h-screen">
-  <nz-sider class="menu-sidebar bg-gray-50 border-r border-gray-300" [class.mobile-overlay]="isMobile && !isCollapsed"
-    nzCollapsible nzWidth="300px" nzBreakpoint="md" [(nzCollapsed)]="isCollapsed" [nzCollapsedWidth]="isMobile ? 0 : 64"
+  <nz-sider class="menu-sidebar" [class.mobile-overlay]="isMobile && !isCollapsed"
+    nzCollapsible nzWidth="280px" nzBreakpoint="md" [(nzCollapsed)]="isCollapsed" [nzCollapsedWidth]="isMobile ? 0 : 64"
     (nzBreakpoint)="onBreakpoint($event)" [nzTrigger]="null" [@.disabled]="true">
 
-    <div
-      class="sidebar-logo flex items-center justify-center py-6 px-4 border-b border-gray-200 bg-gradient-to-r from-white via-blue-50 to-white shadow-sm">
-      <img src="assets/images/logo.jpg" alt="Logo" class="h-20 w-18 object-contain mr-4" />
-      <div *ngIf="!isCollapsed" class="flex flex-col">
-        <span class="text-xl font-extrabold text-blue-900 leading-tight">HỆ THỐNG QUẢN LÝ CHUNG CƯ THÔNG MINH</span>
+    <div class="sidebar-logo">
+      <div class="logo-inner">
+        <div class="logo-mark">
+          <img src="assets/images/logo.jpg" alt="Logo" />
+        </div>
+        <div class="logo-text" *ngIf="!isCollapsed">
+          <span class="logo-sub">Hệ Thống Quản Lý</span>
+          <span class="logo-title">Chung Cư Thông Minh</span>
+        </div>
       </div>
     </div>
 
-    <div class="scroll-area" [style.height]="'calc(100vh - 140px)'" style="overflow:auto">
-      <ul nz-menu nzMode="inline" [nzInlineCollapsed]="isCollapsed" nzTheme="light" [@.disabled]="true">
+    <div class="scroll-area">
+      <ul nz-menu nzMode="inline" [nzInlineCollapsed]="isCollapsed" nzTheme="dark" [@.disabled]="true">
         <ng-container *ngFor="let item of menuItems">
           <li *ngIf="item.children && item.title !== 'Trang chủ'; else normalItem"
             nz-submenu [nzTitle]="submenuTitle">
@@ -48,12 +52,15 @@
   </nz-sider>
 
   <nz-layout [class.overlay-open]="isMobile && !isCollapsed">
-    <nz-header class="flex items-center justify-between bg-blue-50 shadow px-4 border-b border-gray-200">
-      <div class="flex items-center gap-3 min-w-0 flex-1">
-        <span class="cursor-pointer" (click)="toggleSidebar()">
+    <nz-header class="app-header flex items-center justify-between px-6">
+      <div class="flex items-center gap-4 min-w-0 flex-1">
+        <button class="toggle-btn flex items-center justify-center" (click)="toggleSidebar()">
           <i nz-icon [nzType]="isCollapsed ? 'menu-unfold' : 'menu-fold'"></i>
-        </span>
-        <span class="text-lg font-semibold text-blue-900 truncate">{{currentTitle}}</span>
+        </button>
+        <div class="header-breadcrumb">
+          <!-- <span class="text-xs font-black text-indigo-500 uppercase tracking-widest block leading-none mb-0.5">Trang hiện tại</span> -->
+          <h1 class="text-xl font-bold text-slate-800 tracking-tight leading-none truncate">{{currentTitle}}</h1>
+        </div>
       </div>
 
       <div class="flex items-center gap-5 flex-nowrap min-w-max">
@@ -61,12 +68,18 @@
 
         <app-notification-bell></app-notification-bell>
 
-        <a nz-dropdown nzTrigger="click" [nzDropdownMenu]="menu">
-          <div class="flex items-center gap-2 cursor-pointer">
-            <img [src]="avatarUrl || defaultAvatar" (error)="onAvatarError($event)" alt="Avatar"
-              class="w-8 h-8 rounded-full border" />
-            <span *ngIf="!isMobile" class="font-medium text-gray-700">Chào, {{ username }}</span>
-            <i nz-icon nzType="down"></i>
+        <a nz-dropdown nzTrigger="click" [nzDropdownMenu]="menu" class="user-profile-trigger">
+          <div class="flex items-center gap-3 cursor-pointer p-1.5 pr-4 rounded-full border border-slate-100 hover:bg-slate-50 transition-all">
+            <div class="avatar-container relative">
+              <img [src]="avatarUrl || defaultAvatar" (error)="onAvatarError($event)" alt="Avatar"
+                class="w-9 h-9 rounded-full border-2 border-white shadow-sm object-cover" />
+              <div class="status-indicator absolute bottom-0 right-0 w-2.5 h-2.5 bg-emerald-500 rounded-full border-2 border-white"></div>
+            </div>
+            <div *ngIf="!isMobile" class="flex flex-col">
+              <span class="text-[10px] font-black text-slate-400 uppercase tracking-widest leading-none mb-0.5">Quản trị viên</span>
+              <span class="text-sm font-bold text-slate-700 leading-none">{{ username }}</span>
+            </div>
+            <i nz-icon nzType="down" class="text-xs text-slate-400"></i>
           </div>
         </a>
 

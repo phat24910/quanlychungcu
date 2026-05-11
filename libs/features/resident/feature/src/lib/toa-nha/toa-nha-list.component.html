@@ -37,29 +37,40 @@
       (nzCurrentPageDataChange)="onCurrentPageDataChange($event)">
       <thead>
         <tr>
-          <th style="width:48px" [(nzChecked)]="checked" [nzIndeterminate]="indeterminate" (nzCheckedChange)="onAllChecked($event)"></th>
+          <th style="width:48px" [(nzChecked)]="checked" [nzIndeterminate]="indeterminate"
+            (nzCheckedChange)="onAllChecked($event)"></th>
           <th style="width:40px"></th>
           <th style="width:64px; white-space:nowrap; text-align:center">Thao tác</th>
           <th style="width:48px">STT</th>
           <th style="width:100px; cursor:pointer;" (click)="onSort('maToaNha')">
             Mã tòa
-            <i nz-icon [nzType]="sortCol === 'maToaNha' ? (isAsc ? 'caret-up' : 'caret-down') : 'caret-down'" nzTheme="outline" [ngStyle]="{'margin-left':'6px','color': sortCol === 'maToaNha' ? '#000' : '#c7c7c7'}"></i>
+            <i nz-icon [nzType]="sortCol === 'maToaNha' ? (isAsc ? 'caret-up' : 'caret-down') : 'caret-down'"
+              nzTheme="outline"
+              [ngStyle]="{'margin-left':'6px','color': sortCol === 'maToaNha' ? '#000' : '#c7c7c7'}"></i>
           </th>
           <th style="width:150px; cursor:pointer;" (click)="onSort('tenToaNha')">
             Tên tòa
-            <i nz-icon [nzType]="sortCol === 'tenToaNha' ? (isAsc ? 'caret-up' : 'caret-down') : 'caret-down'" nzTheme="outline" [ngStyle]="{'margin-left':'6px','color': sortCol === 'tenToaNha' ? '#000' : '#c7c7c7'}"></i>
+            <i nz-icon [nzType]="sortCol === 'tenToaNha' ? (isAsc ? 'caret-up' : 'caret-down') : 'caret-down'"
+              nzTheme="outline"
+              [ngStyle]="{'margin-left':'6px','color': sortCol === 'tenToaNha' ? '#000' : '#c7c7c7'}"></i>
           </th>
           <th style="width:220px; cursor:pointer;" (click)="onSort('diaChi')">
             Địa chỉ
-            <i nz-icon [nzType]="sortCol === 'diaChi' ? (isAsc ? 'caret-up' : 'caret-down') : 'caret-down'" nzTheme="outline" [ngStyle]="{'margin-left':'6px','color': sortCol === 'diaChi' ? '#000' : '#c7c7c7'}"></i>
+            <i nz-icon [nzType]="sortCol === 'diaChi' ? (isAsc ? 'caret-up' : 'caret-down') : 'caret-down'"
+              nzTheme="outline"
+              [ngStyle]="{'margin-left':'6px','color': sortCol === 'diaChi' ? '#000' : '#c7c7c7'}"></i>
           </th>
           <th style="width:100px; cursor:pointer;" (click)="onSort('soCanHo')">
             Số căn
-            <i nz-icon [nzType]="sortCol === 'soCanHo' ? (isAsc ? 'caret-up' : 'caret-down') : 'caret-down'" nzTheme="outline" [ngStyle]="{'margin-left':'6px','color': sortCol === 'soCanHo' ? '#000' : '#c7c7c7'}"></i>
+            <i nz-icon [nzType]="sortCol === 'soCanHo' ? (isAsc ? 'caret-up' : 'caret-down') : 'caret-down'"
+              nzTheme="outline"
+              [ngStyle]="{'margin-left':'6px','color': sortCol === 'soCanHo' ? '#000' : '#c7c7c7'}"></i>
           </th>
           <th style="width:150px; cursor:pointer;" (click)="onSort('trangThaiToaNhaId')">
             Trạng thái
-            <i nz-icon [nzType]="sortCol === 'trangThaiToaNhaId' ? (isAsc ? 'caret-up' : 'caret-down') : 'caret-down'" nzTheme="outline" [ngStyle]="{'margin-left':'6px','color': sortCol === 'trangThaiToaNhaId' ? '#000' : '#c7c7c7'}"></i>
+            <i nz-icon [nzType]="sortCol === 'trangThaiToaNhaId' ? (isAsc ? 'caret-up' : 'caret-down') : 'caret-down'"
+              nzTheme="outline"
+              [ngStyle]="{'margin-left':'6px','color': sortCol === 'trangThaiToaNhaId' ? '#000' : '#c7c7c7'}"></i>
           </th>
         </tr>
       </thead>
@@ -68,8 +79,11 @@
           <tr>
             <td [nzChecked]="setOfCheckedId.has(it.id!)" (nzCheckedChange)="onItemChecked(it.id!, $event)"></td>
             <td style="text-align:center">
-              <a (click)="toggleRow(it.id!)" style="cursor:pointer;display:inline-flex;align-items:center;justify-content:center" aria-label="Toggle mô tả">
-                <i nz-icon [nzType]="expandedIds.has(it.id!) ? 'caret-down' : 'caret-right'" nzTheme="outline" style="color:#0075E1;font-size:16px"></i>
+              <a (click)="toggleRow(it.id!)"
+                style="cursor:pointer;display:inline-flex;align-items:center;justify-content:center"
+                aria-label="Toggle mô tả">
+                <i nz-icon [nzType]="expandedIds.has(it.id!) ? 'caret-down' : 'caret-right'" nzTheme="outline"
+                  style="color:#0075E1;font-size:16px"></i>
               </a>
             </td>
             <td style="text-align:center">
@@ -78,8 +92,10 @@
               </a>
               <nz-dropdown-menu #actionMenu="nzDropdownMenu">
                 <ul nz-menu>
-                  <li nz-menu-item (click)="editToaNha(it.id)"><i nz-icon nzType="edit" nzTheme="outline"></i>&nbsp;Chỉnh sửa</li>
-                  <li nz-menu-item class="text-red-500" (click)="deleteSelected(it.id)"><i nz-icon nzType="delete" nzTheme="outline"></i>&nbsp;Xóa</li>
+                  <li nz-menu-item (click)="editToaNha(it.id)"><i nz-icon nzType="edit"
+                      nzTheme="outline"></i>&nbsp;Chỉnh sửa</li>
+                  <li nz-menu-item class="text-red-500" (click)="deleteSelected(it.id)"><i nz-icon nzType="delete"
+                      nzTheme="outline"></i>&nbsp;Xóa</li>
                 </ul>
               </nz-dropdown-menu>
             </td>
@@ -89,9 +105,10 @@
             <td>{{ it.diaChi || '-' }}</td>
             <td>{{ it.soCanHo || '-' }}</td>
             <td>
-              <span class="status-pill" [ngClass]="getStatusClass(it.trangThaiToaNhaId)" style="white-space:nowrap;display:inline-block;padding:6px 10px;line-height:1;font-size:13px">
+              <nz-tag class="rounded-full border-none px-3 font-semibold text-[11px] uppercase"
+                [ngClass]="getStatusClass(it.trangThaiToaNhaId)">
                 {{ getStatusName(it.trangThaiToaNhaId, it.tenTrangThaiToaNha) }}
-              </span>
+              </nz-tag>
             </td>
           </tr>
 
@@ -109,6 +126,7 @@
     </nz-table>
   </app-scroll-table>
   <div style="display:flex;justify-content:flex-end;margin-top:12px">
-    <nz-pagination [nzPageIndex]="pageNumber" [nzPageSize]="pageSize" [nzTotal]="totalItems" (nzPageIndexChange)="onPageChange($event)" (nzPageSizeChange)="onPageSizeChange($event)"></nz-pagination>
+    <nz-pagination [nzPageIndex]="pageNumber" [nzPageSize]="pageSize" [nzTotal]="totalItems"
+      (nzPageIndexChange)="onPageChange($event)" (nzPageSizeChange)="onPageSizeChange($event)"></nz-pagination>
   </div>
 </div>

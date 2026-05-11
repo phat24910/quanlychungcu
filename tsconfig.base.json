@@ -73,6 +73,18 @@
       "@features/dich-vu/data-access": [
         "libs/features/dich-vu/data-access/src/lib/index.ts"
       ],
+      "@features/thanh-toan/feature": [
+        "libs/features/thanh-toan/feature/src/lib/index.ts"
+      ],
+      "@features/thanh-toan/data-access": [
+        "libs/features/thanh-toan/data-access/src/lib/index.ts"
+      ],
+      "@features/bao-tri/feature": [
+        "libs/features/bao-tri/feature/src/lib/index.ts"
+      ],
+      "@features/bao-tri/data-access": [
+        "libs/features/bao-tri/data-access/src/lib/index.ts"
+      ],
       "@shared/ui": [
         "libs/shared/ui/src/lib/index.ts"
       ],
@@ -95,6 +107,18 @@
       ],
       "@core/notification/*": [
         "libs/core/notification/src/lib/*"
+      ],
+      "@features/khao-sat/feature": [
+        "libs/features/khao-sat/feature/src/lib/index.ts"
+      ],
+      "@features/khao-sat/data-access": [
+        "libs/features/khao-sat/data-access/src/lib/index.ts"
+      ],
+      "@features/phan-anh/feature": [
+        "libs/features/phan-anh/feature/src/lib/index.ts"
+      ],
+      "@features/phan-anh/data-access": [
+        "libs/features/phan-anh/data-access/src/lib/index.ts"
       ]
     }
   }

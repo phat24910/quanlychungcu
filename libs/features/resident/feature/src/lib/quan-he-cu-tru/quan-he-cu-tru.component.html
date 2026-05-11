@@ -51,28 +51,43 @@
           <th style="width:64px; text-align:center">Thao tác</th>
           <th style="width:60px">STT</th>
           <th style="min-width:120px; cursor:pointer" (click)="onSortSelect('MaToaNha')">Mã tòa nhà
-            <i nz-icon [nzType]="sortCol === 'MaToaNha' ? (isAsc ? 'caret-up' : 'caret-down') : 'caret-down'" nzTheme="outline" [ngStyle]="{'margin-left':'6px','color': sortCol === 'MaToaNha' ? '#000' : '#c7c7c7'}"></i>
+            <i nz-icon [nzType]="sortCol === 'MaToaNha' ? (isAsc ? 'caret-up' : 'caret-down') : 'caret-down'"
+              nzTheme="outline"
+              [ngStyle]="{'margin-left':'6px','color': sortCol === 'MaToaNha' ? '#000' : '#c7c7c7'}"></i>
           </th>
           <th style="min-width:120px; cursor:pointer" (click)="onSortSelect('MaTang')">Mã tầng
-            <i nz-icon [nzType]="sortCol === 'MaTang' ? (isAsc ? 'caret-up' : 'caret-down') : 'caret-down'" nzTheme="outline" [ngStyle]="{'margin-left':'6px','color': sortCol === 'MaTang' ? '#000' : '#c7c7c7'}"></i>
+            <i nz-icon [nzType]="sortCol === 'MaTang' ? (isAsc ? 'caret-up' : 'caret-down') : 'caret-down'"
+              nzTheme="outline"
+              [ngStyle]="{'margin-left':'6px','color': sortCol === 'MaTang' ? '#000' : '#c7c7c7'}"></i>
           </th>
           <th style="min-width:120px; cursor:pointer" (click)="onSortSelect('MaCanHo')">Mã căn hộ
-            <i nz-icon [nzType]="sortCol === 'MaCanHo' ? (isAsc ? 'caret-up' : 'caret-down') : 'caret-down'" nzTheme="outline" [ngStyle]="{'margin-left':'6px','color': sortCol === 'MaCanHo' ? '#000' : '#c7c7c7'}"></i>
+            <i nz-icon [nzType]="sortCol === 'MaCanHo' ? (isAsc ? 'caret-up' : 'caret-down') : 'caret-down'"
+              nzTheme="outline"
+              [ngStyle]="{'margin-left':'6px','color': sortCol === 'MaCanHo' ? '#000' : '#c7c7c7'}"></i>
           </th>
           <th style="min-width:180px; cursor:pointer" (click)="onSortSelect('HoTen')">Họ tên
-            <i nz-icon [nzType]="sortCol === 'HoTen' ? (isAsc ? 'caret-up' : 'caret-down') : 'caret-down'" nzTheme="outline" [ngStyle]="{'margin-left':'6px','color': sortCol === 'HoTen' ? '#000' : '#c7c7c7'}"></i>
+            <i nz-icon [nzType]="sortCol === 'HoTen' ? (isAsc ? 'caret-up' : 'caret-down') : 'caret-down'"
+              nzTheme="outline" [ngStyle]="{'margin-left':'6px','color': sortCol === 'HoTen' ? '#000' : '#c7c7c7'}"></i>
           </th>
           <th style="min-width:140px; cursor:pointer" (click)="onSortSelect('LoaiQuanHeCuTruId')">Loại quan hệ
-            <i nz-icon [nzType]="sortCol === 'LoaiQuanHeCuTruId' ? (isAsc ? 'caret-up' : 'caret-down') : 'caret-down'" nzTheme="outline" [ngStyle]="{'margin-left':'6px','color': sortCol === 'LoaiQuanHeCuTruId' ? '#000' : '#c7c7c7'}"></i>
+            <i nz-icon [nzType]="sortCol === 'LoaiQuanHeCuTruId' ? (isAsc ? 'caret-up' : 'caret-down') : 'caret-down'"
+              nzTheme="outline"
+              [ngStyle]="{'margin-left':'6px','color': sortCol === 'LoaiQuanHeCuTruId' ? '#000' : '#c7c7c7'}"></i>
           </th>
           <th style="min-width:120px; cursor:pointer" (click)="onSortSelect('NgayBatDau')">Ngày bắt đầu
-            <i nz-icon [nzType]="sortCol === 'NgayBatDau' ? (isAsc ? 'caret-up' : 'caret-down') : 'caret-down'" nzTheme="outline" [ngStyle]="{'margin-left':'6px','color': sortCol === 'NgayBatDau' ? '#000' : '#c7c7c7'}"></i>
+            <i nz-icon [nzType]="sortCol === 'NgayBatDau' ? (isAsc ? 'caret-up' : 'caret-down') : 'caret-down'"
+              nzTheme="outline"
+              [ngStyle]="{'margin-left':'6px','color': sortCol === 'NgayBatDau' ? '#000' : '#c7c7c7'}"></i>
           </th>
           <th style="min-width:120px; cursor:pointer" (click)="onSortSelect('NgayKetThuc')">Ngày kết thúc
-            <i nz-icon [nzType]="sortCol === 'NgayKetThuc' ? (isAsc ? 'caret-up' : 'caret-down') : 'caret-down'" nzTheme="outline" [ngStyle]="{'margin-left':'6px','color': sortCol === 'NgayKetThuc' ? '#000' : '#c7c7c7'}"></i>
+            <i nz-icon [nzType]="sortCol === 'NgayKetThuc' ? (isAsc ? 'caret-up' : 'caret-down') : 'caret-down'"
+              nzTheme="outline"
+              [ngStyle]="{'margin-left':'6px','color': sortCol === 'NgayKetThuc' ? '#000' : '#c7c7c7'}"></i>
           </th>
           <th style="min-width:100px; cursor:pointer" (click)="onSortSelect('IsKetThuc')">Trạng thái
-            <i nz-icon [nzType]="sortCol === 'IsKetThuc' ? (isAsc ? 'caret-up' : 'caret-down') : 'caret-down'" nzTheme="outline" [ngStyle]="{'margin-left':'6px','color': sortCol === 'IsKetThuc' ? '#000' : '#c7c7c7'}"></i>
+            <i nz-icon [nzType]="sortCol === 'IsKetThuc' ? (isAsc ? 'caret-up' : 'caret-down') : 'caret-down'"
+              nzTheme="outline"
+              [ngStyle]="{'margin-left':'6px','color': sortCol === 'IsKetThuc' ? '#000' : '#c7c7c7'}"></i>
           </th>
         </tr>
       </thead>
@@ -88,8 +103,10 @@
             </a>
             <nz-dropdown-menu #actionMenu="nzDropdownMenu">
               <ul nz-menu>
-                <li nz-menu-item (click)="openIdentify(it)"><i nz-icon nzType="link" nzTheme="outline"></i>&nbsp;Định danh</li>
-                <li nz-menu-item (click)="viewHoSo(it)"><i nz-icon nzType="eye" nzTheme="outline"></i>&nbsp;Xem hồ sơ</li>
+                <li nz-menu-item (click)="openIdentify(it)"><i nz-icon nzType="link" nzTheme="outline"></i>&nbsp;Định
+                  danh</li>
+                <li nz-menu-item (click)="viewHoSo(it)"><i nz-icon nzType="eye" nzTheme="outline"></i>&nbsp;Xem hồ sơ
+                </li>
                 <li nz-menu-item class="text-red-500" (click)="deleteOne(it.quanHeCuTruId || it.userId)"><i nz-icon
                     nzType="stop" nzTheme="outline"></i>&nbsp;Kết thúc cư trú</li>
               </ul>
@@ -103,7 +120,12 @@
           <td>{{ it.tenLoaiQuanHeCuTru || (it.loaiQuanHeCuTruId ? it.loaiQuanHeCuTruId : '-') }}</td>
           <td>{{ it.ngayBatDau ? (it.ngayBatDau | date:'dd/MM/yyyy') : '-' }}</td>
           <td>{{ it.ngayKetThuc ? (it.ngayKetThuc | date:'dd/MM/yyyy') : '-' }}</td>
-          <td>{{ it.tenTrangThaiCuTru || getTrangThaiLabel(it.trangThaiCuTruId ?? it.isKetThuc) }}</td>
+          <td>
+            <nz-tag [nzColor]="getTrangThaiColor(it.trangThaiCuTruId ?? it.isKetThuc)"
+              class="rounded-full border-none px-3 font-semibold text-[11px] uppercase">
+              {{ it.tenTrangThaiCuTru || getTrangThaiLabel(it.trangThaiCuTruId ?? it.isKetThuc) }}
+            </nz-tag>
+          </td>
         </tr>
       </tbody>
     </nz-table>
@@ -114,11 +136,14 @@
     <div style="min-width:420px">
       <div class="flex flex-col">
         <label class="mb-2 font-medium text-gray-700">Email</label>
-        <input nz-input [(ngModel)]="identifyEmail" [ngModelOptions]="{standalone:true}" style="border-radius:8px;border:1px solid #e5e7eb;padding:8px 10px;box-sizing:border-box" />
+        <input nz-input [(ngModel)]="identifyEmail" [ngModelOptions]="{standalone:true}"
+          style="border-radius:8px;border:1px solid #e5e7eb;padding:8px 10px;box-sizing:border-box" />
       </div>
       <div style="margin-top:12px;display:flex;gap:8px;justify-content:flex-end">
-        <button nz-button nzType="default" type="button" (click)="sendMaDinhDanhForList()" [nzLoading]="identifyLoading">Gửi mã định danh qua email</button>
-        <button nz-button nzType="primary" type="button" (click)="lienKetTaiKhoanTrucTiepForList()" [nzLoading]="identifyDirectLoading">Định danh trực tiếp</button>
+        <button nz-button nzType="default" type="button" (click)="sendMaDinhDanhForList()"
+          [nzLoading]="identifyLoading">Gửi mã định danh qua email</button>
+        <button nz-button nzType="primary" type="button" (click)="lienKetTaiKhoanTrucTiepForList()"
+          [nzLoading]="identifyDirectLoading">Định danh trực tiếp</button>
       </div>
     </div>
   </ng-template>

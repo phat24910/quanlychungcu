@@ -192,7 +192,6 @@ export class YeuCauPhuongTienListComponent implements OnInit, OnDestroy {
       return;
     }
 
-    // fallback: fetch item by id and prepend
     try {
       this.chungCu.getYeuCauPhuongTienById(id).subscribe({
         next: res => {

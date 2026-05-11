@@ -19,6 +19,8 @@
   ],
   "exclude": [
     "apps/resident-portal/src/test.ts",
-    "apps/resident-portal/src/**/*.spec.ts"
+    "apps/resident-portal/src/**/*.spec.ts",
+    "libs/**/*.spec.ts",
+    "libs/**/*.spec.tsx"
   ]
 }

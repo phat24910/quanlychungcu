@@ -30,7 +30,8 @@
             <div class="text-xs text-gray-400">{{ n.createdAt | date:'dd/MM/yyyy HH:mm' }}</div>
           </div>
           <div class="ml-3 flex flex-col items-end">
-            <nz-tag *ngIf="n.isImportant || n.priority === 'high'" nzColor="red">Quan trọng</nz-tag>
+            <nz-tag *ngIf="n.isImportant || n.priority === 'high'" nzColor="red"
+              class="rounded-full border-none px-3 font-semibold text-[11px] uppercase">Quan trọng</nz-tag>
             <div style="margin-top:8px">
               <button nz-button nzType="link" nzSize="small" (click)="openDetail(n)">Xem chi tiết</button>
             </div>
@@ -45,12 +46,8 @@
   </div>
 
   <div class="mt-4 flex justify-center">
-    <nz-pagination
-      [nzTotal]="filteredNotifications.length"
-      [nzPageIndex]="pageNumber"
-      [nzPageSize]="pageSize"
-      [nzPageSizeOptions]="[5,10,20]"
-      (nzPageIndexChange)="onPageChange($event)"
+    <nz-pagination [nzTotal]="filteredNotifications.length" [nzPageIndex]="pageNumber" [nzPageSize]="pageSize"
+      [nzPageSizeOptions]="[5,10,20]" (nzPageIndexChange)="onPageChange($event)"
       (nzPageSizeChange)="onPageSizeChange($event)">
     </nz-pagination>
   </div>

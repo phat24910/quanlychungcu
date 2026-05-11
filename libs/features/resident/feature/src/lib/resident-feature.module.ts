@@ -25,6 +25,11 @@ import { NzNotificationModule } from 'ng-zorro-antd/notification';
 import { NzTagModule } from 'ng-zorro-antd/tag';
 import { NzEmptyModule } from 'ng-zorro-antd/empty';
 import { NzCardModule } from 'ng-zorro-antd/card';
+import { NzStepsModule } from 'ng-zorro-antd/steps';
+import { NzDatePickerModule } from 'ng-zorro-antd/date-picker';
+import { NzDrawerModule } from 'ng-zorro-antd/drawer';
+import { NzSpinModule } from 'ng-zorro-antd/spin';
+import { NzBadgeModule } from 'ng-zorro-antd/badge';
 import { QuanLyCuDanComponent } from './quan-ly-cu-dan/quan-ly-cu-dan.component';
 import { ToaNhaListComponent } from './toa-nha/toa-nha-list.component';
 import { ToaNhaFormComponent } from './toa-nha/toa-nha-form.component';
@@ -32,7 +37,7 @@ import { CanHoListComponent } from './can-ho/can-ho-list.component';
 import { CanHoFormComponent } from './can-ho/can-ho-form.component';
 import { CanHoResidentsComponent } from './can-ho/can-ho-residents.component';
 import { TangFormComponent } from './tang/tang-form.component';
-import { CauTrucChungCuTreeComponent } from './cau-truc-chung-cu-tree/cau-truc-chung-cu-tree.component';
+import { CauTrucChungCuTreeModule } from './cau-truc-chung-cu-tree/cau-truc-chung-cu-tree.module';
 import { ResidentLayoutComponent } from './resident-layout/resident-layout.component';
 import { TangListComponent } from './tang/tang-list.component';
 import { QuanHeCuTruComponent } from './quan-he-cu-tru/quan-he-cu-tru.component';
@@ -46,6 +51,8 @@ import { PhuongTienFormComponent } from './phuong-tien/phuong-tien-form.componen
 import { TaoTheFormComponent } from './phuong-tien/tao-the-form.component';
 import { NhanVienListComponent } from './nhan-vien/nhan-vien-list.component';
 import { NhanVienFormComponent } from './nhan-vien/nhan-vien-form.component';
+import { YeuCauSuaChuaListComponent } from './yeu-cau-cu-dan/yeu-cau-sua-chua-list.component';
+import { YeuCauThiCongListComponent } from './yeu-cau-cu-dan/yeu-cau-thi-cong-list.component';
 import { SharedUiModule } from '@shared/ui';
 
 const routes: Routes = [
@@ -56,6 +63,7 @@ const routes: Routes = [
       { path: '', component: QuanLyCuDanComponent },
       { path: 'quan-he-cu-tru', component: QuanHeCuTruComponent },
       { path: 'requests', component: YeuCauCuDanComponent },
+      { path: 'thi-cong', component: YeuCauThiCongListComponent },
       { path: 'phuong-tien', component: PhuongTienListComponent },
       { path: 'phuong-tien/create', component: PhuongTienFormComponent },
       { path: 'phuong-tien/:id/edit', component: PhuongTienFormComponent },
@@ -83,7 +91,6 @@ const routes: Routes = [
     CanHoFormComponent,
     CanHoResidentsComponent,
     TangFormComponent,
-    CauTrucChungCuTreeComponent,
     ResidentLayoutComponent,
     TangListComponent,
     QuanHeCuTruComponent,
@@ -96,7 +103,9 @@ const routes: Routes = [
     PhuongTienFormComponent,
     TaoTheFormComponent,
     NhanVienListComponent,
-    NhanVienFormComponent
+    NhanVienFormComponent,
+    YeuCauSuaChuaListComponent,
+    YeuCauThiCongListComponent
   ],
   imports: [
     CommonModule,
@@ -124,8 +133,13 @@ const routes: Routes = [
     NzTagModule,
     NzCardModule,
     NzEmptyModule,
-    NzUploadModule
-    ,
+    NzUploadModule,
+    NzStepsModule,
+    NzDatePickerModule,
+    NzDrawerModule,
+    NzSpinModule,
+    NzBadgeModule,
+    CauTrucChungCuTreeModule,
     SharedUiModule
   ],
   providers: []

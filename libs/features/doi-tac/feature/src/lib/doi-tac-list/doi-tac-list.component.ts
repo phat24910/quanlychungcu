@@ -304,19 +304,11 @@ export class DoiTacListComponent implements OnInit {
         this.api.revokeContracts(this.contractPartnerId!, [hopDongId]).subscribe({
           next: () => {
             this.notification.success('Thành công', 'Đã xóa hợp đồng');
-            // remove locally from contractList
-            const idx = this.contractList.findIndex(h => h && h.id === hopDongId);
-            if (idx >= 0) {
-              this.contractList.splice(idx, 1);
+            // Re-fetch everything from server to get updated statuses/dates
+            if (this.contractPartnerId) {
+               this.openContracts({ id: this.contractPartnerId, tenDoiTac: this.contractPartnerName });
             }
-            // also update cached partner DTO if present
-            if (this.contractPartnerDto && Array.isArray(this.contractPartnerDto.hopDongs)) {
-              this.contractPartnerDto.hopDongs = this.contractPartnerDto.hopDongs.filter((h: any) => h && h.id !== hopDongId);
-            }
-            // fallback: refresh from server if item not found locally
-            if (idx < 0 && this.contractPartnerId) {
-              this.openContracts({ id: this.contractPartnerId, tenDoiTac: this.contractPartnerName });
-            }
+            this.load(); // Also refresh main table
           },
           error: () => this.notification.error('Lỗi', 'Xóa hợp đồng thất bại'),
         });
@@ -575,4 +567,7 @@ export class DoiTacListComponent implements OnInit {
       return false;
     });
   }
+
+  formatterVND = (value: number): string => (value != null ? `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',') : '');
+  parserVND = (value: string): string => value.replace(/\$\s?|(,*)/g, '');
 }

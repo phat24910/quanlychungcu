@@ -78,3 +78,10 @@ export interface CauTrucToaNha {
   tenTrangThai?: string;
   cauTrucTangs?: CauTrucTang[];
 }
+
+export interface TepDinhKem {
+  id: number;
+  fileUrl: string;
+  fileName: string;
+  contentType: string;
+}

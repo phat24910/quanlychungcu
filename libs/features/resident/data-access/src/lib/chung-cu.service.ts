@@ -94,7 +94,11 @@ export class ChungCuService {
   }
 
   getTrangThaiYeuCauForSelector(): Observable<ApiResponse<any[]>> {
-    return this.http.post<ApiResponse<any[]>>(`${this.base}/catalog/trang-thai-yeu-cau-cu-tru-for-selector`, {});
+    return this.http.post<ApiResponse<any[]>>(`${this.base}/catalog/trang-thai-yeu-cau-for-selector`, {});
+  }
+
+  getTrangThaiThiCongForSelector(): Observable<ApiResponse<any[]>> {
+    return this.http.post<ApiResponse<any[]>>(`${this.base}/catalog/trang-thai-thi-cong-for-selector`, {});
   }
 
   getLoaiGiayToForSelector(): Observable<ApiResponse<any[]>> {

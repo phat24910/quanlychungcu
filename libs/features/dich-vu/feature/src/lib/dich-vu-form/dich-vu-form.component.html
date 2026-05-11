@@ -1,32 +1,45 @@
-<div class="dich-vu-edit">
-  <h2 *ngIf="!inModal && !id">Thêm dịch vụ</h2>
-  <h2 *ngIf="!inModal && id">Sửa dịch vụ</h2>
+<form nz-form (ngSubmit)="save()" #f="ngForm">
+  <div class="form-card" style="max-width:720px;margin:0 auto;padding:0 12px;">
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-4 md:gap-6">
+      <div class="flex flex-col">
+        <label class="mb-2 font-medium text-gray-700">Mã dịch vụ</label>
+        <input nz-input [(ngModel)]="model.maDichVu" name="maDichVu" placeholder="Nhập mã dịch vụ" required
+          style="flex:1;border-radius:6px;padding:6px 12px;border:1px solid #e5e7eb;height:36px;box-sizing:border-box" />
+      </div>
 
-  <form nz-form>
-    <nz-form-item>
-      <nz-form-label [nzSpan]="6">Tên</nz-form-label>
-      <nz-form-control [nzSpan]="14">
-        <input nz-input [(ngModel)]="model.ten" name="ten" />
-      </nz-form-control>
-    </nz-form-item>
+      <div class="flex flex-col">
+        <label class="mb-2 font-medium text-gray-700">Tên dịch vụ</label>
+        <input nz-input [(ngModel)]="model.tenDichVu" name="tenDichVu" placeholder="Nhập tên dịch vụ" required
+          style="flex:1;border-radius:6px;padding:6px 12px;border:1px solid #e5e7eb;height:36px;box-sizing:border-box" />
+      </div>
 
-    <nz-form-item>
-      <nz-form-label [nzSpan]="6">Mô tả</nz-form-label>
-      <nz-form-control [nzSpan]="14">
-        <textarea nz-input [(ngModel)]="model.moTa" name="moTa"></textarea>
-      </nz-form-control>
-    </nz-form-item>
+      <div class="flex flex-col">
+        <label class="mb-2 font-medium text-gray-700">Loại dịch vụ</label>
+        <nz-select class="rounded-select" [(ngModel)]="model.loaiDichVuId" name="loaiDichVuId"
+          nzPlaceHolder="-- Chọn --" nzAllowClear required style="border-radius:6px">
+          <nz-option *ngFor="let o of loaiDichVuOptions" [nzValue]="o.id"
+            [nzLabel]="o.tenDichVu || o.name || o.ten || o.label"></nz-option>
+        </nz-select>
+      </div>
 
-    <nz-form-item>
-      <nz-form-label [nzSpan]="6">Trạng thái</nz-form-label>
-      <nz-form-control [nzSpan]="14">
-        <nz-checkbox [(ngModel)]="model.trangThai" name="trangThai">Kích hoạt</nz-checkbox>
-      </nz-form-control>
-    </nz-form-item>
+      <div class="flex flex-col">
+        <label class="mb-2 font-medium text-gray-700">Đơn vị tính</label>
+        <input nz-input [(ngModel)]="model.donViTinh" name="donViTinh" placeholder="Ví dụ: chuyến, giờ, phần..."
+          required
+          style="flex:1;border-radius:6px;padding:6px 12px;border:1px solid #e5e7eb;height:36px;box-sizing:border-box" />
+      </div>
 
-    <div class="actions">
-      <button nz-button (click)="save()" nzType="primary">Lưu</button>
-      <button nz-button (click)="cancel()">Hủy</button>
+      <div class="flex flex-col md:col-span-2">
+        <label class="mb-2 font-medium text-gray-700">Mô tả</label>
+        <textarea nz-input rows="4" [(ngModel)]="model.moTa" name="moTa" placeholder="Mô tả"
+          style="border-radius:6px;padding:8px 12px;border:1px solid #e5e7eb;box-sizing:border-box;min-height:88px;width:100%"></textarea>
+      </div>
+
     </div>
-  </form>
-</div>
+  </div>
+
+  <div class="actions" style="margin-top:16px; text-align:center;" *ngIf="!inModal">
+    <button nz-button nzType="primary" type="submit">Lưu</button>
+    <button nz-button type="button" (click)="cancel()" style="margin-left:8px">Hủy</button>
+  </div>
+</form>

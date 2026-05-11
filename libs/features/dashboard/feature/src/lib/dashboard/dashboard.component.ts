@@ -76,11 +76,23 @@ export class DashboardComponent implements OnInit {
       { title: 'Quản lý nhân viên', route: '/dashboard/resident/nhan-vien', icon: 'user' },
       { title: 'Yêu cầu cư dân', route: '/dashboard/resident/requests', icon: 'form' },
       { title: 'Đối tác', route: '/dashboard/doi-tac', icon: 'appstore' },
-      { title: 'Dịch vụ', route: '/dashboard/dich-vu', icon: 'tool' },
-      // { title: 'Dịch vụ', children: [
-      //   { title: 'Bảo trì', route: '/dashboard/services/maintenance', icon: 'tool' },
-      //   { title: 'Thanh toán', route: '/dashboard/services/billing', icon: 'pay-circle' }
-      // ], icon: 'appstore' },
+      { title: 'Dịch vụ', children: [
+        { title: 'Danh mục dịch vụ', route: '/dashboard/dich-vu', icon: 'unordered-list' },
+        { title: 'Chỉ số tiêu thụ', route: '/dashboard/dich-vu/chi-so-tieu-thu', icon: 'dashboard' }
+      ], icon: 'tool' },
+      { title: 'Thanh toán', children: [
+        { title: 'Đợt thanh toán', route: '/dashboard/thanh-toan/dot-thanh-toan', icon: 'calendar' },
+        { title: 'Hóa đơn cư dân', route: '/dashboard/thanh-toan/hoa-don', icon: 'file-text' },
+        { title: 'Hóa đơn đối tác', route: '/dashboard/thanh-toan/hoa-don-doi-tac', icon: 'solution' }
+      ], icon: 'pay-circle' },
+      { title: 'Bảo trì hạ tầng', children: [
+        { title: 'Thiết bị hạ tầng', route: '/dashboard/bao-tri/thiet-bi', icon: 'database' },
+        { title: 'Hạng mục bảo trì', route: '/dashboard/bao-tri/hang-muc', icon: 'project' },
+        { title: 'Lịch bảo trì', route: '/dashboard/bao-tri/lich-bao-tri', icon: 'history' },
+        { title: 'Phiếu bảo trì', route: '/dashboard/bao-tri/phieu-bao-tri', icon: 'file-done' }
+      ], icon: 'setting' },
+      { title: 'Khảo sát & Bầu cử', route: '/dashboard/khao-sat', icon: 'solution' },
+      { title: 'Phản ánh cư dân', route: '/dashboard/phan-anh', icon: 'message' },
       // { title: 'Thông báo', route: '/dashboard/notifications', icon: 'notification' },
       // { title: 'Cài đặt', route: '/dashboard/settings', icon: 'setting' }
     ];

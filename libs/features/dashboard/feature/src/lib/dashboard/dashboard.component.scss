@@ -1,150 +1,369 @@
 :host {
-	display: block;
+  display: block;
 }
 
-.layout {
-	display: flex;
-	height: 100vh;
+/* ========== CSS Variables ========== */
+$primary: #818cf8;
+$primary-solid: #4f46e5;
+$primary-light: rgba(129,140,248,0.15);
+$sidebar-bg: #1e1b4b;
+$sidebar-border: rgba(255,255,255,0.06);
+$sidebar-item-text: #ffffff;
+$sidebar-active-bg: rgba(129,140,248,0.22);
+$sidebar-active-text: #ffffff;
+$text-main: #1e293b;
+$text-muted: #94a3b8;
+$text-accent: #4f46e5;
+
+/* ========== Layout ========== */
+.app-layout {
+  height: 100vh;
+  overflow: hidden;
 }
 
-.sidebar {
-	width: 260px;
-	background: #111827;
-	color: #fff;
-	padding: 16px;
-	box-sizing: border-box;
-	transition: width 0.2s ease;
+/* ========== Sidebar ========== */
+.menu-sidebar {
+  background: $sidebar-bg !important;
+  border-right: none;
+  box-shadow: 4px 0 20px rgba(0, 0, 0, 0.2);
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  overflow: hidden;
+
+  &.mobile-overlay {
+    position: fixed;
+    z-index: 999;
+    height: 100vh;
+  }
+
+  // Force ng-zorro's inner wrapper to flex so scroll-area stretches correctly
+  ::ng-deep .ant-layout-sider-children {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    overflow: hidden;
+  }
 }
 
-.sidebar.collapsed {
-	width: 64px;
+/* ========== Logo Section ========== */
+.sidebar-logo {
+  flex-shrink: 0;
+  padding: 0;
+  position: relative;
+  overflow: hidden;
+
+  &::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(160deg, #3730a3 0%, #1e1b4b 55%, #0f0d2e 100%);
+    z-index: 0;
+  }
+
+  // Top-right glow circle
+  &::after {
+    content: '';
+    position: absolute;
+    width: 180px;
+    height: 180px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(129,140,248,0.15) 0%, transparent 70%);
+    right: -40px;
+    top: -60px;
+    z-index: 0;
+  }
+
+  .logo-inner {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    flex-direction: column;   // vertical stacked layout
+    align-items: center;
+    text-align: center;
+    gap: 14px;
+    padding: 28px 16px 24px;
+    border-bottom: 1px solid rgba(255,255,255,0.08);
+  }
+
+  .logo-mark {
+    flex-shrink: 0;
+    width: 80px;
+    height: 80px;
+    border-radius: 22px;
+    background: rgba(255, 255, 255, 0.12);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 2px solid rgba(255,255,255,0.3);
+    box-shadow:
+      0 8px 24px rgba(0,0,0,0.4),
+      0 0 0 6px rgba(129,140,248,0.12),
+      inset 0 1px 0 rgba(255,255,255,0.25);
+    backdrop-filter: blur(8px);
+
+    img {
+      width: 60px;
+      height: 60px;
+      object-fit: contain;
+      border-radius: 14px;
+    }
+  }
+
+  .logo-text {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 6px;
+
+    .logo-sub {
+      font-size: 9.5px;
+      font-weight: 800;
+      color: #a5b4fc;
+      text-transform: uppercase;
+      letter-spacing: 0.22em;
+      line-height: 1;
+    }
+
+    .logo-title {
+      font-size: 17px;
+      font-weight: 900;
+      color: #ffffff;
+      line-height: 1.25;
+      letter-spacing: -0.01em;
+      text-shadow: 0 2px 12px rgba(79,70,229,0.5), 0 1px 3px rgba(0,0,0,0.5);
+    }
+  }
 }
 
-.brand {
-	font-weight: 700;
-	margin-bottom: 16px;
+/* ========== Scroll Area ========== */
+.scroll-area {
+  flex: 1 1 auto;
+  min-height: 0;
+  overflow-y: auto;
+  overflow-x: hidden;
+  padding: 12px 0;
+
+  &::-webkit-scrollbar {
+    width: 3px;
+  }
+  &::-webkit-scrollbar-track {
+    background: transparent;
+  }
+  &::-webkit-scrollbar-thumb {
+    background: rgba(129, 140, 248, 0.4);
+    border-radius: 10px;
+  }
 }
 
-.nav a {
-	display: block;
-	color: #d1d5db;
-	padding: 8px 10px;
-	border-radius: 4px;
-	text-decoration: none;
-	margin-bottom: 8px;
+/* ========== NG-Zorro Menu Overrides (dark theme) ========== */
+.menu-sidebar ::ng-deep {
+  /* Root menu background — covers both light and dark theme classes */
+  .ant-menu,
+  .ant-menu-root,
+  .ant-menu-inline,
+  .ant-menu-light,
+  .ant-menu-dark {
+    background: transparent !important;
+    border-right: none !important;
+  }
+
+  /* Top-level items and submenu titles */
+  .ant-menu-inline > .ant-menu-item,
+  .ant-menu-inline > .ant-menu-submenu > .ant-menu-submenu-title {
+    height: 48px !important;
+    line-height: 48px !important;
+    margin: 3px 10px !important;
+    width: calc(100% - 20px) !important;
+    border-radius: 10px !important;
+    color: #ffffff !important;
+    font-weight: 500 !important;
+    padding-left: 16px !important;
+    transition: background 0.18s, color 0.18s !important;
+
+    // Force white on the actual text span
+    .ant-menu-title-content,
+    .menu-title,
+    span:not(.ant-menu-item-icon):not([nz-icon]) {
+      color: #ffffff !important;
+    }
+
+    &:hover {
+      background: $sidebar-active-bg !important;
+      color: #fff !important;
+    }
+  }
+
+  // Force white on ALL title-content in the sidebar (catch-all)
+  .ant-menu-title-content {
+    color: #ffffff !important;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  /* Open submenu title */
+  .ant-menu-submenu-open > .ant-menu-submenu-title {
+    color: #fff !important;
+    font-weight: 700 !important;
+    .ant-menu-title-content { color: #fff !important; }
+  }
+
+  /* Selected top-level item */
+  .ant-menu-item-selected {
+    background: $sidebar-active-bg !important;
+    color: #ffffff !important;
+    font-weight: 700 !important;
+    box-shadow: inset 3px 0 0 $primary !important;
+    border-radius: 10px !important;
+
+    &::after {
+      display: none !important;
+    }
+
+    .ant-menu-title-content { color: #ffffff !important; }
+    .ant-menu-item-icon { color: $primary !important; }
+  }
+
+  /* Sub-menu container */
+  .ant-menu-sub.ant-menu-inline {
+    background: transparent !important;
+    border-radius: 0 !important;
+    margin: 0 !important;
+    padding: 4px 0 !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    overflow: hidden !important;
+    box-shadow: none !important;
+
+    .ant-menu-item {
+      height: 40px !important;
+      line-height: 40px !important;
+      margin: 2px 10px 2px 28px !important;
+      width: calc(100% - 38px) !important;
+      border-radius: 8px !important;
+      font-size: 13px !important;
+      font-weight: 500 !important;
+      padding-left: 14px !important;
+      color: rgba(255, 255, 255, 0.75) !important;
+
+      &:hover {
+        background: $sidebar-active-bg !important;
+        color: #fff !important;
+      }
+
+      &.ant-menu-item-selected {
+        background: $sidebar-active-bg !important;
+        color: #fff !important;
+        font-weight: 700 !important;
+        box-shadow: inset 3px 0 0 $primary !important;
+      }
+    }
+  }
+
+  /* Icon sizing */
+  .ant-menu-item-icon,
+  .ant-menu-submenu-title .ant-menu-item-icon {
+    font-size: 17px !important;
+    vertical-align: middle !important;
+  }
+
+  /* Text clipping */
+  .ant-menu-title-content {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  /* Submenu arrow */
+  .ant-menu-submenu-arrow {
+    color: rgba(165, 180, 252, 0.5) !important;
+  }
+
+  /* Scrollbar inside collapsed popup */
+  .ant-menu-submenu-popup {
+    background: #2d2b6b !important;
+    border-radius: 12px !important;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3) !important;
+  }
 }
 
-.nav a.active {
-	background: #1f2937;
-	color: #fff;
+/* ========== Header ========== */
+.app-header {
+  height: 68px;
+  padding: 0 24px;
+  background: #ffffff;       // pure white — distinct from sidebar's blue-slate
+  border-bottom: 1px solid #e8edf5;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.05);
+  position: sticky;
+  top: 0;
+  z-index: 90;
 }
 
-.main {
-	flex: 1;
-	display: flex;
-	flex-direction: column;
+.toggle-btn {
+  width: 42px;
+  height: 42px;
+  border-radius: 12px;
+  border: 1px solid #e8edf5;
+  background: #fff;
+  color: #64748b;
+  font-size: 19px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.18s;
+  flex-shrink: 0;
+
+  &:hover {
+    background: $primary-light;
+    color: $primary;
+    border-color: #c7d2fe;
+  }
 }
 
-.header {
-	height: 56px;
-	display: flex;
-	align-items: center;
-	justify-content: space-between;
-	padding: 0 16px;
-	background: #f8fafc;
-	border-bottom: 1px solid #e5e7eb;
+.header-breadcrumb {
+  h1 {
+    font-size: 18px;
+    font-weight: 700;
+    color: $text-main;
+    margin: 0;
+    line-height: 1.2;
+  }
 }
 
-.toggle {
-	font-size: 20px;
-	background: transparent;
-	border: none;
-	cursor: pointer;
+.icon-center {
+  transition: color 0.18s;
+  &:hover {
+    color: $primary;
+  }
 }
 
-.header-title {
-	font-weight: 600;
+.user-profile-trigger {
+  text-decoration: none;
 }
 
-.header-actions .btn-logout {
-	background: #ef4444;
-	color: white;
-	border: none;
-	padding: 6px 10px;
-	border-radius: 4px;
-	cursor: pointer;
+/* ========== Content ========== */
+.inner-content {
+  padding: 28px !important;
+  background: #edf0f7 !important;   // distinct gray-blue, different from white cards
+  min-height: calc(100vh - 68px);
 }
 
-.content {
-	padding: 24px;
-	overflow: auto;
+nz-content {
+  overflow-y: auto;
+}
+
+/* ========== Mobile ========== */
+.overlay-open {
+  overflow: hidden;
 }
 
 @media (max-width: 768px) {
-	.sidebar { display: none; }
-}
-
-/* ng-zorro specific helper tweaks */
-.menu-sidebar { width: 300px; }
-.menu-sidebar.mobile-overlay { position: fixed; z-index: 80; left: 0; top: 0; bottom: 0; }
-.overlay-open { overflow: hidden; }
-.sidebar-logo img { display: inline-block; }
-.inner-content { background: transparent; }
-
-
-
-
-/* Light sidebar with blue accent */
-.menu-sidebar {
-	display: flex;
-	flex-direction: column;
-	height: 100vh;
-	background: #eff6ff; /* blue-50 */
-	color: #1e3a8a; /* blue-900 */
-	border-right: 1px solid #dbeafe; /* blue-100 */
-}
-
-.menu-sidebar .sidebar-logo {
-	background: transparent;
-	flex: 0 0 auto;
-}
-
-.menu-sidebar .scroll-area {
-	flex: 1 1 auto;
-	min-height: 0;
-	overflow: auto;
-	background: #eff6ff;
-}
-
-.menu-sidebar ::ng-deep .ant-menu-item,
-.menu-sidebar ::ng-deep .ant-menu-submenu-title {
-	color: #070a14fb;
-}
-
-/* Slightly bolder menu text for better readability */
-.menu-sidebar ::ng-deep .ant-menu-item,
-.menu-sidebar ::ng-deep .ant-menu-submenu-title,
-.menu-sidebar ::ng-deep .ant-menu-item .ant-menu-title-content {
-  font-weight: 600;
-}
-
-/* Make the underlying nz-menu background transparent so the sidebar background shows through */
-.menu-sidebar ::ng-deep .ant-menu,
-.menu-sidebar ::ng-deep .ant-menu-root,
-.menu-sidebar ::ng-deep .ant-menu-inline {
-	background: transparent !important;
-}
-
-.menu-sidebar ::ng-deep .ant-menu-submenu-popup {
-	background: #ffffff !important;
-}
-
-.menu-sidebar ::ng-deep .ant-menu-item:hover {
-	background: rgba(59,130,246,0.06) !important; /* blue-500 6% */
-}
-
-.menu-sidebar ::ng-deep .ant-menu-item-selected {
-	background: rgba(59,130,246,0.12) !important; /* blue-500 12% */
-	border-left: 3px solid #3b82f6 !important; /* blue-500 */
-	color: #1e3a8a !important;
+  .inner-content {
+    padding: 16px !important;
+  }
 }

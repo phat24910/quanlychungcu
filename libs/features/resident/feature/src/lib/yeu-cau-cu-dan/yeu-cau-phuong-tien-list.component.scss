@@ -1,52 +1,117 @@
-.custom-modal .ant-modal-body {
-  padding: 16px 20px;
+.section-title {
+  @apply text-sm font-bold text-gray-400 uppercase tracking-wider mb-4 border-b pb-2;
 }
 
-.detail-header h3 { margin: 0; }
-.doc-link { color: #2563eb; text-decoration: none; display:inline-block; margin:4px 0 }
-.doc-link:hover { text-decoration: underline }
-.doc-item { background: #fbfdff }
-
-/* Tighter, cleaner layout */
-.detail-header { padding-bottom: 8px; border-bottom: 1px solid #eef2f6 }
-.detail-header .text-sm { font-size: 12px }
-.section-title { font-size:13px; margin-bottom:8px; color:#111827 }
-
-.doc-item { padding:10px }
-.doc-meta { min-width:180px }
-.doc-link { margin-left:6px }
-
-.modal-actions { display:flex; justify-content:flex-end; gap:8px; margin-top:8px }
-.modal-actions button { min-width:88px }
-
-.btn-approve {
-  background-color: #4c81f5;
-  border-color: #4c81f5;
-  color: #ffffff;
+.info-row {
+  @apply flex items-center mb-3 text-sm;
+  .label {
+    @apply w-32 text-gray-500 font-medium;
+  }
+  .value {
+    @apply text-gray-900 font-medium;
+  }
 }
 
-.btn-approve:hover,
-.btn-approve:focus {
-  background-color: #4c81f5;
-  border-color: #4c81f5;
-  color: #ffffff;
+.detail-container {
+  @apply pb-10;
+}
+
+.info-card {
+  @apply transition-all duration-300;
+  &:hover {
+    @apply shadow-md;
+    transform: translateY(-2px);
+  }
+}
+
+// Action buttons hover effects
+button[nz-button] {
+  @apply rounded-lg transition-all duration-200;
+  &:hover {
+    transform: scale(1.02);
+  }
+  &:active {
+    transform: scale(0.98);
+  }
+}
+
+.badge-large {
+  @apply px-4 py-1 rounded-full font-bold shadow-sm;
 }
 
 .status-pill {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  padding: 4px 14px;
-  border-radius: 999px;
-  font-size: 13px;
+  @apply inline-flex items-center justify-center text-white text-xs whitespace-nowrap rounded-full;
+  min-width: 100px;
+  padding: 4px 12px;
   font-weight: 700;
-  color: #ffffff;
-  min-width: 80px;
-  text-align: center;
-  line-height: 1.1;
-  white-space: nowrap;
+  border-radius: 9999px !important;
 }
 
+.content-textarea {
+  @apply leading-relaxed text-gray-700 bg-gray-50 border-gray-200;
+  line-height: 1.625 !important;
+  color: #374151 !important;
+  background-color: #f9fafb !important;
+  border-color: #e5e7eb !important;
+}
+
+// Animation for rows
+tr {
+  @apply transition-colors duration-200;
+  &:hover {
+    @apply bg-indigo-50;
+    background-color: #eef2ff !important;
+  }
+}
+
+.meta-label {
+  @apply text-xs font-bold text-gray-400 uppercase mb-1 block;
+}
+
+.meta-value {
+  @apply text-sm text-gray-800 font-medium;
+}
+
+.doc-item {
+  @apply transition-all duration-300 border-l-4 border-indigo-500;
+  &:hover {
+     @apply bg-indigo-50;
+  }
+}
+
+.sticky-bottom-bar {
+  @apply bg-white pt-6 mt-8 border-t z-10;
+}
+
+.highlight-row {
+  background-color: #fef9c3 !important; /* Yellow-100 */
+  transition: background-color 0.5s ease;
+  td {
+    background-color: #fef9c3 !important;
+  }
+}
+
+.btn-green {
+  background-color: #16a34a !important;
+  border-color: #16a34a !important;
+  color: white !important;
+  &:hover, &:focus {
+    background-color: #15803d !important;
+    border-color: #15803d !important;
+    color: white !important;
+  }
+}
+
+.btn-blue {
+  background-color: #2563eb !important;
+  border-color: #2563eb !important;
+  color: white !important;
+  &:hover, &:focus {
+    background-color: #1d4ed8 !important;
+    border-color: #1d4ed8 !important;
+    color: white !important;
+  }
+}
 
 .type-label {
   font-weight: 600;
@@ -62,59 +127,4 @@
 
 .type-delete-text {
   color: #dc2626;
-}
-
-/* meta label/value styles */
-.meta-label { font-weight:500; color:#111827; font-size:13px; margin-right:6px }
-
-/* Info cards to separate sections */
-.info-card {
-  background: #ffffff;
-  border: 1px solid #e6eef6;
-  border-radius: 10px;
-  padding: 12px;
-  box-shadow: 0 1px 2px rgba(16,24,40,0.03);
-  min-height: 0;
-}
-
-
-/* Make the inner grid fill available space so labels/fields align top and bottom */
-.info-card .grid {
-  flex: 1 1 auto;
-  display: grid;
-  gap: 8px;
-  grid-auto-rows: auto;
-}
-
-.info-card .grid > div {
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-start;
-}
-
-.info-card .section-title {
-  font-size: 13px;
-  font-weight: 700;
-  margin-bottom: 8px;
-  padding-bottom: 6px;
-  border-bottom: 1px solid #f1f5f9;
-}
-
-.info-card input[nz-input][readonly],
-.info-card textarea[nz-input][readonly] {
-  background: #fbfcfe;
-  border: 1px solid #eef2f7;
-  padding: 6px 8px;
-  border-radius: 6px;
-}
-
-.content-textarea[nz-input][readonly] {
-  resize: vertical;
-  max-height: 320px;
-  overflow: auto;
-  line-height: 1.4;
-}
-
-.highlight-row {
-  background: #E6F1FC;
 }

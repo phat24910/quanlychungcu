@@ -41,12 +41,10 @@ export class SignalrService implements OnDestroy {
 
     this.hub.onclose((err) => {
       this.connectionState.next('disconnected');
-      console.warn('SignalR closed', err);
     });
 
     this.hub.onreconnected((id) => {
       this.connectionState.next('connected');
-      console.info('SignalR reconnected', id);
     });
 
     // Listen to notifications from server

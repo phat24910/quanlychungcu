@@ -146,7 +146,8 @@ export class CauTrucChungCuTreeComponent implements OnInit {
       currentUrl.startsWith('/dashboard/resident/quan-he-cu-tru') ||
       currentUrl.startsWith('/dashboard/resident/phuong-tien') ||
       currentUrl.startsWith('/dashboard/resident/yeu-cau-cu-tru') ||
-      currentUrl.startsWith('/dashboard/resident/requests')
+      currentUrl.startsWith('/dashboard/resident/requests') ||
+      currentUrl.startsWith('/dashboard/dich-vu/chi-so-tieu-thu')
     ) {
       if (node.type === 'root') {
         this.router.navigate([], {
@@ -167,6 +168,7 @@ export class CauTrucChungCuTreeComponent implements OnInit {
           relativeTo: this.route,
           queryParams: {
             filterScope: 'floor',
+            toaNhaId: node.buildingId,
             tangId: node.tangId,
             tangName: node.name
           }
@@ -176,6 +178,8 @@ export class CauTrucChungCuTreeComponent implements OnInit {
           relativeTo: this.route,
           queryParams: {
             filterScope: 'apartment',
+            toaNhaId: node.buildingId,
+            tangId: node.tangId,
             canHoId: node.canHoId
           }
         });

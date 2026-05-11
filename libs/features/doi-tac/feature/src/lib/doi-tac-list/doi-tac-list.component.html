@@ -64,8 +64,7 @@
             <nz-dropdown-menu #actionMenu="nzDropdownMenu">
               <ul nz-menu>
                 <li nz-menu-item (click)="openContracts(it)">
-                  <i nz-icon nzType="file-text" nzTheme="outline"></i>&nbsp;Quản lý hợp đồng
-                </li>
+                  <i nz-icon nzType="container" nzTheme="outline"></i>&nbsp;Quản lý hợp đồng
                 <li nz-menu-item (click)="edit(it)"><i nz-icon nzType="edit" nzTheme="outline"></i>&nbsp;Chỉnh sửa</li>
                 <li nz-menu-item class="text-red-500" (click)="deleteOne(it.id || it.doiTacId)"><i nz-icon nzType="delete" nzTheme="outline"></i>&nbsp;Xóa</li>
               </ul>
@@ -96,124 +95,158 @@
   </nz-modal>
 
   <!-- Contracts modal -->
-  <nz-modal [(nzVisible)]="contractModalVisible" [nzTitle]="'Quản lý hợp đồng' + (contractPartnerName ? ' - ' + contractPartnerName : '')" (nzOnCancel)="closeContracts()" [nzFooter]="null" nzWidth="820" nzWrapClassName="custom-modal wide-modal">
+  <nz-modal [(nzVisible)]="contractModalVisible" [nzTitle]="modalHeader" (nzOnCancel)="closeContracts()" [nzFooter]="null" nzWidth="900" nzWrapClassName="custom-modal wide-modal">
+    <ng-template #modalHeader>
+      <div class="flex items-center gap-2">
+        <span class="font-bold text-gray-800">Quản lý hợp đồng - {{ contractPartnerName }}</span>
+      </div>
+    </ng-template>
+
     <ng-container *nzModalContent>
-      <app-scroll-table [height]="'420px'" [noBorder]="true">
-        <div style="display:flex;justify-content:space-between;align-items:center">
-          <div style="font-weight:700">Danh sách hợp đồng</div>
-          <button nz-button nzType="dashed" type="button" (click)="addContract()" style="border-color:#60a5fa;color:#0ea5e9;border-radius:6px;padding:6px 12px;font-weight:600;height:36px;box-sizing:border-box;display:flex;align-items:center;gap:8px">
-            <i nz-icon nzType="plus" nzTheme="outline" style="font-size:16px;line-height:1;color:currentColor"></i>
-            <span style="font-weight:600;color:currentColor">Thêm hợp đồng</span>
-          </button>
+      <div class="flex justify-between items-center mb-4 bg-blue-50 p-3 rounded-lg border border-blue-100">
+        <div class="flex items-center gap-2 text-blue-800">
+          <!-- <i nz-icon nzType="info-circle"></i> -->
+          <span class="font-bold uppercase tracking-tight text-xs">Danh sách hợp đồng đang hiệu lực</span>
         </div>
+        <button nz-button nzType="primary" (click)="addContract()" class="rounded-md h-9 px-4 font-semibold shadow-sm flex items-center gap-2">
+          <i nz-icon nzType="plus"></i>
+          <span>Thêm hợp đồng mới</span>
+        </button>
+      </div>
 
-        <div *ngIf="contractList?.length; else noContracts">
-          <div *ngFor="let c of contractList; let i = index" style="margin-top:12px;border:1px solid #e5e7eb;border-radius:8px;padding:12px;display:flex;gap:12px;align-items:start;background:#fff">
-            <div style="flex:1">
-              <div style="display:flex;justify-content:space-between;align-items:center">
-                <div>
-                  <div>
-                    <ng-container *ngIf="c.editing; else showSoHopDong">
-                      <label class="mb-1 text-sm text-gray-700">Số hợp đồng <span style="color:#e11d48">*</span></label>
-                      <input nz-input [(ngModel)]="c.soHopDong" [ngModelOptions]="{standalone:true}" class="w-full rounded-md border border-gray-200 px-3 py-2" />
-                      <div *ngIf="c.editing && (!c.soHopDong || (c.soHopDong + '').trim() === '')" style="color:#e11d48;font-size:12px;margin-top:4px">Số hợp đồng là bắt buộc</div>
-                    </ng-container>
-                    <ng-template #showSoHopDong>
-                      <div style="font-weight:600">{{ c.soHopDong || ('Hợp đồng ' + (i + 1)) }}</div>
-                    </ng-template>
-                    <div style="font-size:13px;color:#6b7280;margin-top:6px">{{ c.tenDichVu }}</div>
-                  </div>
-                </div>
-                <div style="display:flex;gap:8px;align-items:center">
-                  <button nz-button nzType="default" nzDanger (click)="deleteContract(c.id, i)" type="button" style="display:flex;align-items:center;gap:8px">
-                    <i nz-icon nzType="delete" nzTheme="outline"></i>
-                    <span>Xóa</span>
-                  </button>
-                  <input type="file" #fileInput style="display:none" (change)="onContractFilesSelected($event, i)" multiple />
-                  <button nz-button nzType="default" type="button" (click)="fileInput.click()" [disabled]="!c.editing" style="display:flex;align-items:center;gap:8px">
-                    <i nz-icon nzType="upload" nzTheme="outline"></i>
-                    <span>Chọn tệp ({{ (c.teps?.length || c.tepFileIds?.length || 0) }})</span>
-                  </button>
-                </div>
-              </div>
+      <div class="max-h-[70vh] overflow-y-auto pr-2 custom-scrollbar">
+        <div *ngIf="contractList?.length; else noContracts" class="space-y-4 pb-4">
+          <div *ngFor="let c of contractList; let i = index"
+            class="bg-white border border-gray-200 rounded-xl overflow-hidden shadow-sm transition-all hover:shadow-md hover:border-blue-300">
 
-                <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:12px">
+            <!-- Card Header -->
+            <div class="bg-gray-50 border-b border-gray-100 px-4 py-3 flex justify-between items-center">
+              <div class="flex items-center gap-3">
+                <span class="bg-blue-600 text-white w-7 h-7 rounded-full flex items-center justify-center font-bold text-xs shadow-sm">{{ i + 1 }}</span>
                 <div>
-                  <label class="mb-1 text-sm text-gray-700">Ngày ký</label>
-                  <input nz-input type="date" [(ngModel)]="c.ngayKyInput" [ngModelOptions]="{standalone:true}" [readonly]="!c.editing" class="w-full rounded-md border border-gray-200 px-3 py-2" />
-                </div>
-                <div>
-                  <label class="mb-1 text-sm text-gray-700">Ngày hết hạn</label>
-                  <input nz-input type="date" [(ngModel)]="c.ngayHetHanInput" [ngModelOptions]="{standalone:true}" [readonly]="!c.editing" class="w-full rounded-md border border-gray-200 px-3 py-2" />
-                </div>
-                <div>
-                  <label class="mb-1 text-sm text-gray-700">Giá trị</label>
-                  <input nz-input type="number" [(ngModel)]="c.giaTriHopDong" [ngModelOptions]="{standalone:true}" [readonly]="!c.editing" class="w-full rounded-md border border-gray-200 px-3 py-2" />
-                </div>
-              </div>
-
-              <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:12px">
-                <div>
-                  <label class="mb-1 text-sm text-gray-700">Mã dịch vụ <span *ngIf="c.editing" style="color:#e11d48">*</span></label>
-                  <input nz-input [(ngModel)]="c.maDichVu" [ngModelOptions]="{standalone:true}" [readonly]="!c.editing" class="w-full rounded-md border border-gray-200 px-3 py-2" />
-                </div>
-                <div>
-                  <label class="mb-1 text-sm text-gray-700">Tên dịch vụ <span *ngIf="c.editing" style="color:#e11d48">*</span></label>
-                  <input nz-input [(ngModel)]="c.tenDichVu" [ngModelOptions]="{standalone:true}" [readonly]="!c.editing" class="w-full rounded-md border border-gray-200 px-3 py-2" />
-                </div>
-                <div>
-                  <label class="mb-1 text-sm text-gray-700">Nội dung</label>
-                  <textarea nz-input rows="2" [(ngModel)]="c.noiDung" [ngModelOptions]="{standalone:true}" [readonly]="!c.editing" class="w-full rounded-md border border-gray-200 px-3 py-2"></textarea>
-                </div>
-              </div>
-
-              <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:12px">
-                <div>
-                  <label class="mb-1 text-sm text-gray-700">Loại dịch vụ</label>
-                  <select [(ngModel)]="c.loaiDichVuId" [ngModelOptions]="{standalone:true}" [disabled]="!c.editing" class="w-full rounded-md border border-gray-200 px-3 py-2">
-                    <option [ngValue]="null">-- Chọn --</option>
-                    <option *ngFor="let s of dichVuOptions" [ngValue]="s.id">{{ s.tenDichVu || s.tenLoaiDichVu || s.name || s.ten }}</option>
-                  </select>
-                </div>
-                <div>
-                  <label class="mb-1 text-sm text-gray-700">Đơn vị tính</label>
-                  <input nz-input [(ngModel)]="c.donViTinh" [ngModelOptions]="{standalone:true}" [readonly]="!c.editing" class="w-full rounded-md border border-gray-200 px-3 py-2" />
-                </div>
-                <div>
-                  <label class="mb-1 text-sm text-gray-700">Trạng thái</label>
-                  <ng-container *ngIf="c.editing; else showStatusText">
-                    <select [(ngModel)]="c.trangThaiHopDongId" (ngModelChange)="onTrangThaiHopDongChange(c, $event)" [disabled]="!c.editing" class="w-full rounded-md border border-gray-200 px-3 py-2">
-                      <option [ngValue]="null">-- Chọn --</option>
-                      <option *ngFor="let s of trangThaiHopDongOptions" [ngValue]="s.id">{{ s.ten || s.name || s.label || s.text }}</option>
-                    </select>
+                  <ng-container *ngIf="c.editing; else showSoHopDong">
+                    <input nz-input [(ngModel)]="c.soHopDong" placeholder="Nhập số hợp đồng" class="w-64 h-8 rounded border-gray-300" />
                   </ng-container>
-                  <ng-template #showStatusText>
-                    <input nz-input [(ngModel)]="c.trangThaiHopDongTen" [ngModelOptions]="{standalone:true}" [readonly]="true" class="w-full rounded-md border border-gray-200 px-3 py-2" />
+                  <ng-template #showSoHopDong>
+                    <span class="font-bold text-gray-800 text-base">{{ c.soHopDong || 'Hợp đồng mới' }}</span>
                   </ng-template>
                 </div>
               </div>
+              <div class="flex items-center gap-2">
+                <button nz-button nzType="text" nzDanger (click)="deleteContract(c.id, i)" class="flex items-center gap-1 hover:bg-red-50">
+                  <i nz-icon nzType="delete"></i>
+                  <span>Gỡ bỏ</span>
+                </button>
+                <!-- <button *ngIf="!c.editing" nz-button nzType="text" (click)="c.editing = true" class="text-blue-600 hover:bg-blue-50">
+                  <i nz-icon nzType="edit"></i>
+                  <span>Chỉnh sửa</span>
+                </button> -->
+              </div>
+            </div>
 
-              <div *ngIf="(c.teps && c.teps.length) || (c.files && c.files.length)" style="margin-top:8px">
-                <div *ngIf="c.teps?.length">
-                    <div *ngFor="let f of c.teps; let fi = index" style="padding:6px 8px;border:1px dashed #e5e7eb;border-radius:6px;background:#fff;margin-bottom:6px;display:flex;align-items:center;justify-content:space-between;gap:8px">
-                      <a *ngIf="f.fileUrl" [href]="f.fileUrl" target="_blank" class="text-sm truncate text-blue-600">{{ f.fileName || f.fileUrl }}</a>
-                      <div *ngIf="!f.fileUrl" class="text-sm truncate">{{ f.fileName || f.name }}</div>
-                      <button nz-button nzType="text" nzDanger type="button" (click)="removeContractFile(i, fi)" [disabled]="!c.editing"> <i nz-icon nzType="delete" nzTheme="outline"></i> </button>
-                    </div>
-                  </div>
+            <!-- Card Body -->
+            <div class="p-4 space-y-5">
+              <!-- Row 1: Dates and Value -->
+              <div class="grid grid-cols-4 gap-4">
+                <div class="col-span-1">
+                  <label class="block mb-1 text-xs font-bold text-gray-500 uppercase tracking-wider">Ngày ký</label>
+                  <input nz-input type="date" [(ngModel)]="c.ngayKyInput" [readonly]="!c.editing" class="w-full rounded border-gray-200" />
+                </div>
+                <div class="col-span-1">
+                  <label class="block mb-1 text-xs font-bold text-gray-500 uppercase tracking-wider">Ngày hết hạn</label>
+                  <input nz-input type="date" [(ngModel)]="c.ngayHetHanInput" [readonly]="!c.editing" class="w-full rounded border-gray-200" />
+                </div>
+                <div class="col-span-2">
+                  <label class="block mb-1 text-xs font-bold text-gray-500 uppercase tracking-wider">Giá trị hợp đồng (VNĐ)</label>
+                  <nz-input-number class="w-full rounded border-gray-200" [(ngModel)]="c.giaTriHopDong" [nzDisabled]="!c.editing" [nzMin]="0" [nzFormatter]="formatterVND" [nzParser]="parserVND"></nz-input-number>
+                </div>
               </div>
 
-                <div style="display:flex;justify-content:flex-end;gap:8px;margin-top:12px">
-                  <button *ngIf="c.editing" nz-button nzType="primary" type="button" (click)="saveContract(i)" [disabled]="!c.soHopDong || !c.maDichVu || !c.tenDichVu || contractLoading" style="min-width:96px">Lưu</button>
-                  <button *ngIf="c.editing" nz-button type="button" (click)="cancelEditContract(i)" style="min-width:96px">Hủy</button>
+              <!-- Row 2: Basic Service Info -->
+              <div class="grid grid-cols-4 gap-4">
+                <div class="col-span-1">
+                  <label class="block mb-1 text-xs font-bold text-gray-500 uppercase tracking-wider">Mã dịch vụ <span *ngIf="c.editing" class="text-red-500">*</span></label>
+                  <input nz-input [(ngModel)]="c.maDichVu" placeholder="Mã DV" [readonly]="!c.editing" class="w-full rounded border-gray-200" />
                 </div>
+                <div class="col-span-1">
+                  <label class="block mb-1 text-xs font-bold text-gray-500 uppercase tracking-wider">Loại dịch vụ</label>
+                  <select [(ngModel)]="c.loaiDichVuId" [disabled]="!c.editing" class="w-full h-[32px] rounded border border-gray-200 px-2 text-sm bg-white outline-none focus:border-blue-500">
+                    <option [ngValue]="null">-- Loại DV --</option>
+                    <option *ngFor="let s of dichVuOptions" [ngValue]="s.id">{{ s.tenDichVu || s.name }}</option>
+                  </select>
+                </div>
+                <div class="col-span-1">
+                   <label class="block mb-1 text-xs font-bold text-gray-500 uppercase tracking-wider">Đơn vị tính</label>
+                   <input nz-input [(ngModel)]="c.donViTinh" placeholder="ĐVT" [readonly]="!c.editing" class="w-full rounded border-gray-200" />
+                </div>
+                <div class="col-span-1">
+                  <label class="block mb-1 text-xs font-bold text-gray-500 uppercase tracking-wider">Trạng thái</label>
+                  <select [(ngModel)]="c.trangThaiHopDongId" (ngModelChange)="onTrangThaiHopDongChange(c, $event)" [disabled]="!c.editing"
+                    class="w-full h-[32px] rounded border border-gray-200 px-2 text-sm outline-none font-medium"
+                    [ngClass]="{'text-green-600': c.trangThaiHopDongId === 1, 'text-red-600': c.trangThaiHopDongId === 2, 'bg-gray-50': !c.editing}">
+                    <option [ngValue]="null">-- Trạng thái --</option>
+                    <option *ngFor="let s of trangThaiHopDongOptions" [ngValue]="s.id">{{ s.ten || s.name }}</option>
+                  </select>
+                </div>
+              </div>
+
+              <!-- Row 3: Name and Files -->
+              <div class="grid grid-cols-2 gap-4">
+                <div>
+                  <label class="block mb-1 text-xs font-bold text-gray-500 uppercase tracking-wider">Tên dịch vụ <span *ngIf="c.editing" class="text-red-500">*</span></label>
+                  <input nz-input [(ngModel)]="c.tenDichVu" placeholder="Tên dịch vụ" [readonly]="!c.editing" class="w-full rounded border-gray-200" />
+                </div>
+                <div>
+                  <label class="block mb-1 text-xs font-bold text-gray-500 uppercase tracking-wider">File đính kèm</label>
+                  <div class="flex items-center gap-2">
+                    <input type="file" #fileInput style="display:none" (change)="onContractFilesSelected($event, i)" multiple />
+                    <button nz-button nzType="dashed" size="small" (click)="fileInput.click()" [disabled]="!c.editing" class="w-full rounded border-blue-400 text-blue-600 h-[32px]">
+                      <i nz-icon nzType="upload"></i> Chọn tệp đính kèm
+                    </button>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Row 4: Description -->
+              <div>
+                <label class="block mb-1 text-xs font-bold text-gray-500 uppercase tracking-wider">Nội dung chi tiết</label>
+                <textarea nz-input rows="2" [(ngModel)]="c.noiDung" [readonly]="!c.editing" placeholder="Nhập nội dung hợp đồng..." class="w-full rounded border-gray-200"></textarea>
+              </div>
+            </div>
+
+              <!-- Files Display -->
+              <div *ngIf="c.teps?.length" class="mt-3 bg-gray-50 p-2 rounded-lg border border-dashed border-gray-300">
+                <div class="flex flex-wrap gap-2">
+                  <div *ngFor="let f of c.teps; let fi = index" class="group relative bg-white border rounded px-2 py-1 flex items-center gap-2 shadow-sm">
+                    <i nz-icon nzType="file-pdf" class="text-red-500"></i>
+                    <a [href]="f.fileUrl" target="_blank" class="text-xs text-gray-600 hover:text-blue-600 truncate max-w-[150px]">{{ f.fileName }}</a>
+                    <button *ngIf="c.editing" nz-button nzType="text" nzSize="small" nzDanger (click)="removeContractFile(i, fi)" class="opacity-0 group-hover:opacity-100 p-0 h-4 w-4">
+                      <i nz-icon nzType="close-circle"></i>
+                    </button>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Actions inside card -->
+              <div *ngIf="c.editing" class="mt-6 pt-4 border-t border-gray-100 flex justify-end gap-3 pb-2 pr-2">
+                <button nz-button type="button" (click)="cancelEditContract(i)" class="rounded-md px-6 h-9 hover:bg-gray-100 transition-colors">
+                  Hủy bỏ
+                </button>
+                <button nz-button nzType="primary" type="button" (click)="saveContract(i)"
+                  [disabled]="!c.soHopDong || !c.maDichVu || !c.tenDichVu || contractLoading" class="rounded-md px-8 h-9 font-bold bg-blue-600 shadow-sm hover:bg-blue-700 transition-all">
+                  Lưu thay đổi
+                </button>
+              </div>
             </div>
           </div>
-        </div>
         <ng-template #noContracts>
-          <div style="color:#6b7280;margin-top:6px">Không có hợp đồng.</div>
+          <div class="flex flex-col items-center justify-center py-20 bg-gray-50 rounded-xl border-2 border-dashed border-gray-200">
+            <i nz-icon nzType="file-protect" class="text-5xl text-gray-300 mb-4"></i>
+            <p class="text-gray-500 font-medium">Chưa có hợp đồng nào được đăng ký cho đối tác này.</p>
+            <button nz-button nzType="link" (click)="addContract()" class="mt-2 font-bold">Thêm hợp đồng đầu tiên</button>
+          </div>
         </ng-template>
-      </app-scroll-table>
+      </div>
     </ng-container>
   </nz-modal>
 </div>

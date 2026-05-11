@@ -36,6 +36,23 @@ body { font-family: Inter, system-ui, -apple-system, "Segoe UI", Roboto, "Helvet
 	max-height: calc(90vh - 120px) !important;
 }
 
+/* Extra-large modal for wide tables like pricing history */
+.modal-xl .ant-modal {
+	max-width: 1100px !important;
+	width: 1100px !important;
+}
+
+.modal-xl .ant-modal-content {
+	max-height: 95vh !important;
+	display: flex;
+	flex-direction: column;
+}
+
+.modal-xl .ant-modal-body {
+	overflow: auto !important;
+	max-height: calc(95vh - 120px) !important;
+}
+
 /* Emphasize table headers (Danh mục) vs data rows */
 .ant-table-thead > tr > th {
 	font-size: 16px;

@@ -36,6 +36,11 @@ export class DichVuService {
     return this.http.post<ApiResponse<any>>(`${this.base}/catalog/loai-dich-vu-for-selector`, query || {});
   }
 
+  // Get service status options for selector (catalog)
+  getTrangThaiDichVuForSelector(query?: any): Observable<ApiResponse<any>> {
+    return this.http.post<ApiResponse<any>>(`${this.base}/catalog/trang-thai-dich-vu-for-selector`, query || {});
+  }
+
   activate(ids: number[]): Observable<ApiResponse<boolean>> {
     return this.http.put<ApiResponse<boolean>>(`${this.base}/dich-vu/activate`, { ids });
   }
@@ -96,6 +101,18 @@ export class DichVuService {
 
   getBangGiaById(id: number): Observable<ApiResponse<any>> {
     return this.http.post<ApiResponse<any>>(`${this.base}/dich-vu/bang-gia/get-by-id`, { id });
+  }
+
+  getLoaiDinhGiaForSelector(query?: any): Observable<ApiResponse<any>> {
+    return this.http.post<ApiResponse<any>>(`${this.base}/catalog/loai-dinh-gia-for-selector`, query || {});
+  }
+
+  getLoaiCanHoForSelector(query?: any): Observable<ApiResponse<any>> {
+    return this.http.post<ApiResponse<any>>(`${this.base}/catalog/loai-can-ho-for-selector`, query || {});
+  }
+
+  getNgayTrongTuanForSelector(query?: any): Observable<ApiResponse<any>> {
+    return this.http.post<ApiResponse<any>>(`${this.base}/catalog/ngay-trong-tuan-for-selector`, query || {});
   }
 
   activateBangGia(payload: { dichVuId: number; ids: number[] } | any): Observable<ApiResponse<boolean>> {

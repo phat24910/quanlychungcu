@@ -15,6 +15,8 @@ import { NzDropDownModule } from 'ng-zorro-antd/dropdown';
 import { NzMenuModule } from 'ng-zorro-antd/menu';
 import { NzCheckboxModule } from 'ng-zorro-antd/checkbox';
 import { NzNotificationModule } from 'ng-zorro-antd/notification';
+import { NzInputNumberModule } from 'ng-zorro-antd/input-number';
+import { NzIconModule } from 'ng-zorro-antd/icon';
 import { SharedUiModule } from '@shared/ui';
 
 @NgModule({
@@ -35,6 +37,8 @@ import { SharedUiModule } from '@shared/ui';
     NzMenuModule,
     NzCheckboxModule,
     NzNotificationModule,
+    NzInputNumberModule,
+    NzIconModule,
     SharedUiModule,
   ],
 })

@@ -111,21 +111,25 @@ export class NotificationsComponent implements OnInit, OnDestroy {
       try { this.thongBao.markRead(phanBo).subscribe({ next: () => { n._read = true; this.updateUnreadCount(); }, error: () => { n._read = true; this.updateUnreadCount(); } }); } catch (e) { n._read = true; this.updateUnreadCount(); }
     } else { n._read = true; this.updateUnreadCount(); }
 
-    const kind = n.loaiThongBaoId ?? null;
-
+    let kind = n.loaiThongBaoId ?? null;
     let refId: number | null = null;
+
     if (n.referenceId != null) {
       const parsed = parseInt(n.referenceId, 10);
       refId = Number.isNaN(parsed) ? null : parsed;
     }
 
-    if (refId == null && typeof n.metadata === 'string') {
+    if (typeof n.metadata === 'string') {
       try {
         const metaObj = JSON.parse(n.metadata);
         const mId = metaObj?.referenceId ?? metaObj?.id ?? metaObj?.Id;
-        if (mId != null) {
+        if (mId != null && refId == null) {
           const p = parseInt(mId, 10);
           refId = Number.isNaN(p) ? null : p;
+        }
+        // Bổ sung: Lấy kind từ metadata nếu ở ngoài không có
+        if (kind == null) {
+          kind = metaObj?.loaiThongBaoId ?? metaObj?.Kind ?? metaObj?.kind ?? null;
         }
       } catch {}
     }
@@ -134,7 +138,26 @@ export class NotificationsComponent implements OnInit, OnDestroy {
       refId = n.id;
     }
 
-    const tabIndex = (kind === 2) ? 1 : 0;
-    this.router.navigate(['/dashboard/resident/requests'], { queryParams: { id: refId, tab: tabIndex } });
+    let tabIndex = 0;
+    const k = Number(kind);
+    const title = (n.tieuDe || n.title || '').toLowerCase();
+    const content = (n.noiDung || n.content || '').toLowerCase();
+
+    if (k === 2 || title.includes('phương tiện') || content.includes('phương tiện')) {
+      tabIndex = 1;
+    } else if (k === 10 || title.includes('sửa chữa') || content.includes('sửa chữa')) {
+      tabIndex = 2;
+    } else if (k === 11 || title.includes('thi công') || content.includes('thi công')) {
+      tabIndex = 3;
+    }
+
+    // Chuyển hướng với đầy đủ tham số
+    this.router.navigate(['/dashboard/resident/requests'], { 
+      queryParams: { 
+        id: refId, 
+        tab: tabIndex, 
+        loaiThongBaoId: k || (tabIndex === 1 ? 2 : tabIndex === 2 ? 10 : tabIndex === 3 ? 11 : 1) 
+      } 
+    });
   }
 }
