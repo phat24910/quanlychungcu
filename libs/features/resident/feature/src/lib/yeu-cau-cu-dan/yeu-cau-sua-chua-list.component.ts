@@ -125,10 +125,6 @@ export class YeuCauSuaChuaListComponent implements OnInit, OnDestroy {
       this.canHoId = params.canHoId ? +params.canHoId : undefined;
 
       this.load();
-
-      if (this.highlightId) {
-        this.openDetail({ id: this.highlightId } as any);
-      }
     });
 
     this.initSelectors();
@@ -197,12 +193,31 @@ export class YeuCauSuaChuaListComponent implements OnInit, OnDestroy {
   }
 
   private applyHighlight(): void {
-    if (!this.highlightId) return;
-    const it = this.items.find(x => x.id === this.highlightId);
-    if (it) {
-      it._highlight = true;
-      setTimeout(() => { it._highlight = false; }, 6000);
+    const id = this.highlightId;
+    if (!id) return;
+    const idx = this.items.findIndex(x => x.id === id);
+    if (idx !== -1) {
+      const item = this.items[idx];
+      this.items = [item, ...this.items.filter((_, i) => i !== idx)];
+      try { (this.items[0] as any)._highlight = true; } catch (e) {}
+      setTimeout(() => { try { delete (this.items[0] as any)._highlight; this.items = [...this.items]; } catch (e) {} }, 6000);
+      return;
     }
+
+    try {
+      this.service.getById(id).subscribe({
+        next: res => {
+          if (res.isOk && res.result) {
+            const item = res.result;
+            (item as any)._highlight = true;
+            this.items = [item as any, ...this.items];
+            this.total = (this.total || 0) + 1;
+            setTimeout(() => { try { delete (this.items[0] as any)._highlight; this.items = [...this.items]; } catch (e) {} }, 6000);
+          }
+        },
+        error: () => {}
+      });
+    } catch (e) {}
   }
 
   onSearch(): void {
@@ -274,7 +289,10 @@ export class YeuCauSuaChuaListComponent implements OnInit, OnDestroy {
         this.service.pheDuyet(this.selectedRequest!.id).subscribe(res => {
           if (res.isOk) {
             this.notification.success('Thành công', 'Đã phê duyệt yêu cầu');
-            this.selectedRequest = res.result;
+            this.selectedRequest = {
+              ...this.selectedRequest,
+              ...res.result,
+            };
             this.load();
           }
         });
@@ -331,7 +349,10 @@ export class YeuCauSuaChuaListComponent implements OnInit, OnDestroy {
           this.reasonModalVisible = false;
           this.reasonTargetId = null;
           if (this.selectedRequest && this.selectedRequest.id === id) {
-            this.selectedRequest = res.result;
+            this.selectedRequest = {
+              ...this.selectedRequest,
+              ...res.result,
+            };
           }
           this.load();
         }
@@ -386,7 +407,10 @@ export class YeuCauSuaChuaListComponent implements OnInit, OnDestroy {
       if (res.isOk) {
         this.notification.success('Thành công', 'Đã điều phối nhân sự');
         this.dispatchVisible = false;
-        this.selectedRequest = res.result;
+        this.selectedRequest = {
+          ...this.selectedRequest,
+          ...res.result,
+        };
         this.load();
       }
     });
@@ -407,7 +431,10 @@ export class YeuCauSuaChuaListComponent implements OnInit, OnDestroy {
         if (res.isOk) {
           this.notification.success('Thành công', 'Đã bổ sung nhân sự');
           this.dispatchVisible = false;
-          this.selectedRequest = res.result;
+        this.selectedRequest = {
+          ...this.selectedRequest!,
+            ...res.result,
+          };
           this.load();
         }
       });
@@ -428,7 +455,10 @@ export class YeuCauSuaChuaListComponent implements OnInit, OnDestroy {
       if (res.isOk) {
         this.notification.success('Thành công', 'Đã cập nhật báo giá');
         this.quoteVisible = false;
-        this.selectedRequest = res.result;
+        this.selectedRequest = {
+          ...this.selectedRequest,
+          ...res.result,
+        };
         this.load();
       }
     });
@@ -460,15 +490,21 @@ export class YeuCauSuaChuaListComponent implements OnInit, OnDestroy {
 
   submitSchedule(): void {
     if (this.scheduleRange.length < 2) return;
+    const henTu = this.scheduleRange[0].toISOString();
+    const henDen = this.scheduleRange[1].toISOString();
     this.service.henLich({
       id: this.selectedRequest!.id,
-      henTu: this.scheduleRange[0].toISOString(),
-      henDen: this.scheduleRange[1].toISOString()
+      henTu,
+      henDen
     }).subscribe(res => {
       if (res.isOk) {
         this.notification.success('Thành công', 'Đã hẹn lịch sửa chữa');
         this.scheduleVisible = false;
-        this.selectedRequest = res.result;
+        this.selectedRequest = {
+          ...this.selectedRequest!,
+          henTu: res.result?.henTu || henTu,
+          henDen: res.result?.henDen || henDen,
+        };
         this.load();
       }
     });
@@ -488,7 +524,10 @@ export class YeuCauSuaChuaListComponent implements OnInit, OnDestroy {
       if (res.isOk) {
         this.notification.success('Thành công', 'Đã hoàn tất xử lý yêu cầu');
         this.completeVisible = false;
-        this.selectedRequest = res.result;
+        this.selectedRequest = {
+          ...this.selectedRequest,
+          ...res.result,
+        };
         this.load();
       }
     });
@@ -530,16 +569,17 @@ export class YeuCauSuaChuaListComponent implements OnInit, OnDestroy {
 
   canShowAction(status: string): boolean {
      if (!this.selectedRequest) return false;
-     const s = this.selectedRequest.trangThaiYeuCauId;
-     const sub = this.selectedRequest.trangThaiSuaChuaId;
+     const s = Number(this.selectedRequest.trangThaiYeuCauId);
+     const sub = Number(this.selectedRequest.trangThaiSuaChuaId);
+     const hasSchedule = !!this.selectedRequest.henTu;
 
      switch(status) {
        case 'Approve': return s === 1 || s === 9;
        case 'Dispatch': return s === 2 && !sub;
        case 'Supplement': return s === 2 && !!sub;
        case 'Quote': return s === 2 && sub === 1;
-       case 'Schedule': return s === 2 && (sub === 1 || sub === 2);
-       case 'Complete': return s === 2 && (sub === 2 || sub === 3);
+        case 'Schedule': return s === 2 && sub === 3 && !hasSchedule;
+        case 'Complete': return s === 2 && !!this.selectedRequest?.henTu;
        case 'Cancel': return s === 1 || s === 2 || s === 9;
      }
      return false;

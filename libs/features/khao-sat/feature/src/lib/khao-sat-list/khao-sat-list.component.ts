@@ -3,8 +3,12 @@ import { KhaoSatService, KhaoSatResponse } from '@features/khao-sat/data-access'
 import { ApiResponse } from '@features/dich-vu/data-access';
 import { NzNotificationService } from 'ng-zorro-antd/notification';
 import { NzModalService } from 'ng-zorro-antd/modal';
+import { NzDrawerService } from 'ng-zorro-antd/drawer';
 import { KhaoSatFormComponent } from '../khao-sat-form/khao-sat-form.component';
 import { KhaoSatResultComponent } from '../khao-sat-result/khao-sat-result.component';
+import { KhaoSatDanhSachThamGiaComponent } from '../khao-sat-danh-sach-tham-gia/khao-sat-danh-sach-tham-gia.component';
+import { KhaoSatLichSuComponent } from '../khao-sat-lich-su/khao-sat-lich-su.component';
+import { KhaoSatTraCuuComponent } from '../khao-sat-tra-cuu/khao-sat-tra-cuu.component';
 
 @Component({
   selector: 'app-khao-sat-list',
@@ -24,10 +28,15 @@ export class KhaoSatListComponent implements OnInit {
   pageNumber = 1;
   totalItems = 0;
 
+  loaiKhaoSatOptions: { id: number; name: string }[] = [];
+  trangThaiOptions: { id: number; name: string }[] = [];
+  advancedVisible = false;
+
   constructor(
     private khaoSatService: KhaoSatService,
     private notification: NzNotificationService,
-    private modal: NzModalService
+    private modal: NzModalService,
+    private drawerService: NzDrawerService
   ) {}
 
   ngOnInit(): void {
@@ -51,6 +60,12 @@ export class KhaoSatListComponent implements OnInit {
         if (res.isOk) {
           this.items = res.result.items;
           this.totalItems = res.result.pagingInfo.totalItems;
+          this.loaiKhaoSatOptions = [
+            ...new Map((res.result.items as any[]).map((i: any) => [i.loaiKhaoSatId, { id: i.loaiKhaoSatId, name: i.loaiKhaoSatTen }])).values()
+          ];
+          this.trangThaiOptions = [
+            ...new Map((res.result.items as any[]).map((i: any) => [i.trangThaiId, { id: i.trangThaiId, name: i.trangThaiTen }])).values()
+          ];
         }
         this.loading = false;
       },
@@ -59,6 +74,14 @@ export class KhaoSatListComponent implements OnInit {
         this.notification.error('Lỗi', 'Không thể tải danh sách khảo sát');
       }
     });
+  }
+
+  onRefresh(): void {
+    this.keyword = '';
+    this.trangThaiId = null;
+    this.loaiKhaoSatId = null;
+    this.pageNumber = 1;
+    this.load();
   }
 
   onPageChange(page: number): void {
@@ -73,7 +96,8 @@ export class KhaoSatListComponent implements OnInit {
       nzComponentParams: { item },
       nzWidth: 800,
       nzFooter: null,
-      nzClassName: 'khao-sat-modal'
+      nzClassName: 'khao-sat-modal',
+      nzBodyStyle: { 'max-height': '80vh', 'overflow': 'auto' }
     });
 
     modal.afterClose.subscribe(res => {
@@ -82,12 +106,43 @@ export class KhaoSatListComponent implements OnInit {
   }
 
   viewResult(item: KhaoSatResponse): void {
-    this.modal.create({
+    this.drawerService.create({
       nzTitle: 'Kết quả khảo sát & Biểu quyết',
       nzContent: KhaoSatResultComponent,
-      nzComponentParams: { id: item.id },
-      nzWidth: 700,
-      nzFooter: null
+      nzContentParams: { id: item.id },
+      nzWidth: 700
+    });
+  }
+
+  viewDanhSachThamGia(item: KhaoSatResponse): void {
+    this.drawerService.create({
+      nzTitle: 'Danh sách căn hộ tham gia',
+      nzContent: KhaoSatDanhSachThamGiaComponent,
+      nzContentParams: { khaoSatId: item.id, tieuDe: item.tieuDe },
+      nzWidth: 800
+    });
+  }
+
+  openLichSuModal(): void {
+    const modal = this.modal.create({
+      nzTitle: 'Tra cứu lịch sử biểu quyết',
+      nzContent: KhaoSatTraCuuComponent,
+      nzFooter: null,
+      nzWidth: 500
+    });
+    modal.afterClose.subscribe((canHoId: number) => {
+      if (canHoId) {
+        this.viewLichSuBieuQuyet(canHoId);
+      }
+    });
+  }
+
+  viewLichSuBieuQuyet(canHoId: number): void {
+    this.drawerService.create({
+      nzTitle: `Lịch sử biểu quyết - Căn hộ #${canHoId}`,
+      nzContent: KhaoSatLichSuComponent,
+      nzContentParams: { canHoId },
+      nzWidth: 640
     });
   }
 

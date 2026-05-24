@@ -63,7 +63,7 @@
               </ul>
             </nz-dropdown-menu>
           </td>
-          <td style="text-align:center">{{ items.indexOf(it) + 1 }}</td>
+          <td style="text-align:center">{{ (pageNumber - 1) * pageSize + i + 1 }}</td>
           <td style="max-width:160px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">{{ it.tenCanHo }}</td>
           <td>{{ it.loaiSuCoTen }}</td>
           <td style="max-width:300px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">{{ it.noiDung }}</td>
@@ -105,7 +105,7 @@
     <div *ngIf="!detailLoading && selectedRequest" class="detail-container">
       <!-- PROGRESS STEPS -->
       <div class="mb-8 p-4 bg-gray-50 rounded-lg">
-        <nz-steps [nzCurrent]="selectedRequest.trangThaiYeuCauId === 7 ? 5 : (selectedRequest.trangThaiSuaChuaId || 0)"
+        <nz-steps [nzCurrent]="selectedRequest.trangThaiYeuCauId === 7 ? 4 : (selectedRequest.trangThaiSuaChuaId || 0)"
           nzSize="small">
           <nz-step nzTitle="Tiếp nhận" nzDescription="Đang chờ duyệt"></nz-step>
           <nz-step nzTitle="Điều phối" nzDescription="Giao việc"></nz-step>
@@ -146,8 +146,12 @@
             </nz-tag>
           </div>
           <div class="mt-4" *ngIf="selectedRequest.lyDo">
-            <span class="label block mb-1">Ghi chú/Lý do:</span>
+            <span class="label block mb-1">Lý do trả lại:</span>
             <div class="p-2 bg-amber-50 border border-amber-100 rounded text-amber-900">{{ selectedRequest.lyDo }}</div>
+          </div>
+          <div class="mt-4" *ngIf="selectedRequest.lyDoHuy">
+            <span class="label block mb-1">Lý do hủy:</span>
+            <div class="p-2 bg-red-50 border border-red-100 rounded text-red-900">{{ selectedRequest.lyDoHuy }}</div>
           </div>
         </div>
       </div>

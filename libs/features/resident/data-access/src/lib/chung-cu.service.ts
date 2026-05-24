@@ -358,6 +358,17 @@ export class ChungCuService {
   }
 
   // Nhan vien
+  private toPascalKeys(obj: any): any {
+    if (obj === null || obj === undefined) return obj;
+    if (Array.isArray(obj)) return obj.map(v => this.toPascalKeys(v));
+    if (typeof obj !== 'object') return obj;
+    const out: any = {};
+    Object.keys(obj).forEach(k => {
+      out[k.charAt(0).toUpperCase() + k.slice(1)] = this.toPascalKeys(obj[k]);
+    });
+    return out;
+  }
+
   createNhanVien(payload: any): Observable<ApiResponse<any>> {
     return this.http.post<ApiResponse<any>>(`${this.base}/nhan-vien`, payload)
       .pipe(tap((res: any) => { if (res && res.isOk) this.refreshSubject.next(); }));

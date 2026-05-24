@@ -73,13 +73,6 @@ export class NhanVienListComponent implements OnInit {
 
   applyAdvanced(): void { this.pageNumber = 1; this.load(); }
 
-  resetAdvanced(): void {
-    this.loaiNhanVienId = 0;
-    this.trangThaiNhanVienId = 0;
-    this.pageNumber = 1;
-    this.load();
-  }
-
   openAdvanced(): void { this.advancedVisible = true; }
 
   onPageChange(p: number): void { this.pageNumber = p; this.load(); }
@@ -129,15 +122,18 @@ export class NhanVienListComponent implements OnInit {
   }
 
   onModalOk(): void {
+    if (!this.formComp) { this.notification.warning('Thông báo', 'Form chưa sẵn sàng, vui lòng thử lại'); return; }
     this.saving = true;
-    this.formComp?.submit();
+    this.formComp.submit();
   }
 
-  onSaved(): void {
+  onSaved(success: boolean): void {
     this.saving = false;
-    this.isModalVisible = false;
-    this.notification.success('Thành công', 'Lưu nhân viên thành công');
-    this.load();
+    if (success) {
+      this.isModalVisible = false;
+      this.notification.success('Thành công', 'Lưu nhân viên thành công');
+      this.load();
+    }
   }
 
   deleteOne(id: number): void {

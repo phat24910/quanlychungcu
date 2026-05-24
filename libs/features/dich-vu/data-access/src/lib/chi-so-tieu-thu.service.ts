@@ -61,4 +61,9 @@ export class ChiSoTieuThuService {
     formData.append('zipFile', zipFile);
     return this.http.post<ApiResponse<any>>(`${this.base}/chi-so-tieu-thu/import-images`, formData);
   }
+
+  // --- Catalog Selectors ---
+  getTrangThaiChiSoForSelector(): Observable<ApiResponse<any>> {
+    return this.http.post<ApiResponse<any>>(`${this.base}/catalog/trang-thai-chi-so-for-selector`, {});
+  }
 }

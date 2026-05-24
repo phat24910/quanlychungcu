@@ -47,7 +47,7 @@
           <span class="text-sm font-bold text-indigo-900">{{ data.tenNguoiXuLy }}</span>
         </div>
       </section>
-      
+
       <section *ngIf="data.trangThaiPhanAnhId === 6" class="bg-green-50 p-4 rounded-2xl border border-green-100">
         <label class="text-[10px] font-bold text-green-500 uppercase tracking-widest mb-3 block">Đánh giá chất lượng</label>
         <div class="flex items-center gap-2 mb-2">
@@ -62,17 +62,17 @@
   <!-- Right Side: Interaction & Chat -->
   <div class="col-span-8 flex flex-col h-full bg-white relative">
     <!-- Header with Actions -->
-    <div class="p-4 border-b border-gray-100 flex justify-between items-center bg-white/80 backdrop-blur-md sticky top-0 z-10">
+    <div class="p-4 border-b border-gray-100 flex justify-between items-center bg-white">
       <div class="flex items-center gap-3">
         <div class="w-2 h-2 rounded-full animate-pulse" [class.bg-green-500]="data.trangThaiPhanAnhId === 6" [class.bg-blue-500]="data.trangThaiPhanAnhId === 2"></div>
         <span class="text-sm font-black text-gray-800 uppercase tracking-wider">{{ data.trangThaiPhanAnhTen }}</span>
       </div>
-      
+
       <div class="flex gap-2">
         <button *ngIf="data.trangThaiPhanAnhId === 1" nz-button nzType="primary" (click)="tiepNhan()" class="bg-blue-600 border-blue-600 rounded-lg font-bold shadow-md shadow-blue-100">
           <i nz-icon nzType="check"></i> Tiếp nhận
         </button>
-        <button *ngIf="data.trangThaiPhanAnhId >= 2 && data.trangThaiPhanAnhId <= 4" nz-button nzType="primary" (click)="xacNhanHoanThanh()" class="bg-green-600 border-green-600 rounded-lg font-bold shadow-md shadow-green-100">
+        <button *ngIf="data.trangThaiPhanAnhId >= 2 && data.trangThaiPhanAnhId <= 4" nz-button nzType="default" (click)="xacNhanHoanThanh()" class="bg-green-600 border-green-600 rounded-lg font-bold shadow-md shadow-green-100 hover:bg-green-700 hover:border-green-700 text-white hover:text-white">
           <i nz-icon nzType="check-circle"></i> Hoàn thành
         </button>
         <button *ngIf="data.trangThaiPhanAnhId < 5" nz-button nzDanger nzType="default" (click)="huy()" class="rounded-lg font-bold border-red-100 text-red-500 hover:bg-red-50">
@@ -130,7 +130,7 @@
           <i nz-icon nzType="send" class="text-lg"></i>
         </button>
       </div>
-      <p class="text-[9px] text-gray-400 font-bold uppercase mt-3 text-center tracking-widest">Tin nhắn sẽ được gửi trực tiếp tới Mobile App của cư dân</p>
+      <!-- <p class="text-[9px] text-gray-400 font-bold uppercase mt-3 text-center tracking-widest">Tin nhắn sẽ được gửi trực tiếp tới Mobile App của cư dân</p> -->
     </div>
   </div>
 </div>

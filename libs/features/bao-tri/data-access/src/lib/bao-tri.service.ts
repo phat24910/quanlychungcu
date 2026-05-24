@@ -102,4 +102,20 @@ export class BaoTriService {
   deleteHangMuc(id: number): Observable<ApiResponse<any>> {
     return this.http.request<ApiResponse<any>>('delete', `${this.base}/hang-muc`, { body: { id } });
   }
+
+  // --- Catalog Selectors ---
+  getTanSuatBaoTriForSelector(): Observable<ApiResponse<any>> {
+    const url = this.base.replace('/bao-tri-ha-tang', '/catalog') + '/tan-suat-bao-tri-for-selector';
+    return this.http.post<ApiResponse<any>>(url, {});
+  }
+
+  getTrangThaiPhieuBaoTriForSelector(): Observable<ApiResponse<any>> {
+    const url = this.base.replace('/bao-tri-ha-tang', '/catalog') + '/trang-thai-phieu-bao-tri-for-selector';
+    return this.http.post<ApiResponse<any>>(url, {});
+  }
+
+  getTrangThaiThietBiForSelector(): Observable<ApiResponse<any>> {
+    const url = this.base.replace('/bao-tri-ha-tang', '/catalog') + '/trang-thai-thiet-bi-for-selector';
+    return this.http.post<ApiResponse<any>>(url, {});
+  }
 }

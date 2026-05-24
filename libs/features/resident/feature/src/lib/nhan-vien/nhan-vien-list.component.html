@@ -68,7 +68,7 @@
     [nzOkLoading]="saving" nzOkText="Lưu" nzCancelText="Hủy" nzWidth="480" nzWrapClassName="custom-modal wide-modal"
     [nzBodyStyle]="{ 'max-height': '80vh', 'overflow': 'auto' }">
     <ng-container *nzModalContent>
-      <app-nhan-vien-form [nhanVienId]="editingId" [inModal]="true" (saved)="onSaved()"></app-nhan-vien-form>
+      <app-nhan-vien-form [nhanVienId]="editingId" [inModal]="true" (saved)="onSaved($event)"></app-nhan-vien-form>
     </ng-container>
   </nz-modal>
 

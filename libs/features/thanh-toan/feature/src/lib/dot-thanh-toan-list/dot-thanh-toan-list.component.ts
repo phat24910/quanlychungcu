@@ -9,12 +9,12 @@ import { DotThanhToanFormComponent } from './dot-thanh-toan-form.component';
 @Component({
   selector: 'app-dot-thanh-toan-list',
   templateUrl: './dot-thanh-toan-list.component.html',
-  styleUrls: ['./dot-thanh-toan-list.component.scss']
+  styleUrls: ['./dot-thanh-toan-list.component.scss'],
 })
 export class DotThanhToanListComponent implements OnInit {
   loading = false;
   items: any[] = [];
-  
+
   thang = new Date().getMonth() + 1;
   nam = new Date().getFullYear();
   trangThaiId: number | null = null;
@@ -28,7 +28,7 @@ export class DotThanhToanListComponent implements OnInit {
     private thanhToanService: ThanhToanService,
     private notification: NzNotificationService,
     private modal: NzModalService,
-    private router: Router
+    private router: Router,
   ) {}
 
   ngOnInit(): void {
@@ -43,7 +43,7 @@ export class DotThanhToanListComponent implements OnInit {
       trangThaiId: this.trangThaiId,
       keyword: this.keyword,
       pageNumber: this.pageNumber,
-      pageSize: this.pageSize
+      pageSize: this.pageSize,
     };
     this.thanhToanService.getDotThanhToanList(query).subscribe({
       next: (res: ApiResponse<any>) => {
@@ -53,8 +53,11 @@ export class DotThanhToanListComponent implements OnInit {
       },
       error: () => {
         this.loading = false;
-        this.notification.error('Lỗi', 'Không thể tải danh sách đợt thanh toán');
-      }
+        this.notification.error(
+          'Lỗi',
+          'Không thể tải danh sách đợt thanh toán',
+        );
+      },
     });
   }
 
@@ -68,10 +71,12 @@ export class DotThanhToanListComponent implements OnInit {
       nzTitle: item ? 'Cập nhật đợt thanh toán' : 'Tạo đợt thanh toán mới',
       nzContent: DotThanhToanFormComponent,
       nzComponentParams: { item },
-      nzFooter: null
+      nzFooter: null,
+      nzWidth: 800,
+      nzBodyStyle: { 'max-height': '70vh', 'overflow': 'auto' },
     });
 
-    modal.afterClose.subscribe(res => {
+    modal.afterClose.subscribe((res) => {
       if (res) this.load();
     });
   }
@@ -81,23 +86,33 @@ export class DotThanhToanListComponent implements OnInit {
       nzTitle: 'Xác nhận duyệt',
       nzContent: `Bạn có chắc chắn muốn duyệt đợt thanh toán "${item.tenDot}"?`,
       nzOnOk: () => {
-        this.thanhToanService.approveDotThanhToan([item.id]).subscribe((res: ApiResponse<any>) => {
-          if (res.isOk) {
-            this.notification.success('Thành công', 'Đã duyệt đợt thanh toán');
-            this.load();
-          }
-        });
-      }
+        this.thanhToanService
+          .approveDotThanhToan([item.id])
+          .subscribe((res: ApiResponse<any>) => {
+            if (res.isOk) {
+              this.notification.success(
+                'Thành công',
+                'Đã duyệt đợt thanh toán',
+              );
+              this.load();
+            }
+          });
+      },
     });
   }
 
   getStatusColor(statusId: number): string {
     switch (statusId) {
-      case 1: return 'blue'; // TaoMoi
-      case 2: return 'orange'; // ChoDuyet
-      case 3: return 'green'; // DaDuyet
-      case 4: return 'gray'; // DaDong
-      default: return 'default';
+      case 1:
+        return 'blue'; // TaoMoi
+      case 2:
+        return 'orange'; // ChoDuyet
+      case 3:
+        return 'green'; // DaDuyet
+      case 4:
+        return 'gray'; // DaDong
+      default:
+        return 'default';
     }
   }
 
@@ -106,12 +121,15 @@ export class DotThanhToanListComponent implements OnInit {
     this.thanhToanService.lapHoaDonDuThao(item.id).subscribe({
       next: (res: ApiResponse<any>) => {
         if (res.isOk) {
-          this.notification.success('Thành công', `Đã lập ${res.result.soLuongHoaDonTaoMoi} hóa đơn dự thảo`);
+          this.notification.success(
+            'Thành công',
+            `Đã lập ${res.result.soLuongHoaDonTaoMoi} hóa đơn dự thảo`,
+          );
           this.load();
         }
         this.loading = false;
       },
-      error: () => this.loading = false
+      error: () => (this.loading = false),
     });
   }
 
@@ -121,18 +139,22 @@ export class DotThanhToanListComponent implements OnInit {
       nzContent: `Bạn có chắc chắn muốn xóa đợt thanh toán "${item.tenDot}"?`,
       nzOkDanger: true,
       nzOnOk: () => {
-        this.thanhToanService.deleteDotThanhToan([item.id]).subscribe((res: ApiResponse<any>) => {
-          if (res.isOk) {
-            this.notification.success('Thành công', 'Đã xóa đợt thanh toán');
-            this.load();
-          }
-        });
-      }
+        this.thanhToanService
+          .deleteDotThanhToan([item.id])
+          .subscribe((res: ApiResponse<any>) => {
+            if (res.isOk) {
+              this.notification.success('Thành công', 'Đã xóa đợt thanh toán');
+              this.load();
+            }
+          });
+      },
     });
   }
 
   viewInvoices(item: any): void {
-    this.router.navigate(['/dashboard/thanh-toan/hoa-don'], { queryParams: { dotThanhToanId: item.id } });
+    this.router.navigate(['/dashboard/thanh-toan/hoa-don'], {
+      queryParams: { dotThanhToanId: item.id },
+    });
   }
 
   dongDot(item: any): void {
@@ -140,13 +162,15 @@ export class DotThanhToanListComponent implements OnInit {
       nzTitle: 'Xác nhận đóng đợt',
       nzContent: `Bạn có chắc chắn muốn đóng đợt thanh toán "${item.tenDot}"? Sau khi đóng, đợt thanh toán này sẽ không thể nhận thêm thanh toán nào nữa.`,
       nzOnOk: () => {
-        this.thanhToanService.dongDotThanhToan(item.id).subscribe((res: ApiResponse<any>) => {
-          if (res.isOk) {
-            this.notification.success('Thành công', 'Đã đóng đợt thanh toán');
-            this.load();
-          }
-        });
-      }
+        this.thanhToanService
+          .dongDotThanhToan(item.id)
+          .subscribe((res: ApiResponse<any>) => {
+            if (res.isOk) {
+              this.notification.success('Thành công', 'Đã đóng đợt thanh toán');
+              this.load();
+            }
+          });
+      },
     });
   }
 }

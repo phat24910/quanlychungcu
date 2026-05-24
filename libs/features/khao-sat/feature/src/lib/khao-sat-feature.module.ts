@@ -18,10 +18,17 @@ import { NzSpinModule } from 'ng-zorro-antd/spin';
 import { NzEmptyModule } from 'ng-zorro-antd/empty';
 import { NzCheckboxModule } from 'ng-zorro-antd/checkbox';
 import { NzInputNumberModule } from 'ng-zorro-antd/input-number';
+import { NzDrawerModule } from 'ng-zorro-antd/drawer';
+import { NzDescriptionsModule } from 'ng-zorro-antd/descriptions';
+import { NzPaginationModule } from 'ng-zorro-antd/pagination';
+import { NzFormModule } from 'ng-zorro-antd/form';
 
 import { KhaoSatListComponent } from './khao-sat-list/khao-sat-list.component';
 import { KhaoSatFormComponent } from './khao-sat-form/khao-sat-form.component';
 import { KhaoSatResultComponent } from './khao-sat-result/khao-sat-result.component';
+import { KhaoSatDanhSachThamGiaComponent } from './khao-sat-danh-sach-tham-gia/khao-sat-danh-sach-tham-gia.component';
+import { KhaoSatLichSuComponent } from './khao-sat-lich-su/khao-sat-lich-su.component';
+import { KhaoSatTraCuuComponent } from './khao-sat-tra-cuu/khao-sat-tra-cuu.component';
 
 const routes: Routes = [
   { path: '', component: KhaoSatListComponent }
@@ -31,7 +38,10 @@ const routes: Routes = [
   declarations: [
     KhaoSatListComponent,
     KhaoSatFormComponent,
-    KhaoSatResultComponent
+    KhaoSatResultComponent,
+    KhaoSatDanhSachThamGiaComponent,
+    KhaoSatLichSuComponent,
+    KhaoSatTraCuuComponent
   ],
   imports: [
     CommonModule,
@@ -52,7 +62,11 @@ const routes: Routes = [
     NzSpinModule,
     NzEmptyModule,
     NzCheckboxModule,
-    NzInputNumberModule
+    NzInputNumberModule,
+    NzDrawerModule,
+    NzDescriptionsModule,
+    NzPaginationModule,
+    NzFormModule
   ]
 })
 export class KhaoSatFeatureModule { }

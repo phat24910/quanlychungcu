@@ -119,6 +119,18 @@
       ],
       "@features/phan-anh/data-access": [
         "libs/features/phan-anh/data-access/src/lib/index.ts"
+      ],
+      "@features/sao-luu/feature": [
+        "libs/features/sao-luu/feature/src/lib/index.ts"
+      ],
+      "@features/sao-luu/data-access": [
+        "libs/features/sao-luu/data-access/src/lib/index.ts"
+      ],
+      "@features/quy-thu-chi/feature": [
+        "libs/features/quy-thu-chi/feature/src/lib/index.ts"
+      ],
+      "@features/quy-thu-chi/data-access": [
+        "libs/features/quy-thu-chi/data-access/src/lib/index.ts"
       ]
     }
   }

@@ -143,21 +143,30 @@ export class NotificationsComponent implements OnInit, OnDestroy {
     const title = (n.tieuDe || n.title || '').toLowerCase();
     const content = (n.noiDung || n.content || '').toLowerCase();
 
-    if (k === 2 || title.includes('phương tiện') || content.includes('phương tiện')) {
-      tabIndex = 1;
-    } else if (k === 10 || title.includes('sửa chữa') || content.includes('sửa chữa')) {
-      tabIndex = 2;
-    } else if (k === 11 || title.includes('thi công') || content.includes('thi công')) {
-      tabIndex = 3;
+    const isPhanAnh = k === 5
+      || title.includes('phản ánh') || title.includes('khiếu nại') || title.includes('góp ý')
+      || content.includes('phản ánh') || content.includes('khiếu nại') || content.includes('góp ý');
+
+    if (!isPhanAnh) {
+      if (k === 2 || title.includes('phương tiện') || content.includes('phương tiện')) {
+        tabIndex = 1;
+      } else if (k === 10 || k === 3 || title.includes('sửa chữa') || content.includes('sửa chữa')) {
+        tabIndex = 2;
+      } else if (k === 11 || k === 4 || title.includes('thi công') || content.includes('thi công')) {
+        tabIndex = 3;
+      }
     }
 
-    // Chuyển hướng với đầy đủ tham số
-    this.router.navigate(['/dashboard/resident/requests'], { 
-      queryParams: { 
-        id: refId, 
-        tab: tabIndex, 
-        loaiThongBaoId: k || (tabIndex === 1 ? 2 : tabIndex === 2 ? 10 : tabIndex === 3 ? 11 : 1) 
-      } 
-    });
+    if (isPhanAnh) {
+      this.router.navigate(['/dashboard/phan-anh'], { queryParams: { id: refId } });
+    } else {
+      this.router.navigate(['/dashboard/resident/requests'], { 
+        queryParams: { 
+          id: refId, 
+          tab: tabIndex, 
+          loaiThongBaoId: k || (tabIndex === 1 ? 2 : tabIndex === 2 ? 10 : tabIndex === 3 ? 11 : 1) 
+        } 
+      });
+    }
   }
 }

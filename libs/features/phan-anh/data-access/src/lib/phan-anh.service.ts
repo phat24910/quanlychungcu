@@ -58,7 +58,7 @@ export class PhanAnhService {
   }
 
   tiepNhan(phanAnhId: number): Observable<ApiResponse<PhanAnhResponse>> {
-    return this.http.put<ApiResponse<PhanAnhResponse>>(`${this.base}/phan-anh/tiep-nhan-phan-cong`, { phanAnhId });
+    return this.http.put<ApiResponse<PhanAnhResponse>>(`${this.base}/phan-anh/tiep-nhan`, { phanAnhId });
   }
 
   submitTraLoi(phanAnhId: number, noiDung: string): Observable<ApiResponse<PhanAnhResponse>> {

@@ -10,7 +10,7 @@ import { ChiSoTieuThuFormComponent } from '../chi-so-tieu-thu-form/chi-so-tieu-t
 @Component({
   selector: 'app-chi-so-tieu-thu-list',
   templateUrl: './chi-so-tieu-thu-list.component.html',
-  styleUrls: ['./chi-so-tieu-thu-list.component.scss']
+  styleUrls: ['./chi-so-tieu-thu-list.component.scss'],
 })
 export class ChiSoTieuThuListComponent implements OnInit {
   list: any[] = [];
@@ -30,11 +30,7 @@ export class ChiSoTieuThuListComponent implements OnInit {
 
   // Selectors
   dichVuOptions: any[] = [];
-  trangThaiOptions: any[] = [
-    { id: 1, name: 'Mới' },
-    { id: 2, name: 'Đã xác nhận' },
-    { id: 3, name: 'Đã lập hóa đơn' }
-  ];
+  trangThaiOptions: any[] = [];
 
   // Selection
   setOfCheckedId = new Set<number>();
@@ -47,14 +43,14 @@ export class ChiSoTieuThuListComponent implements OnInit {
     private modal: NzModalService,
     private notification: NzNotificationService,
     private router: Router,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
   ) {}
 
   ngOnInit(): void {
     this.loadSelectors();
-    
+
     // Listen to query params from tree component
-    this.route.queryParams.subscribe(params => {
+    this.route.queryParams.subscribe((params) => {
       this.toaNhaId = params['toaNhaId'] ? Number(params['toaNhaId']) : null;
       this.tangId = params['tangId'] ? Number(params['tangId']) : null;
       this.canHoId = params['canHoId'] ? Number(params['canHoId']) : null;
@@ -63,12 +59,13 @@ export class ChiSoTieuThuListComponent implements OnInit {
   }
 
   loadSelectors(): void {
-    this.chiSoService.getListDichVuTieuThu().subscribe(res => {
+    this.chiSoService.getListDichVuTieuThu().subscribe((res) => {
       this.dichVuOptions = res.result || [];
     });
+    this.chiSoService.getTrangThaiChiSoForSelector().subscribe((res) => {
+      this.trangThaiOptions = res.result || [];
+    });
   }
-
-
 
   load(): void {
     this.loading = true;
@@ -83,7 +80,7 @@ export class ChiSoTieuThuListComponent implements OnInit {
       pageNumber: this.pageNumber,
       pageSize: this.pageSize,
       sortCol: 'ngayGhiNhan',
-      isAsc: false
+      isAsc: false,
     };
 
     this.chiSoService.getList(query).subscribe({
@@ -96,7 +93,7 @@ export class ChiSoTieuThuListComponent implements OnInit {
       error: () => {
         this.loading = false;
         this.notification.error('Lỗi', 'Không thể tải danh sách chỉ số');
-      }
+      },
     });
   }
 
@@ -134,13 +131,17 @@ export class ChiSoTieuThuListComponent implements OnInit {
   }
 
   onAllChecked(value: boolean): void {
-    this.list.forEach(item => this.updateCheckedSet(item.id, value));
+    this.list.forEach((item) => this.updateCheckedSet(item.id, value));
     this.refreshCheckedStatus();
   }
 
   refreshCheckedStatus(): void {
-    this.checked = this.list.length > 0 && this.list.every(item => this.setOfCheckedId.has(item.id));
-    this.indeterminate = this.list.some(item => this.setOfCheckedId.has(item.id)) && !this.checked;
+    this.checked =
+      this.list.length > 0 &&
+      this.list.every((item) => this.setOfCheckedId.has(item.id));
+    this.indeterminate =
+      this.list.some((item) => this.setOfCheckedId.has(item.id)) &&
+      !this.checked;
   }
 
   // Actions
@@ -150,9 +151,9 @@ export class ChiSoTieuThuListComponent implements OnInit {
       tangId: this.tangId || undefined,
       dichVuId: this.dichVuId || undefined,
       thang: this.thang,
-      nam: this.nam
+      nam: this.nam,
     };
-    this.chiSoService.exportExcel(payload).subscribe(blob => {
+    this.chiSoService.exportExcel(payload).subscribe((blob) => {
       const url = window.URL.createObjectURL(blob);
       const a = document.createElement('a');
       a.href = url;
@@ -163,20 +164,29 @@ export class ChiSoTieuThuListComponent implements OnInit {
 
   confirmBulk(): void {
     if (!this.dichVuId) {
-      this.notification.warning('Cảnh báo', 'Vui lòng chọn dịch vụ để xác nhận hàng loạt');
+      this.notification.warning(
+        'Cảnh báo',
+        'Vui lòng chọn dịch vụ để xác nhận hàng loạt',
+      );
       return;
     }
     this.modal.confirm({
       nzTitle: 'Xác nhận hàng loạt',
       nzContent: `Bạn có chắc chắn muốn xác nhận tất cả chỉ số của tháng ${this.thang}/${this.nam} cho dịch vụ đã chọn?`,
       nzOnOk: () => {
-        this.chiSoService.confirm({ thang: this.thang, nam: this.nam, dichVuId: this.dichVuId! }).subscribe(res => {
-          if (res.isOk) {
-            this.notification.success('Thành công', 'Đã xác nhận thành công');
-            this.load();
-          }
-        });
-      }
+        this.chiSoService
+          .confirm({
+            thang: this.thang,
+            nam: this.nam,
+            dichVuId: this.dichVuId!,
+          })
+          .subscribe((res) => {
+            if (res.isOk) {
+              this.notification.success('Thành công', 'Đã xác nhận thành công');
+              this.load();
+            }
+          });
+      },
     });
   }
 
@@ -188,14 +198,14 @@ export class ChiSoTieuThuListComponent implements OnInit {
       nzContent: `Bạn có chắc chắn muốn xóa ${ids.length} chỉ số đã chọn?`,
       nzOkDanger: true,
       nzOnOk: () => {
-        this.chiSoService.delete(ids).subscribe(res => {
+        this.chiSoService.delete(ids).subscribe((res) => {
           if (res.isOk) {
             this.notification.success('Thành công', 'Đã xóa thành công');
             this.setOfCheckedId.clear();
             this.load();
           }
         });
-      }
+      },
     });
   }
 
@@ -210,10 +220,11 @@ export class ChiSoTieuThuListComponent implements OnInit {
       nzContent: ChiSoTieuThuImportComponent,
       nzComponentParams: {
         thang: this.thang,
-        nam: this.nam
+        nam: this.nam,
       },
       nzFooter: null,
-      nzWidth: 600
+      nzWidth: 600,
+      nzBodyStyle: { 'max-height': '70vh', 'overflow': 'auto' },
     });
 
     modalRef.componentInstance?.success.subscribe(() => {
@@ -227,10 +238,11 @@ export class ChiSoTieuThuListComponent implements OnInit {
       nzTitle: 'Cập nhật chỉ số tiêu thụ',
       nzContent: ChiSoTieuThuFormComponent,
       nzComponentParams: {
-        itemId: item.id
+        itemId: item.id,
       },
       nzFooter: null,
-      nzWidth: 600
+      nzWidth: 600,
+      nzBodyStyle: { 'max-height': '70vh', 'overflow': 'auto' },
     });
 
     modalRef.componentInstance?.saved.subscribe(() => {
@@ -243,12 +255,32 @@ export class ChiSoTieuThuListComponent implements OnInit {
     });
   }
 
+  deleteItem(item: any): void {
+    this.modal.confirm({
+      nzTitle: 'Xác nhận xóa',
+      nzContent: `Bạn có chắc chắn muốn xóa chỉ số tiêu thụ của căn hộ "${item.maCanHo}" tháng ${item.thang}/${item.nam}?`,
+      nzOkDanger: true,
+      nzOnOk: () => {
+        this.chiSoService.delete([item.id]).subscribe((res) => {
+          if (res.isOk) {
+            this.notification.success('Thành công', 'Đã xóa chỉ số tiêu thụ');
+            this.load();
+          }
+        });
+      },
+    });
+  }
+
   getStatusColor(statusId: number): string {
     switch (statusId) {
-      case 1: return 'blue';
-      case 2: return 'green';
-      case 3: return 'gold';
-      default: return 'default';
+      case 1:
+        return 'blue';
+      case 2:
+        return 'green';
+      case 3:
+        return 'gold';
+      default:
+        return 'default';
     }
   }
 

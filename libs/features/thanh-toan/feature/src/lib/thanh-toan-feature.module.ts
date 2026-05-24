@@ -23,6 +23,7 @@ import { NzPopconfirmModule } from 'ng-zorro-antd/popconfirm';
 import { NzEmptyModule } from 'ng-zorro-antd/empty';
 import { NzFormModule } from 'ng-zorro-antd/form';
 import { NzInputNumberModule } from 'ng-zorro-antd/input-number';
+import { NzDrawerModule } from 'ng-zorro-antd/drawer';
 
 import { DotThanhToanListComponent } from './dot-thanh-toan-list/dot-thanh-toan-list.component';
 import { DotThanhToanFormComponent } from './dot-thanh-toan-list/dot-thanh-toan-form.component';
@@ -70,7 +71,8 @@ const routes: Routes = [
     NzPopconfirmModule,
     NzEmptyModule,
     NzFormModule,
-    NzInputNumberModule
+    NzInputNumberModule,
+    NzDrawerModule
   ]
 })
 export class ThanhToanFeatureModule {}

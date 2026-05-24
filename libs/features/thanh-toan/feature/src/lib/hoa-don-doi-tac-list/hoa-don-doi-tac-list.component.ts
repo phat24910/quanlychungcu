@@ -9,12 +9,12 @@ import { HoaDonDoiTacFormComponent } from './hoa-don-doi-tac-form.component';
 @Component({
   selector: 'app-hoa-don-doi-tac-list',
   templateUrl: './hoa-don-doi-tac-list.component.html',
-  styleUrls: ['./hoa-don-doi-tac-list.component.scss']
+  styleUrls: ['./hoa-don-doi-tac-list.component.scss'],
 })
 export class HoaDonDoiTacListComponent implements OnInit {
   loading = false;
   items: any[] = [];
-  
+
   doiTacId: number | null = null;
   thang = new Date().getMonth() + 1;
   nam = new Date().getFullYear();
@@ -30,7 +30,7 @@ export class HoaDonDoiTacListComponent implements OnInit {
     private thanhToanService: ThanhToanService,
     private doiTacApiService: DoiTacApiService,
     private notification: NzNotificationService,
-    private modal: NzModalService
+    private modal: NzModalService,
   ) {}
 
   ngOnInit(): void {
@@ -39,9 +39,11 @@ export class HoaDonDoiTacListComponent implements OnInit {
   }
 
   loadDoiTacs(): void {
-    this.doiTacApiService.getList({ pageSize: 1000, pageNumber: 1 }).subscribe((res: ApiResponse<any>) => {
-      this.doiTacOptions = res.result?.items || [];
-    });
+    this.doiTacApiService
+      .getList({ pageSize: 1000, pageNumber: 1 })
+      .subscribe((res: ApiResponse<any>) => {
+        this.doiTacOptions = res.result?.items || [];
+      });
   }
 
   load(): void {
@@ -52,7 +54,7 @@ export class HoaDonDoiTacListComponent implements OnInit {
       nam: this.nam,
       trangThaiThanhToanId: this.trangThaiThanhToanId,
       pageNumber: this.pageNumber,
-      pageSize: this.pageSize
+      pageSize: this.pageSize,
     };
     this.thanhToanService.getHoaDonDoiTacList(query).subscribe({
       next: (res: ApiResponse<any>) => {
@@ -62,8 +64,11 @@ export class HoaDonDoiTacListComponent implements OnInit {
       },
       error: () => {
         this.loading = false;
-        this.notification.error('Lỗi', 'Không thể tải danh sách hóa đơn đối tác');
-      }
+        this.notification.error(
+          'Lỗi',
+          'Không thể tải danh sách hóa đơn đối tác',
+        );
+      },
     });
   }
 
@@ -78,10 +83,11 @@ export class HoaDonDoiTacListComponent implements OnInit {
       nzContent: HoaDonDoiTacFormComponent,
       nzComponentParams: { item, doiTacOptions: this.doiTacOptions },
       nzFooter: null,
-      nzWidth: 700
+      nzWidth: 800,
+      nzBodyStyle: { 'max-height': '70vh', 'overflow': 'auto' },
     });
 
-    modal.afterClose.subscribe(res => {
+    modal.afterClose.subscribe((res) => {
       if (res) this.load();
     });
   }
@@ -95,13 +101,15 @@ export class HoaDonDoiTacListComponent implements OnInit {
       nzTitle: 'Xác nhận thanh toán',
       nzContent: `Bạn đã thực hiện thanh toán ${item.soTien.toLocaleString()}đ cho đối tác ${item.tenDoiTac}?`,
       nzOnOk: () => {
-        this.thanhToanService.xacNhanThanhToanDoiTac(item.id).subscribe((res: ApiResponse<any>) => {
-          if (res.isOk) {
-            this.notification.success('Thành công', 'Đã xác nhận thanh toán');
-            this.load();
-          }
-        });
-      }
+        this.thanhToanService
+          .xacNhanThanhToanDoiTac(item.id)
+          .subscribe((res: ApiResponse<any>) => {
+            if (res.isOk) {
+              this.notification.success('Thành công', 'Đã xác nhận thanh toán');
+              this.load();
+            }
+          });
+      },
     });
   }
 
@@ -111,13 +119,15 @@ export class HoaDonDoiTacListComponent implements OnInit {
       nzContent: 'Bạn có chắc chắn muốn xóa hóa đơn đối tác này?',
       nzOkDanger: true,
       nzOnOk: () => {
-        this.thanhToanService.deleteHoaDonDoiTac(item.id).subscribe((res: ApiResponse<any>) => {
-          if (res.isOk) {
-            this.notification.success('Thành công', 'Đã xóa hóa đơn đối tác');
-            this.load();
-          }
-        });
-      }
+        this.thanhToanService
+          .deleteHoaDonDoiTac(item.id)
+          .subscribe((res: ApiResponse<any>) => {
+            if (res.isOk) {
+              this.notification.success('Thành công', 'Đã xóa hóa đơn đối tác');
+              this.load();
+            }
+          });
+      },
     });
   }
 }

@@ -183,7 +183,6 @@ export class YeuCauThiCongListComponent implements OnInit, OnDestroy {
       const kind =
         n.loaiThongBaoId ?? (n.metadata && n.metadata.loaiThongBaoId) ?? null;
       if (kind === 11) {
-        // Assume kind 11 for Construction Request
         this.load();
       }
     });
@@ -233,14 +232,31 @@ export class YeuCauThiCongListComponent implements OnInit, OnDestroy {
   }
 
   private applyHighlight(): void {
-    if (!this.highlightId) return;
-    const it = this.items.find((x) => x.id === this.highlightId);
-    if (it) {
-      it._highlight = true;
-      setTimeout(() => {
-        it._highlight = false;
-      }, 6000);
+    const id = this.highlightId;
+    if (!id) return;
+    const idx = this.items.findIndex(x => x.id === id);
+    if (idx !== -1) {
+      const item = this.items[idx];
+      this.items = [item, ...this.items.filter((_, i) => i !== idx)];
+      try { (this.items[0] as any)._highlight = true; } catch (e) {}
+      setTimeout(() => { try { delete (this.items[0] as any)._highlight; this.items = [...this.items]; } catch (e) {} }, 6000);
+      return;
     }
+
+    try {
+      this.service.getById(id).subscribe({
+        next: (res) => {
+          if (res.isOk && res.result) {
+            const item = res.result;
+            (item as any)._highlight = true;
+            this.items = [item as any, ...this.items];
+            this.total = (this.total || 0) + 1;
+            setTimeout(() => { try { delete (this.items[0] as any)._highlight; this.items = [...this.items]; } catch (e) {} }, 6000);
+          }
+        },
+        error: () => {}
+      });
+    } catch (e) {}
   }
 
   onSearch(): void {

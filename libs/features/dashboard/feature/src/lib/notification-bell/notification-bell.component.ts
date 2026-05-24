@@ -97,7 +97,7 @@ export class NotificationBellComponent implements OnInit, OnDestroy {
       } catch (e) { n._read = true; }
     } else { n._read = true; }
 
-    const kind = n.loaiThongBaoId ?? null;
+    let kind = n.loaiThongBaoId ?? null;
 
     let refId: number | null = null;
     if (n.referenceId != null) {
@@ -105,13 +105,18 @@ export class NotificationBellComponent implements OnInit, OnDestroy {
       refId = Number.isNaN(parsed) ? null : parsed;
     }
 
-    if (refId == null && typeof n.metadata === 'string') {
+    if (typeof n.metadata === 'string') {
       try {
         const metaObj = JSON.parse(n.metadata);
-        const mId = metaObj?.referenceId ?? metaObj?.id ?? metaObj?.Id;
-        if (mId != null) {
-          const p = parseInt(mId, 10);
-          refId = Number.isNaN(p) ? null : p;
+        if (refId == null) {
+          const mId = metaObj?.referenceId ?? metaObj?.id ?? metaObj?.Id;
+          if (mId != null) {
+            const p = parseInt(mId, 10);
+            refId = Number.isNaN(p) ? null : p;
+          }
+        }
+        if (kind == null) {
+          kind = metaObj?.loaiThongBaoId ?? metaObj?.Kind ?? metaObj?.kind ?? null;
         }
       } catch {}
     }
@@ -120,8 +125,31 @@ export class NotificationBellComponent implements OnInit, OnDestroy {
       refId = n.id;
     }
 
-    const tabIndex = (kind === 2) ? 1 : 0;
+    const title = (n.tieuDe || n.title || '').toLowerCase();
+    const content = (n.noiDung || n.content || '').toLowerCase();
+    const k = Number(kind);
+
+    let tabIndex = 0;
+    const isPhanAnh = k === 5
+      || title.includes('phản ánh') || title.includes('khiếu nại') || title.includes('góp ý')
+      || content.includes('phản ánh') || content.includes('khiếu nại') || content.includes('góp ý');
+
+    if (!isPhanAnh) {
+      if (k === 2 || title.includes('phương tiện') || content.includes('phương tiện')) {
+        tabIndex = 1;
+      } else if (k === 10 || k === 3 || title.includes('sửa chữa') || content.includes('sửa chữa')) {
+        tabIndex = 2;
+      } else if (k === 11 || k === 4 || title.includes('thi công') || content.includes('thi công')) {
+        tabIndex = 3;
+      }
+    }
+
     try { this.dropdownVisible = false; } catch (e) {}
-    this.router.navigate(['/dashboard/resident/requests'], { queryParams: { id: refId, tab: tabIndex } });
+
+    if (isPhanAnh) {
+      this.router.navigate(['/dashboard/phan-anh'], { queryParams: { id: refId } });
+    } else {
+      this.router.navigate(['/dashboard/resident/requests'], { queryParams: { id: refId, tab: tabIndex } });
+    }
   }
 }

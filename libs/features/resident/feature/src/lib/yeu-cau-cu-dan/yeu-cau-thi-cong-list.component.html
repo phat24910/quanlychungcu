@@ -1,6 +1,6 @@
-<div class="yeu-cau-thi-cong-list">
+﻿<div class="yeu-cau-thi-cong-list">
   <!-- Toolbar -->
-  <div class="flex justify-between items-center mb-6">
+  <div class="flex justify-between items-center mb-3">
     <div class="flex items-center gap-3">
       <input nz-input placeholder="Tìm theo căn hộ, người gửi" [(ngModel)]="keyword" (keydown.enter)="onSearch()"
         class="w-80 rounded-lg h-10 border-gray-200" />
@@ -85,7 +85,7 @@
   </nz-modal>
 
   <!-- Table -->
-  <app-scroll-table height="calc(100vh - 320px)">
+  <app-scroll-table height="calc(100vh - 240px)">
     <nz-table [nzData]="items" [nzLoading]="loading" [nzShowPagination]="false" nzBordered class="custom-table">
       <thead>
         <tr>
@@ -234,13 +234,25 @@
         </div>
       </div>
 
+      <!-- REASON -->
+      <div *ngIf="selectedRequest.lyDo || selectedRequest.lyDoHuy">
+        <label class="block text-xs font-bold text-gray-400 uppercase tracking-wider mb-2">Lý do</label>
+        <div *ngIf="selectedRequest.lyDo" class="p-3 bg-amber-50 border border-amber-100 rounded-lg text-amber-900 mb-2">
+          <span class="font-semibold">Lý do trả lại:</span> {{ selectedRequest.lyDo }}
+        </div>
+        <div *ngIf="selectedRequest.lyDoHuy" class="p-3 bg-red-50 border border-red-100 rounded-lg text-red-900">
+          <span class="font-semibold">Lý do hủy:</span> {{ selectedRequest.lyDoHuy }}
+        </div>
+      </div>
+
       <!-- PERSONNEL -->
       <div class="bg-gray-50 p-4 rounded-xl">
         <div class="flex justify-between items-center mb-4">
           <label class="text-sm font-bold text-gray-700 uppercase tracking-wider">Danh sách nhân sự ({{
             selectedRequest.nhanSuThiCongs?.length || 0 }})</label>
-          <button nz-button nzType="primary" nzSize="small" (click)="openAddNhanSu()"
-            *ngIf="selectedRequest.trangThaiYeuCauId !== 7 && selectedRequest.trangThaiYeuCauId !== 8">
+          <button nz-button nzType="dashed" nzSize="small" (click)="openAddNhanSu()"
+            *ngIf="selectedRequest.trangThaiYeuCauId !== 7 && selectedRequest.trangThaiYeuCauId !== 8"
+            class="rounded-lg border-indigo-200 text-indigo-600">
             <i nz-icon nzType="plus"></i> Thêm thợ
           </button>
         </div>
@@ -261,7 +273,7 @@
               <td class="font-medium">{{ ns.hoTen }}</td>
               <td>{{ ns.soCCCD }}</td>
               <td>{{ ns.soDienThoai }}</td>
-              <td><nz-tag class="rounded-full border-none px-3 font-semibold text-[11px] uppercase">{{ ns.vaiTro
+              <td><nz-tag class="rounded-full border-none px-3 font-semibold text-[11px]">{{ ns.vaiTro
                   }}</nz-tag></td>
               <td class="text-right"
                 *ngIf="selectedRequest.trangThaiYeuCauId !== 7 && selectedRequest.trangThaiYeuCauId !== 8">
@@ -269,9 +281,9 @@
                     nzType="delete"></i></button>
               </td>
             </tr>
-            <tr *ngIf="nsTable.data.length === 0">
+            <!-- <tr *ngIf="nsTable.data.length === 0">
               <td colspan="5" class="text-center text-gray-400 py-4">Chưa có danh sách nhân sự</td>
-            </tr>
+            </tr> -->
           </tbody>
         </nz-table>
       </div>
@@ -390,35 +402,40 @@
   <ng-container *nzModalContent>
     <div nz-form nzLayout="vertical">
       <nz-form-item>
-        <nz-form-label nzRequired>Họ và tên</nz-form-label>
+        <nz-form-label>Họ và tên</nz-form-label>
         <nz-form-control>
-          <input nz-input [(ngModel)]="nhanSuModel.hoTen" placeholder="Nguyễn Văn A" />
+          <input nz-input [(ngModel)]="nhanSuModel.hoTen"
+            style="border-radius:6px;border:1px solid #e5e7eb;padding:6px 12px;height:36px;box-sizing:border-box" />
         </nz-form-control>
       </nz-form-item>
       <div class="grid grid-cols-2 gap-4">
         <nz-form-item>
-          <nz-form-label nzRequired>Số CCCD</nz-form-label>
+          <nz-form-label>Số CCCD</nz-form-label>
           <nz-form-control>
-            <input nz-input [(ngModel)]="nhanSuModel.soCCCD" placeholder="012345678901" />
+            <input nz-input [(ngModel)]="nhanSuModel.soCCCD"
+              style="border-radius:6px;border:1px solid #e5e7eb;padding:6px 12px;height:36px;box-sizing:border-box" />
           </nz-form-control>
         </nz-form-item>
         <nz-form-item>
           <nz-form-label>Số điện thoại</nz-form-label>
           <nz-form-control>
-            <input nz-input [(ngModel)]="nhanSuModel.soDienThoai" placeholder="090..." />
+            <input nz-input [(ngModel)]="nhanSuModel.soDienThoai"
+              style="border-radius:6px;border:1px solid #e5e7eb;padding:6px 12px;height:36px;box-sizing:border-box" />
           </nz-form-control>
         </nz-form-item>
       </div>
       <nz-form-item>
         <nz-form-label>Vai trò</nz-form-label>
         <nz-form-control>
-          <input nz-input [(ngModel)]="nhanSuModel.vaiTro" placeholder="Ví dụ: Thợ điện, Phụ hồ..." />
+          <input nz-input [(ngModel)]="nhanSuModel.vaiTro" placeholder="Ví dụ: Thợ điện, Phụ hồ..."
+            style="border-radius:6px;border:1px solid #e5e7eb;padding:6px 12px;height:36px;box-sizing:border-box" />
         </nz-form-control>
       </nz-form-item>
       <nz-form-item>
         <nz-form-label>Ghi chú</nz-form-label>
         <nz-form-control>
-          <input nz-input [(ngModel)]="nhanSuModel.ghiChu" />
+          <input nz-input [(ngModel)]="nhanSuModel.ghiChu"
+            style="border-radius:6px;border:1px solid #e5e7eb;padding:6px 12px;height:36px;box-sizing:border-box" />
         </nz-form-control>
       </nz-form-item>
     </div>

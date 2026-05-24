@@ -118,4 +118,21 @@ export class ThanhToanService {
   xacNhanThanhToanDoiTac(id: number): Observable<ApiResponse<any>> {
     return this.http.put<ApiResponse<any>>(`${this.base}/hoa-don-doi-tac/xac-nhan-thanh-toan`, { id });
   }
+
+  // --- Catalog Selectors ---
+  getLoaiChiTietHoaDonForSelector(): Observable<ApiResponse<any>> {
+    return this.http.post<ApiResponse<any>>(`${this.base}/catalog/loai-chi-tiet-hoa-don-for-selector`, {});
+  }
+
+  getTrangThaiHoaDonForSelector(): Observable<ApiResponse<any>> {
+    return this.http.post<ApiResponse<any>>(`${this.base}/catalog/trang-thai-hoa-don-for-selector`, {});
+  }
+
+  getTrangThaiDotThanhToanForSelector(): Observable<ApiResponse<any>> {
+    return this.http.post<ApiResponse<any>>(`${this.base}/catalog/trang-thai-dot-thanh-toan-for-selector`, {});
+  }
+
+  getTrangThaiThanhToanDoiTacForSelector(): Observable<ApiResponse<any>> {
+    return this.http.post<ApiResponse<any>>(`${this.base}/catalog/trang-thai-thanh-toan-doi-tac-for-selector`, {});
+  }
 }

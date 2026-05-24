@@ -1,214 +1,100 @@
-<div class="profile-root" style="min-width:520px">
-  <div class="profile-header">
-    <!-- <div class="profile-avatar" *ngIf="profile?.anhDaiDienUrl">
-      <img [src]="profile.anhDaiDienUrl" alt="avatar" />
-    </div> -->
-    <div>
-      <div class="profile-name">{{ profile?.fullName || '-' }}</div>
+<div class="profile-container">
+  <div class="profile-card">
+    <div class="profile-header">
+      <div class="avatar-placeholder">
+        <i nz-icon nzType="user" nzTheme="outline"></i>
+      </div>
+      <div class="header-info">
+        <div class="profile-name">{{ profile?.fullName || '-' }}</div>
+        <div class="profile-sub" *ngIf="profile?.maDinhDanh">Mã định danh: {{ profile.maDinhDanh }}</div>
+      </div>
     </div>
-    <div style="margin-left:auto">
-      <button nz-button nzType="primary" (click)="openEdit()" *ngIf="!editMode">Chỉnh sửa</button>
-    </div>
-  </div>
 
-  <div class="profile-grid">
-    <ng-template #editTpl>
-      <form class="edit-form space-y-4" [formGroup]="editForm" (ngSubmit)="saveEdit()">
-        <div class="form-grid grid grid-cols-2 gap-3">
-          <div class="form-row flex items-center gap-3">
-            <label class="form-label w-28 text-gray-600 font-medium">Họ</label>
-            <input nz-input formControlName="lastName" placeholder="Họ"
-              class="w-full rounded-md border border-gray-200 px-3 py-2" />
-          </div>
-
-          <div class="form-row flex items-center gap-3">
-            <label class="form-label w-28 text-gray-600 font-medium">Tên</label>
-            <input nz-input formControlName="firstName" placeholder="Tên"
-              class="w-full rounded-md border border-gray-200 px-3 py-2" />
-          </div>
-
-          <div class="form-row flex items-center gap-3">
-            <label class="form-label w-28 text-gray-600 font-medium">CCCD/CMND</label>
-            <input nz-input formControlName="idCard" placeholder="Số CCCD/CMND"
-              class="w-full rounded-md border border-gray-200 px-3 py-2" />
-          </div>
-
-          <div class="form-row flex items-center gap-3">
-            <label class="form-label w-28 text-gray-600 font-medium">Số điện thoại</label>
-            <input nz-input formControlName="phoneNumber" placeholder="Số điện thoại"
-              class="w-full rounded-md border border-gray-200 px-3 py-2" />
-          </div>
-
-          <div class="form-row flex items-center gap-3">
-            <label class="form-label w-28 text-gray-600 font-medium">Ngày sinh</label>
-            <input type="date" nz-input formControlName="dob"
-              class="w-full rounded-md border border-gray-200 px-3 py-2" />
-          </div>
-
-          <div class="form-row flex items-center gap-3">
-            <label class="form-label w-28 text-gray-600 font-medium">Giới tính</label>
-            <nz-radio-group formControlName="gioiTinhId" class="w-full" style="display:flex;gap:8px;flex-wrap:wrap">
-              <label nz-radio *ngFor="let g of gioiTinhOptions" [nzValue]="g.id ?? g.value ?? g.key">{{ g.name || g.ten || g.label }}</label>
-            </nz-radio-group>
-          </div>
-
-          <div class="form-row flex items-center gap-3">
-            <label class="form-label w-28 text-gray-600 font-medium">Địa chỉ</label>
-            <input nz-input formControlName="diaChi" placeholder="Địa chỉ"
-              class="w-full rounded-md border border-gray-200 px-3 py-2" />
-          </div>
-
-          <div class="form-row full-width col-span-2 flex items-center gap-3">
-            <label class="form-label w-28 text-gray-600 font-medium">Quan hệ cư trú</label>
-            <nz-select formControlName="loaiQuanHeCuTruId" class="w-full rounded-md border border-gray-200"
-              nzAllowClear>
-              <nz-option *ngFor="let t of loaiQuanHeOptions" [nzValue]="t.id ?? t.value ?? t.key"
-                [nzLabel]="t.name || t.ten || t.tenLoaiQuanHeCuTru || t.label"></nz-option>
-            </nz-select>
-          </div>
+    <div class="info-section">
+      <div class="section-title">
+        Thông tin cá nhân
+      </div>
+      <div class="info-grid">
+        <div class="info-item">
+          <span class="info-label">CCCD/CMND</span>
+          <span class="info-value">{{ profile?.idCard || '-' }}</span>
         </div>
-
-        <div class="docs-section border-t pt-2 mt-2">
-          <div class="flex items-center justify-between mb-2">
-            <div class="font-medium text-sm">Tài liệu có sẵn</div>
-            <div style="display:flex;gap:8px;align-items:center">
-              <button nz-button nzType="default" (click)="addDocumentCard()" type="button"
-                style="display:flex;align-items:center;gap:8px;padding:8px 14px;font-weight:600">
-                <i nz-icon nzType="plus" nzTheme="outline"></i>
-                <span>Thêm tài liệu</span>
-              </button>
-              <button nz-button nzType="default" (click)="removeDocumentCard(documentCards.length-1)"
-                [disabled]="!documentCards || documentCards.length===0" type="button"
-                style="display:flex;align-items:center;gap:8px;padding:8px 12px;font-weight:600;border:1px solid #fecaca;background:#fff1f2;color:#991b1b">
-                <i nz-icon nzType="delete" nzTheme="outline"></i>
-                <span>Xóa</span>
-              </button>
-            </div>
-          </div>
-
-          <input type="file" #cardFileInput multiple class="hidden" (change)="onCardFileInput($event)" />
-
-          <div *ngFor="let c of documentCards; let i = index" class="doc-card card-clean p-3 mb-3">
-            <div class="flex items-center gap-2">
-              <label class="w-28 text-gray-600 font-medium">Loại giấy tờ</label>
-              <nz-select class="w-full rounded-md border border-gray-200" [(ngModel)]="c.meta.loaiGiayToId"
-                [ngModelOptions]="{standalone: true}" nzAllowClear>
-                <nz-option *ngFor="let g of loaiGiayToOptions" [nzValue]="g.id ?? g.value ?? g.key"
-                  [nzLabel]="g.name || g.ten || g.label"></nz-option>
-              </nz-select>
-            </div>
-
-            <div class="flex items-center gap-2 mt-2">
-              <label class="w-28 text-gray-600 font-medium">Số giấy tờ</label>
-              <input nz-input class="w-full rounded-md border border-gray-200 px-3 py-2" [(ngModel)]="c.meta.soGiayTo"
-                [ngModelOptions]="{standalone: true}" />
-            </div>
-
-            <div class="flex items-center gap-2 mt-2">
-              <label class="w-28 text-gray-600 font-medium">Ngày phát hành</label>
-              <input type="date" nz-input class="w-full rounded-md border border-gray-200 px-3 py-2"
-                [(ngModel)]="c.meta.ngayPhatHanh" [ngModelOptions]="{standalone: true}" />
-            </div>
-
-            <div class="flex items-center gap-2 mt-2">
-              <label class="w-28 text-gray-600 font-medium">Tệp</label>
-              <div class="flex-1">
-                <div *ngIf="(c.files?.length || 0) + (c.existingFiles?.length || 0)" class="text-sm text-gray-700 mb-1">
-                  {{ (c.files?.length || 0) + (c.existingFiles?.length || 0) }} file</div>
-                <div class="flex gap-2">
-                  <button nz-button nzType="default" type="button" class="rounded-md"
-                    (click)="startAddFileToCard(i, cardFileInput)"
-                    style="display:flex;align-items:center;gap:8px;padding:6px 12px;font-weight:600">
-                    <i nz-icon nzType="upload" nzTheme="outline"></i>
-                    <span>Thêm file</span>
-                  </button>
-                </div>
-              </div>
-            </div>
-
-            <div *ngIf="c.files?.length" class="mt-2">
-              <div *ngFor="let f of c.files; let fileIndex = index"
-                class="flex items-center justify-between py-1 px-2 border rounded mb-1">
-                <span class="text-sm truncate">{{ f.name }}</span>
-                <button nz-button nzType="text" nzDanger type="button" (click)="removeDocumentFile(i, fileIndex)">
-                  <i nz-icon nzType="delete" nzTheme="outline"></i>
-                </button>
-              </div>
-            </div>
-
-            <div *ngIf="c.existingFiles?.length" class="mt-2">
-              <!-- <div class="text-sm text-gray-500 mb-1">Tài liệu có sẵn:</div> -->
-              <div *ngFor="let ef of c.existingFiles; let efIndex = index"
-                class="flex items-center justify-between py-1 px-2 border rounded mb-1">
-                <a [href]="ef.fileUrl" target="_blank" class="text-sm truncate text-blue-600">{{ ef.fileName ||
-                  ef.fileUrl }}</a>
-                <button nz-button nzType="text" nzDanger type="button" (click)="removeExistingFile(i, efIndex)">
-                  <i nz-icon nzType="delete" nzTheme="outline"></i>
-                </button>
-              </div>
-            </div>
-          </div>
+        <div class="info-item">
+          <span class="info-label">Số điện thoại</span>
+          <span class="info-value">{{ profile?.phoneNumber || '-' }}</span>
         </div>
-
-        <div style="display:flex;gap:8px;justify-content:flex-end;margin-top:6px">
-          <button nz-button (click)="cancelEdit()" type="button">Hủy</button>
-          <button nz-button nzType="primary" [nzLoading]="saving" type="submit">Lưu</button>
+        <div class="info-item">
+          <span class="info-label">Ngày sinh</span>
+          <span class="info-value">{{ profile?.dob ? (profile.dob | date:'dd/MM/yyyy') : '-' }}</span>
         </div>
-      </form>
-    </ng-template>
-
-    <div class="profile-row">
-      <div class="profile-label">Số CCCD/CMND:</div>
-      <div class="profile-value">{{ profile?.idCard || '-' }}</div>
-    </div>
-    <div class="profile-row">
-      <div class="profile-label">Số điện thoại:</div>
-      <div class="profile-value">{{ profile?.phoneNumber || '-' }}</div>
-    </div>
-    <div class="profile-row">
-      <div class="profile-label">Ngày sinh:</div>
-      <div class="profile-value">{{ profile?.dob ? (profile.dob | date:'dd/MM/yyyy') : '-' }}</div>
-    </div>
-    <div class="profile-row">
-      <div class="profile-label">Giới tính:</div>
-      <div class="profile-value">{{ profile?.gioiTinhName || '-' }}</div>
-    </div>
-    <div class="profile-row">
-      <div class="profile-label">Quan hệ cư trú:</div>
-      <div class="profile-value">{{ profile?.loaiQuanHeTen || profile?.tenLoaiQuanHeCuTru || '-' }}</div>
-    </div>
-    <div class="profile-row">
-      <div class="profile-label">Trạng thái:</div>
-      <div class="profile-value">{{ profile?.trangThaiCuTruTen || (profile?.trangThaiCuTruId ? profile.trangThaiCuTruId
-        : '-') }}</div>
-    </div>
-    <div class="profile-row">
-      <div class="profile-label">Ngày bắt đầu:</div>
-      <div class="profile-value">{{ profile?.ngayBatDau ? (profile.ngayBatDau | date:'dd/MM/yyyy') : '-' }}</div>
-    </div>
-    <div class="profile-row">
-      <div class="profile-label">Ngày kết thúc:</div>
-      <div class="profile-value">{{ profile?.ngayKetThuc ? (profile.ngayKetThuc | date:'dd/MM/yyyy') : '-' }}</div>
-    </div>
-  </div>
-
-  <div style="margin-top:12px">
-    <div style="font-weight:700;color:#0f172a">Tài liệu cư trú</div>
-    <div *ngIf="profile?.taiLieuCuTrus?.length; else noDocs">
-      <div *ngFor="let d of profile.taiLieuCuTrus" class="doc-card">
-        <div class="doc-title">{{ d.tenLoaiGiayTo || d.loaiGiayToId || 'Giấy tờ' }}</div>
-        <div class="doc-meta">Số: <span class="profile-value">{{ d.soGiayTo || '-' }}</span></div>
-        <div class="doc-meta">Ngày phát hành: <span class="profile-value">{{ d.ngayPhatHanh ? (d.ngayPhatHanh |
-            date:'dd/MM/yyyy') : '-' }}</span></div>
-        <div *ngIf="d.files && d.files.length" style="margin-top:6px">
-          <div *ngFor="let f of d.files">
-            <a class="file-link" [href]="f.fileUrl" target="_blank">{{ f.fileName || f.fileUrl }}</a>
-          </div>
+        <div class="info-item">
+          <span class="info-label">Giới tính</span>
+          <span class="info-value">{{ profile?.gioiTinhName || '-' }}</span>
+        </div>
+        <div class="info-item info-item-full">
+          <span class="info-label">Địa chỉ</span>
+          <span class="info-value">{{ profile?.diaChi || '-' }}</span>
         </div>
       </div>
     </div>
-    <ng-template #noDocs>
-      <div style="color:#6b7280;margin-top:6px">Không có tài liệu</div>
-    </ng-template>
+
+    <div class="info-section">
+      <div class="section-title">
+        Thông tin cư trú
+      </div>
+      <div class="info-grid">
+        <div class="info-item">
+          <span class="info-label">Quan hệ cư trú</span>
+          <span class="info-value">{{ profile?.loaiQuanHeTen || profile?.tenLoaiQuanHeCuTru || '-' }}</span>
+        </div>
+        <div class="info-item">
+          <span class="info-label">Trạng thái</span>
+          <span class="info-value">
+            <span class="status-badge" [class.active]="profile?.trangThaiCuTruId === 1" [class.inactive]="profile?.trangThaiCuTruId !== 1">
+              {{ profile?.trangThaiCuTruTen || (profile?.trangThaiCuTruId ? profile.trangThaiCuTruId : '-') }}
+            </span>
+          </span>
+        </div>
+        <div class="info-item">
+          <span class="info-label">Ngày bắt đầu</span>
+          <span class="info-value">{{ profile?.ngayBatDau ? (profile.ngayBatDau | date:'dd/MM/yyyy') : '-' }}</span>
+        </div>
+        <div class="info-item">
+          <span class="info-label">Ngày kết thúc</span>
+          <span class="info-value">{{ profile?.ngayKetThuc ? (profile.ngayKetThuc | date:'dd/MM/yyyy') : '-' }}</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="info-section">
+      <div class="section-title">
+        <i nz-icon nzType="file-text" nzTheme="outline"></i>
+        Tài liệu cư trú
+      </div>
+      <div *ngIf="profile?.taiLieuCuTrus?.length; else noDocs" class="docs-list">
+        <div *ngFor="let d of profile.taiLieuCuTrus" class="doc-card">
+          <div class="doc-icon">
+            <i nz-icon nzType="file" nzTheme="outline"></i>
+          </div>
+          <div class="doc-body">
+            <div class="doc-title">{{ d.tenLoaiGiayTo || d.loaiGiayToId || 'Giấy tờ' }}</div>
+            <div class="doc-meta" *ngIf="d.soGiayTo">Số: <span>{{ d.soGiayTo }}</span></div>
+            <div class="doc-meta" *ngIf="d.ngayPhatHanh">Ngày phát hành: <span>{{ d.ngayPhatHanh | date:'dd/MM/yyyy' }}</span></div>
+            <div *ngIf="d.files && d.files.length" class="doc-files">
+              <a *ngFor="let f of d.files" class="file-link" [href]="f.fileUrl" target="_blank">
+                <i nz-icon nzType="paper-clip" nzTheme="outline"></i>
+                {{ f.fileName || f.fileUrl }}
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+      <ng-template #noDocs>
+        <div class="no-docs">
+          <i nz-icon nzType="inbox" nzTheme="outline"></i>
+          <span>Không có tài liệu</span>
+        </div>
+      </ng-template>
+    </div>
   </div>
 </div>

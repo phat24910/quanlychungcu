@@ -97,4 +97,12 @@ export class KhaoSatService {
   congBo(id: number): Observable<ApiResponse<KhaoSatResponse>> {
     return this.http.put<ApiResponse<KhaoSatResponse>>(`${this.base}/khao-sat/cong-bo`, { id });
   }
+
+  getDanhSachThamGia(query: any): Observable<ApiResponse<any>> {
+    return this.http.post<ApiResponse<any>>(`${this.base}/khao-sat/danh-sach-tham-gia`, query);
+  }
+
+  getLichSuBieuQuyet(query: any): Observable<ApiResponse<any>> {
+    return this.http.post<ApiResponse<any>>(`${this.base}/khao-sat/lich-su-bieu-quyet`, query);
+  }
 }

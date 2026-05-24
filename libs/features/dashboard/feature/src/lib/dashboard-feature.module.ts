@@ -37,7 +37,9 @@ const routes: Routes = [
       { path: 'thanh-toan', loadChildren: () => import('@features/thanh-toan/feature').then((m) => m.ThanhToanFeatureModule) },
       { path: 'bao-tri', loadChildren: () => import('@features/bao-tri/feature').then((m) => m.BaoTriFeatureModule) },
       { path: 'khao-sat', loadChildren: () => import('@features/khao-sat/feature').then((m) => m.KhaoSatFeatureModule) },
-      { path: 'phan-anh', loadChildren: () => import('@features/phan-anh/feature').then((m) => m.PhanAnhFeatureModule) }
+      { path: 'phan-anh', loadChildren: () => import('@features/phan-anh/feature').then((m) => m.PhanAnhFeatureModule) },
+      { path: 'sao-luu', loadChildren: () => import('@features/sao-luu/feature').then((m) => m.SaoLuuFeatureModule) },
+      { path: 'quy-thu-chi', loadChildren: () => import('@features/quy-thu-chi/feature').then((m) => m.QuyThuChiFeatureModule) }
     ]
   }
 ];

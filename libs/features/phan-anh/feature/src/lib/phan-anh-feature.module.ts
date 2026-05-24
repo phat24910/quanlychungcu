@@ -19,6 +19,7 @@ import { NzEmptyModule } from 'ng-zorro-antd/empty';
 import { NzAvatarModule } from 'ng-zorro-antd/avatar';
 import { NzImageModule } from 'ng-zorro-antd/image';
 import { NzRateModule } from 'ng-zorro-antd/rate';
+import { NzDrawerModule } from 'ng-zorro-antd/drawer';
 
 import { PhanAnhListComponent } from './phan-anh-list/phan-anh-list.component';
 import { PhanAnhDetailComponent } from './phan-anh-detail/phan-anh-detail.component';
@@ -52,7 +53,8 @@ const routes: Routes = [
     NzEmptyModule,
     NzAvatarModule,
     NzImageModule,
-    NzRateModule
+    NzRateModule,
+    NzDrawerModule
   ]
 })
 export class PhanAnhFeatureModule { }

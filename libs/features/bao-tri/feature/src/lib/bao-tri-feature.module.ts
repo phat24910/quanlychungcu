@@ -29,6 +29,7 @@ import { NzTimelineModule } from 'ng-zorro-antd/timeline';
 import { NzStepsModule } from 'ng-zorro-antd/steps';
 import { NzCheckboxModule } from 'ng-zorro-antd/checkbox';
 import { NzSpaceModule } from 'ng-zorro-antd/space';
+import { NzDrawerModule } from 'ng-zorro-antd/drawer';
 
 import { ThietBiListComponent } from './thiet-bi-list/thiet-bi-list.component';
 import { ThietBiFormComponent } from './thiet-bi-list/thiet-bi-form.component';
@@ -89,7 +90,8 @@ const routes: Routes = [
     NzTimelineModule,
     NzStepsModule,
     NzCheckboxModule,
-    NzSpaceModule
+    NzSpaceModule,
+    NzDrawerModule
   ]
 })
 export class BaoTriFeatureModule {}

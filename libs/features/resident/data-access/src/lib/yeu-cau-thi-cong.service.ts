@@ -48,6 +48,7 @@ export interface YeuCauThiCongDetail extends YeuCauThiCongListItem {
   tenNguoiXuLy: string;
   ngayXuLy: string;
   lyDo: string;
+  lyDoHuy?: string;
   nhanSuThiCongs: NhanSuThiCong[];
   danhSachTep: TepDinhKem[];
 }

@@ -83,7 +83,8 @@ export class DashboardComponent implements OnInit {
       { title: 'Thanh toán', children: [
         { title: 'Đợt thanh toán', route: '/dashboard/thanh-toan/dot-thanh-toan', icon: 'calendar' },
         { title: 'Hóa đơn cư dân', route: '/dashboard/thanh-toan/hoa-don', icon: 'file-text' },
-        { title: 'Hóa đơn đối tác', route: '/dashboard/thanh-toan/hoa-don-doi-tac', icon: 'solution' }
+        { title: 'Hóa đơn đối tác', route: '/dashboard/thanh-toan/hoa-don-doi-tac', icon: 'solution' },
+        { title: 'Quỹ Thu/Chi', route: '/dashboard/quy-thu-chi', icon: 'wallet' }
       ], icon: 'pay-circle' },
       { title: 'Bảo trì hạ tầng', children: [
         { title: 'Thiết bị hạ tầng', route: '/dashboard/bao-tri/thiet-bi', icon: 'database' },
@@ -93,6 +94,7 @@ export class DashboardComponent implements OnInit {
       ], icon: 'setting' },
       { title: 'Khảo sát & Bầu cử', route: '/dashboard/khao-sat', icon: 'solution' },
       { title: 'Phản ánh cư dân', route: '/dashboard/phan-anh', icon: 'message' },
+      { title: 'Sao lưu & Khôi phục', route: '/dashboard/sao-luu', icon: 'cloud-server' },
       // { title: 'Thông báo', route: '/dashboard/notifications', icon: 'notification' },
       // { title: 'Cài đặt', route: '/dashboard/settings', icon: 'setting' }
     ];
