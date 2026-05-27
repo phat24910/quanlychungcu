@@ -20,6 +20,8 @@ import { NzListModule } from 'ng-zorro-antd/list';
 import { NzEmptyModule } from 'ng-zorro-antd/empty';
 import { NzButtonModule } from 'ng-zorro-antd/button';
 import { NzAvatarModule } from 'ng-zorro-antd/avatar';
+import { NzSpinModule } from 'ng-zorro-antd/spin';
+import { NzNotificationModule } from 'ng-zorro-antd/notification';
 import { FormsModule } from '@angular/forms';
 
 const routes: Routes = [
@@ -60,6 +62,8 @@ const routes: Routes = [
     NzEmptyModule,
     NzButtonModule,
     NzAvatarModule,
+    NzSpinModule,
+    NzNotificationModule,
     NzInputModule,
     NzSelectModule,
     NzTagModule,

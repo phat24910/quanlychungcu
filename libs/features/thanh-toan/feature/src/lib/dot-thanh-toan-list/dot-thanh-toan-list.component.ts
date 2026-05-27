@@ -133,6 +133,15 @@ export class DotThanhToanListComponent implements OnInit {
     });
   }
 
+  onRefresh(): void {
+    this.keyword = '';
+    this.thang = new Date().getMonth() + 1;
+    this.nam = new Date().getFullYear();
+    this.trangThaiId = null;
+    this.pageNumber = 1;
+    this.load();
+  }
+
   delete(item: any): void {
     this.modal.confirm({
       nzTitle: 'Xác nhận xóa',

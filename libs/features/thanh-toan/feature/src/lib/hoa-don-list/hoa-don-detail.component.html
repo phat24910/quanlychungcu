@@ -37,7 +37,7 @@
           </tr>
         </thead>
         <tbody>
-          <tr *ngFor="let child of innerTable.data">
+          <tr *ngFor="let child of innerTable.data" (click)="openChiTiet(child)" class="cursor-pointer hover:bg-blue-50 transition-colors">
             <td><span class="font-semibold text-gray-700">{{ child.tenMucPhi }}</span></td>
             <td><nz-tag nzColor="default">{{ getLoaiDinhGiaLabel(child.loaiDinhGiaId) }}</nz-tag></td>
             <td class="text-right">{{ child.soLuong | number }}</td>
@@ -53,4 +53,132 @@
       <div class="text-sm text-gray-600">{{ item.ghiChu }}</div>
     </div>
   </div>
+
+  <nz-modal [(nzVisible)]="chiTietVisible" [nzTitle]="'Chi tiết: ' + (selectedChiTiet?.tenMucPhi || '')"
+    (nzOnCancel)="chiTietVisible=false" [nzFooter]="null" nzWidth="700px">
+    <div *nzModalContent>
+      <nz-spin [nzSpinning]="chiTietLoading">
+        <div *ngIf="!chiTietLoading && selectedChiTiet">
+          <!-- Giá cố định (gửi xe) -->
+          <ng-container *ngIf="selectedChiTiet.loaiDinhGiaId === 1">
+            <h4 class="text-sm font-bold text-gray-500 uppercase mb-3">Danh sách biển số xe</h4>
+            <nz-table #coDinhTable [nzData]="chiTietData" [nzFrontPagination]="false" [nzShowPagination]="false" nzSize="small">
+              <thead>
+                <tr>
+                  <th>Biển số xe</th>
+                  <th>Loại xe</th>
+                  <th class="text-right">Số lượng</th>
+                  <th class="text-right">Đơn giá</th>
+                  <th class="text-right">Thành tiền</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let d of coDinhTable.data">
+                  <td><span class="font-mono font-bold text-blue-600">{{ d.bienSoXe || d.bienSo }}</span></td>
+                  <td>{{ d.tenLoaiXe || d.loaiXe || '-' }}</td>
+                  <td class="text-right">{{ d.soLuong | number }}</td>
+                  <td class="text-right">{{ d.donGia | number }}</td>
+                  <td class="text-right font-bold text-indigo-600">{{ (d.soLuong * d.donGia) | number }} đ</td>
+                </tr>
+              </tbody>
+            </nz-table>
+          </ng-container>
+
+          <!-- Giá lũy tiến (điện/nước) -->
+          <ng-container *ngIf="selectedChiTiet.loaiDinhGiaId === 2">
+            <h4 class="text-sm font-bold text-gray-500 uppercase mb-3">Chi tiết lũy tiến</h4>
+            <!-- Images -->
+            <div class="flex gap-4 mb-4" *ngIf="chiTietData[0]?.anhDongHo">
+              <div *ngFor="let img of (chiTietData[0].anhDongHo || '').split(',')" class="flex flex-col items-center">
+                <img [src]="img" alt="Ảnh đồng hồ" class="w-32 h-32 object-cover rounded-lg border border-gray-200" />
+                <span class="text-[10px] text-gray-400 mt-1">Ảnh đồng hồ</span>
+              </div>
+            </div>
+            <!-- Meter readings -->
+            <div class="grid grid-cols-2 gap-4 mb-4 p-3 bg-blue-50 rounded-lg" *ngIf="chiTietData[0]?.chiSoCu !== undefined">
+              <div>
+                <span class="text-xs font-bold text-gray-400">Chỉ số cũ</span>
+                <div class="text-lg font-bold text-gray-700">{{ chiTietData[0].chiSoCu | number }}</div>
+              </div>
+              <div>
+                <span class="text-xs font-bold text-gray-400">Chỉ số mới</span>
+                <div class="text-lg font-bold text-gray-700">{{ chiTietData[0].chiSoMoi | number }}</div>
+              </div>
+            </div>
+            <!-- Tiers -->
+            <nz-table #luyTienTable [nzData]="chiTietData" [nzFrontPagination]="false" [nzShowPagination]="false" nzSize="small">
+              <thead>
+                <tr>
+                  <th>Bậc thang</th>
+                  <th class="text-right">Chỉ số từ</th>
+                  <th class="text-right">Chỉ số đến</th>
+                  <th class="text-right">Số lượng</th>
+                  <th class="text-right">Đơn giá</th>
+                  <th class="text-right">Thành tiền</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let d of luyTienTable.data">
+                  <td><span class="font-semibold">{{ d.tenBac || d.bac || '-' }}</span></td>
+                  <td class="text-right">{{ d.chiSoTu || d.tu | number }}</td>
+                  <td class="text-right">{{ d.chiSoDen || d.den | number }}</td>
+                  <td class="text-right">{{ d.soLuong | number }}</td>
+                  <td class="text-right">{{ d.donGia | number }}</td>
+                  <td class="text-right font-bold text-indigo-600">{{ d.thanhTien | number }} đ</td>
+                </tr>
+              </tbody>
+            </nz-table>
+          </ng-container>
+
+          <!-- Theo diện tích -->
+          <ng-container *ngIf="selectedChiTiet.loaiDinhGiaId === 3">
+            <h4 class="text-sm font-bold text-gray-500 uppercase mb-3">Chi tiết tính theo diện tích</h4>
+            <div class="p-4 bg-green-50 rounded-lg" *ngIf="chiTietData[0]">
+              <div class="grid grid-cols-3 gap-4 text-center">
+                <div>
+                  <span class="text-xs font-bold text-gray-400">Diện tích</span>
+                  <div class="text-xl font-bold text-green-700">{{ (chiTietData[0].dienTich || selectedChiTiet.soLuong) | number }} m²</div>
+                </div>
+                <div>
+                  <span class="text-xs font-bold text-gray-400">Đơn giá</span>
+                  <div class="text-xl font-bold text-gray-700">{{ (chiTietData[0].donGia || selectedChiTiet.donGia) | number }} đ/m²</div>
+                </div>
+                <div>
+                  <span class="text-xs font-bold text-gray-400">Thành tiền</span>
+                  <div class="text-xl font-bold text-red-500">{{ (chiTietData[0].thanhTien || selectedChiTiet.thanhTien) | number }} đ</div>
+                </div>
+              </div>
+            </div>
+          </ng-container>
+
+          <!-- Theo khung giờ -->
+          <ng-container *ngIf="selectedChiTiet.loaiDinhGiaId === 4">
+            <h4 class="text-sm font-bold text-gray-500 uppercase mb-3">Chi tiết tính theo khung giờ</h4>
+            <nz-table #khungGioTable [nzData]="chiTietData" [nzFrontPagination]="false" [nzShowPagination]="false" nzSize="small">
+              <thead>
+                <tr>
+                  <th>Khung giờ</th>
+                  <th class="text-right">Số lượng</th>
+                  <th class="text-right">Đơn giá</th>
+                  <th class="text-right">Thành tiền</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let d of khungGioTable.data">
+                  <td><span class="font-semibold">{{ d.tenKhungGio || d.khungGio }}</span></td>
+                  <td class="text-right">{{ d.soLuong | number }}</td>
+                  <td class="text-right">{{ d.donGia | number }}</td>
+                  <td class="text-right font-bold text-indigo-600">{{ d.thanhTien || (d.soLuong * d.donGia) | number }} đ</td>
+                </tr>
+              </tbody>
+            </nz-table>
+          </ng-container>
+
+          <div *ngIf="chiTietData.length === 0" class="text-center text-gray-400 py-4">
+            <i nz-icon nzType="info-circle" class="mr-1"></i> Không có dữ liệu chi tiết
+          </div>
+        </div>
+      </nz-spin>
+    </div>
+  </nz-modal>
 </nz-spin>

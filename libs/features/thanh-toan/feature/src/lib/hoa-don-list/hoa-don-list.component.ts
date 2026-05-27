@@ -127,6 +127,16 @@ export class HoaDonListComponent implements OnInit {
     });
   }
 
+  onRefresh(): void {
+    this.keyword = '';
+    this.thang = new Date().getMonth() + 1;
+    this.nam = new Date().getFullYear();
+    this.dotThanhToanId = null;
+    this.trangThaiHoaDonId = null;
+    this.pageNumber = 1;
+    this.load();
+  }
+
   publishInvoices(): void {
     if (!this.dotThanhToanId) {
       this.notification.warning(
