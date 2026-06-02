@@ -1,5 +1,5 @@
 <form nz-form (ngSubmit)="save()" #f="ngForm">
-  <div class="form-card" style="max-width:720px;margin:0 auto;padding:0 12px;">
+  <div class="form-card w-full" style="max-width:720px;margin:0 auto;padding:0 12px;">
     <div class="grid grid-cols-1 lg:grid-cols-2 gap-4 md:gap-6">
       <div class="flex flex-col">
         <label class="mb-2 font-medium text-gray-700">Mã dịch vụ</label>
@@ -39,7 +39,7 @@
   </div>
 
   <div class="actions" style="margin-top:16px; text-align:center;" *ngIf="!inModal">
-    <button nz-button nzType="primary" type="submit">Lưu</button>
-    <button nz-button type="button" (click)="cancel()" style="margin-left:8px">Hủy</button>
+    <button nz-button nzType="primary" type="submit" class="rounded-lg">Lưu</button>
+    <button nz-button type="button" (click)="cancel()" style="margin-left:8px" class="rounded-lg">Hủy</button>
   </div>
 </form>

@@ -5,25 +5,24 @@
         <div class="mb-4 p-4 bg-blue-50 border border-blue-100 rounded-lg flex items-start gap-3">
           <i nz-icon nzType="info-circle" class="text-blue-500 mt-1"></i>
           <div class="text-xs text-blue-800">
-            Sử dụng file Excel mẫu để đảm bảo dữ liệu được nhập chính xác. 
+            Sử dụng file Excel mẫu để đảm bảo dữ liệu được nhập chính xác.
             Bạn có thể xuất file mẫu từ màn hình danh sách.
           </div>
         </div>
 
-        <div class="grid grid-cols-2 gap-4 mb-4">
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-4">
           <div>
             <label class="text-xs font-bold text-gray-500 mb-1 block">Tháng / Năm</label>
             <div class="flex gap-2">
-              <nz-select [(ngModel)]="thang" style="width: 70px" class="rounded-lg">
+              <nz-select [(ngModel)]="thang" nzAllowClear nzPlaceHolder="Tháng" style="width: 90px" class="rounded-lg">
                 <nz-option *ngFor="let m of [1,2,3,4,5,6,7,8,9,10,11,12]" [nzValue]="m" [nzLabel]="m"></nz-option>
               </nz-select>
-              <nz-select [(ngModel)]="nam" style="width: 100px" class="rounded-lg">
-                <nz-option *ngFor="let y of [2024,2025,2026]" [nzValue]="y" [nzLabel]="y"></nz-option>
-              </nz-select>
+              <input nz-input type="number" [(ngModel)]="nam" placeholder="Năm" min="2020" max="2100"
+                style="width:100px;border-radius:6px;padding:6px 12px;border:1px solid #e5e7eb;height:40px;box-sizing:border-box" />
             </div>
           </div>
           <div>
-            <label class="text-xs font-bold text-gray-500 mb-1block">Ngày chốt chỉ số</label>
+            <label class="text-xs font-bold text-gray-500 mb-1 block">Ngày chốt chỉ số</label>
             <nz-date-picker [(ngModel)]="ngayChot" class="w-full rounded-lg"></nz-date-picker>
           </div>
         </div>
@@ -35,7 +34,7 @@
         </nz-upload>
 
         <div class="mt-6 flex justify-end">
-          <button nz-button nzType="primary" (click)="doImportExcel()" [nzLoading]="importing" class="h-10 px-8 rounded-lg font-bold bg-indigo-600 border-indigo-600">
+          <button nz-button nzType="primary" (click)="doImportExcel()" [nzLoading]="importing" class="h-10 px-8 rounded-lg font-bold">
             <i nz-icon nzType="cloud-upload"></i>&nbsp;Bắt đầu nhập
           </button>
         </div>
@@ -47,7 +46,7 @@
         <div class="mb-4 p-4 bg-amber-50 border border-amber-100 rounded-lg flex items-start gap-3">
           <i nz-icon nzType="warning" class="text-amber-500 mt-1"></i>
           <div class="text-xs text-amber-800">
-            Tải lên file ZIP chứa các ảnh đồng hồ. 
+            Tải lên file ZIP chứa các ảnh đồng hồ.
             Tên file ảnh phải khớp với Mã căn hộ (VD: A101.jpg, B202.png) để hệ thống tự động nhận diện.
           </div>
         </div>

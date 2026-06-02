@@ -3,16 +3,16 @@
   <div class="bg-white p-3 rounded-xl shadow-sm border border-gray-100 mb-3 flex flex-wrap gap-4 items-end">
     <div>
       <!-- <label class="text-[11px] font-bold text-gray-400 mb-1.5 block ml-1">Tìm kiếm</label> -->
-      <div style="display:flex;align-items:center;gap:8px">
+      <div style="display:flex;align-items:center;gap:8px" class="flex-wrap">
         <input nz-input placeholder="Mã giao dịch, người giao dịch..." [(ngModel)]="keyword" (keydown.enter)="load()"
-          style="min-width:260px;width:320px;border-radius:8px;padding:8px 12px;border:1px solid #e5e7eb;height:40px;box-sizing:border-box" />
+          class="w-full sm:w-80" style="border-radius:8px;padding:8px 12px;border:1px solid #e5e7eb;height:40px;box-sizing:border-box" />
         <button nz-button (click)="load()"
           style="display:flex;align-items:center;background:#0b84e6;border-color:#0b84e6;color:#fff;border-radius:8px;padding:6px 14px;font-weight:600;height:40px;box-sizing:border-box">
           <i nz-icon nzType="search" nzTheme="outline"></i>&nbsp;Tìm kiếm</button>
         <button nz-button type="button" (click)="advancedVisible = true"
           style="height:40px;padding:6px 12px;border-radius:6px;display:flex;align-items:center;gap:8px;font-weight:600">
           <i nz-icon nzType="filter" nzTheme="outline"></i>
-          <span>Tìm nâng cao</span>
+          <span class="hidden sm:inline">Tìm nâng cao</span>
         </button>
         <button nz-button type="button" (click)="onRefresh()"
           style="height:40px;padding:6px 12px;border-radius:6px;display:flex;align-items:center;justify-content:center;gap:8px;font-weight:600;border:1px solid #60a5fa;background:#eff6ff;color:#1e3a8a">
@@ -23,7 +23,7 @@
   </div>
 
   <!-- Action bar -->
-  <div class="flex items-center justify-between mb-3">
+  <div class="page-toolbar flex items-center justify-between flex-wrap gap-2 sm:gap-3 mb-3">
     <div class="flex items-center gap-2">
       <button nz-button nzType="primary" (click)="openTaoPhieuThu()"
         style="height:40px;padding:6px 12px;border-radius:8px;display:flex;align-items:center;gap:8px;font-weight:700;box-shadow:0 2px 6px rgba(0,0,0,0.06)">
@@ -100,7 +100,7 @@
 
   <!-- Detail Drawer -->
   <nz-drawer [nzVisible]="detailDrawerVisible" [nzTitle]="'Chi tiết giao dịch'"
-    (nzOnClose)="closeDetail()" nzWidth="560">
+    (nzOnClose)="closeDetail()" nzPlacement="right" nzWidth="50%">
     <ng-container *nzDrawerContent>
       <app-giao-dich-detail [item]="detailItem" [loading]="detailLoading"></app-giao-dich-detail>
     </ng-container>
@@ -114,9 +114,8 @@
         <nz-form-item>
           <nz-form-label>Loại giao dịch</nz-form-label>
           <nz-form-control>
-            <nz-select [(ngModel)]="loaiGiaoDichId" class="w-full" nzAllowClear>
-              <nz-option [nzValue]="1" nzLabel="Phiếu thu"></nz-option>
-              <nz-option [nzValue]="2" nzLabel="Phiếu chi"></nz-option>
+            <nz-select [(ngModel)]="loaiGiaoDichId" class="w-full" nzAllowClear nzPlaceHolder="Tất cả">
+              <nz-option *ngFor="let o of loaiThuChiOptions" [nzValue]="o.id" [nzLabel]="o.name || o.ten || o.label"></nz-option>
             </nz-select>
           </nz-form-control>
         </nz-form-item>
@@ -124,13 +123,13 @@
           <nz-form-item>
             <nz-form-label>Từ ngày</nz-form-label>
             <nz-form-control>
-              <nz-date-picker [(ngModel)]="tuNgay" class="w-full"></nz-date-picker>
+              <nz-date-picker [(ngModel)]="tuNgay" class="w-full rounded-lg"></nz-date-picker>
             </nz-form-control>
           </nz-form-item>
           <nz-form-item>
             <nz-form-label>Đến ngày</nz-form-label>
             <nz-form-control>
-              <nz-date-picker [(ngModel)]="denNgay" class="w-full"></nz-date-picker>
+              <nz-date-picker [(ngModel)]="denNgay" class="w-full rounded-lg"></nz-date-picker>
             </nz-form-control>
           </nz-form-item>
         </div>

@@ -50,4 +50,9 @@ export class QuyThuChiService {
   exportCongNoToaNha(query: any): Observable<Blob> {
     return this.http.post(`${this.base}/bao-cao/cong-no-toa-nha/export`, query, { responseType: 'blob' });
   }
+
+  getLoaiThuChiForSelector(): Observable<ApiResponse<any[]>> {
+    const url = this.base.replace('/quy-thu-chi', '/catalog') + '/loai-thu-chi-for-selector';
+    return this.http.post<ApiResponse<any[]>>(url, {});
+  }
 }

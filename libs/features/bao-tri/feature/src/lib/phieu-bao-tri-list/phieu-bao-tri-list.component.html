@@ -1,6 +1,6 @@
 ﻿<div class="p-3 bg-gray-50 min-h-screen">
   <div
-    class="bg-white p-3 rounded-xl shadow-sm border border-gray-100 mb-3 flex flex-wrap gap-4 items-end"
+    class="page-toolbar bg-white p-3 rounded-xl shadow-sm border border-gray-100 mb-3 flex flex-wrap gap-2 sm:gap-3 items-end"
   >
     <div>
       <label class="text-[10px] font-semibold text-gray-400 mb-1 block"
@@ -11,7 +11,8 @@
         placeholder="Mã phiếu, tên thiết bị..."
         [(ngModel)]="keyword"
         (keyup.enter)="load()"
-        style="min-width:260px;width:320px;border-radius:8px;padding:8px 12px;border:1px solid #e5e7eb;height:40px;box-sizing:border-box"
+        class="w-full sm:w-80"
+        style="border-radius:8px;padding:8px 12px;border:1px solid #e5e7eb;height:40px;box-sizing:border-box"
       />
     </div>
     <button
@@ -29,9 +30,9 @@
       style="height:40px;padding:6px 12px;border-radius:6px;display:flex;align-items:center;gap:8px;font-weight:600"
     >
       <i nz-icon nzType="filter" nzTheme="outline"></i>
-      <span>Tìm nâng cao</span>
+      <span class="hidden sm:inline">Tìm nâng cao</span>
     </button>
-    <div style="margin-left:auto;display:flex;gap:8px">
+    <div style="margin-left:auto;display:flex;gap:8px" class="flex-wrap">
       <button
         nz-button
         type="button"
@@ -131,6 +132,9 @@
                   <li nz-menu-item (click)="openDetail(data)">
                     <i nz-icon nzType="eye" nzTheme="outline"></i>&nbsp;Chi tiết
                   </li>
+                  <li nz-menu-item (click)="exportExcel(data.id)">
+                    <i nz-icon nzType="file-excel" nzTheme="outline" class="text-green-600"></i>&nbsp;Xuất Excel
+                  </li>
                 </ul>
               </nz-dropdown-menu>
             </td>
@@ -197,7 +201,7 @@
     <ng-container *nzModalContent>
       <div nz-form nzLayout="vertical">
         <nz-form-item>
-          <nz-form-label>Trạng thái</nz-form-label>
+          <nz-form-label class="text-gray-600 font-medium">Trạng thái</nz-form-label>
           <nz-form-control>
             <nz-select [(ngModel)]="trangThaiPhieuBaoTriId" class="w-full" nzAllowClear>
               <nz-option *ngFor="let o of trangThaiPhieuBaoTriOptions" [nzValue]="o.id" [nzLabel]="o.name"></nz-option>
@@ -205,7 +209,7 @@
           </nz-form-control>
         </nz-form-item>
         <nz-form-item>
-          <nz-form-label>Thiết bị</nz-form-label>
+          <nz-form-label class="text-gray-600 font-medium">Thiết bị</nz-form-label>
           <nz-form-control>
             <nz-select [(ngModel)]="thietBiId" class="w-full" nzAllowClear nzShowSearch>
               <nz-option *ngFor="let o of thietBiOptions" [nzValue]="o.id" [nzLabel]="o.tenThietBi"></nz-option>

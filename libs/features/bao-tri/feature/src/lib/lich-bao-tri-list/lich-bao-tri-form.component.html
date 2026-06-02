@@ -7,7 +7,7 @@
       <nz-select
         formControlName="thietBiId"
         nzShowSearch
-        [disabled]="!!item"
+        [disabled]="hasHistory"
         class="rounded-lg"
       >
         <nz-option
@@ -27,7 +27,7 @@
       <nz-select
         formControlName="hangMucBaoTriId"
         nzShowSearch
-        [disabled]="!!item"
+        [disabled]="hasHistory"
         class="rounded-lg"
       >
         <nz-option
@@ -54,7 +54,7 @@
     </nz-form-control>
   </nz-form-item>
 
-  <div class="grid grid-cols-2 gap-4">
+  <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
     <nz-form-item>
       <nz-form-label class="text-gray-600 font-medium"
         >Ngày bắt đầu áp dụng</nz-form-label

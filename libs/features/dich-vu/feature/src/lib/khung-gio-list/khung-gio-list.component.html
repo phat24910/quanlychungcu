@@ -1,6 +1,6 @@
-<div class="khung-gio-list">
+﻿<div class="khung-gio-list">
   <!-- Toolbar -->
-  <div class="flex justify-between items-center mb-4">
+  <div class="page-toolbar flex justify-between items-center flex-wrap gap-2 sm:gap-3 mb-4">
     <div class="flex items-center gap-2">
       <input nz-input placeholder="Tìm theo tên khung giờ" [(ngModel)]="keyword" (keydown.enter)="onSearch()"
         class="w-80 rounded-lg h-10 border-gray-200" />
@@ -18,13 +18,14 @@
       </button>
       <button nz-button nzType="primary" (click)="openCreateModal()"
         style="height:40px;padding:6px 12px;border-radius:8px;display:flex;align-items:center;gap:8px;font-weight:700;box-shadow:0 2px 6px rgba(0,0,0,0.06)">
-        <i nz-icon nzType="plus" nzTheme="outline"></i>
+        <i nz-icon nzType="plus-circle" nzTheme="outline"></i>
         <span>Tạo khung giờ</span>
       </button>
     </div>
   </div>
 
   <!-- Table -->
+  <div class="responsive-table">
   <nz-table [nzData]="list" [nzLoading]="loading" [nzShowPagination]="false" class="modern-table">
       <thead>
         <tr>
@@ -77,6 +78,7 @@
         </tr>
       </tbody>
     </nz-table>
+  </div>
 
   <div style="display:flex;justify-content:flex-end;margin-top:12px">
     <nz-pagination [nzTotal]="total" [nzPageIndex]="pageNumber" [nzPageSize]="pageSize"

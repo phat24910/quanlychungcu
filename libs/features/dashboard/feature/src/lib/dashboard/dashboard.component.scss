@@ -15,6 +15,11 @@ $text-main: #1e293b;
 $text-muted: #94a3b8;
 $text-accent: #4f46e5;
 
+/* ========== Breakpoints ========== */
+$phone: 480px;
+$tablet: 768px;
+$laptop: 1024px;
+
 /* ========== Layout ========== */
 .app-layout {
   height: 100vh;
@@ -30,19 +35,70 @@ $text-accent: #4f46e5;
   flex-direction: column;
   height: 100vh;
   overflow: hidden;
+  transition: transform 0.25s ease;
 
   &.mobile-overlay {
     position: fixed;
-    z-index: 999;
+    z-index: 1000;
     height: 100vh;
+    box-shadow: 0 0 40px rgba(0, 0, 0, 0.3);
   }
 
-  // Force ng-zorro's inner wrapper to flex so scroll-area stretches correctly
   ::ng-deep .ant-layout-sider-children {
     display: flex;
     flex-direction: column;
     height: 100%;
     overflow: hidden;
+  }
+}
+
+/* Sidebar close button */
+.sidebar-header {
+  display: none;
+}
+
+@media (max-width: $tablet) {
+  .sidebar-header {
+    display: flex;
+    justify-content: flex-end;
+    padding: 8px 12px 0;
+    position: relative;
+    z-index: 2;
+  }
+
+  .sidebar-close-btn {
+    background: rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    color: #fff;
+    width: 32px;
+    height: 32px;
+    border-radius: 8px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 16px;
+    transition: background 0.18s;
+
+    &:hover {
+      background: rgba(255, 255, 255, 0.2);
+    }
+  }
+}
+
+/* Mobile overlay backdrop */
+.mobile-overlay-backdrop {
+  display: none;
+}
+
+@media (max-width: $tablet) {
+  .mobile-overlay-backdrop {
+    display: block;
+    position: fixed;
+    inset: 0;
+    z-index: 998;
+    background: rgba(0, 0, 0, 0.4);
+    backdrop-filter: blur(2px);
   }
 }
 
@@ -61,7 +117,6 @@ $text-accent: #4f46e5;
     z-index: 0;
   }
 
-  // Top-right glow circle
   &::after {
     content: '';
     position: absolute;
@@ -78,7 +133,7 @@ $text-accent: #4f46e5;
     position: relative;
     z-index: 1;
     display: flex;
-    flex-direction: column;   // vertical stacked layout
+    flex-direction: column;
     align-items: center;
     text-align: center;
     gap: 14px;
@@ -136,6 +191,32 @@ $text-accent: #4f46e5;
   }
 }
 
+/* Responsive sidebar logo */
+@media (max-width: $tablet) {
+  .sidebar-logo .logo-inner {
+    padding: 16px 12px 16px;
+    gap: 10px;
+  }
+
+  .sidebar-logo .logo-mark {
+    width: 56px;
+    height: 56px;
+
+    img {
+      width: 42px;
+      height: 42px;
+    }
+  }
+
+  .sidebar-logo .logo-text .logo-title {
+    font-size: 14px;
+  }
+
+  .sidebar-logo .logo-text .logo-sub {
+    font-size: 8px;
+  }
+}
+
 /* ========== Scroll Area ========== */
 .scroll-area {
   flex: 1 1 auto;
@@ -158,7 +239,6 @@ $text-accent: #4f46e5;
 
 /* ========== NG-Zorro Menu Overrides (dark theme) ========== */
 .menu-sidebar ::ng-deep {
-  /* Root menu background — covers both light and dark theme classes */
   .ant-menu,
   .ant-menu-root,
   .ant-menu-inline,
@@ -168,7 +248,6 @@ $text-accent: #4f46e5;
     border-right: none !important;
   }
 
-  /* Top-level items and submenu titles */
   .ant-menu-inline > .ant-menu-item,
   .ant-menu-inline > .ant-menu-submenu > .ant-menu-submenu-title {
     height: 48px !important;
@@ -181,7 +260,6 @@ $text-accent: #4f46e5;
     padding-left: 16px !important;
     transition: background 0.18s, color 0.18s !important;
 
-    // Force white on the actual text span
     .ant-menu-title-content,
     .menu-title,
     span:not(.ant-menu-item-icon):not([nz-icon]) {
@@ -194,7 +272,6 @@ $text-accent: #4f46e5;
     }
   }
 
-  // Force white on ALL title-content in the sidebar (catch-all)
   .ant-menu-title-content {
     color: #ffffff !important;
     overflow: hidden;
@@ -202,14 +279,12 @@ $text-accent: #4f46e5;
     white-space: nowrap;
   }
 
-  /* Open submenu title */
   .ant-menu-submenu-open > .ant-menu-submenu-title {
     color: #fff !important;
     font-weight: 700 !important;
     .ant-menu-title-content { color: #fff !important; }
   }
 
-  /* Selected top-level item */
   .ant-menu-item-selected {
     background: $sidebar-active-bg !important;
     color: #ffffff !important;
@@ -225,7 +300,6 @@ $text-accent: #4f46e5;
     .ant-menu-item-icon { color: $primary !important; }
   }
 
-  /* Sub-menu container */
   .ant-menu-sub.ant-menu-inline {
     background: transparent !important;
     border-radius: 0 !important;
@@ -261,26 +335,22 @@ $text-accent: #4f46e5;
     }
   }
 
-  /* Icon sizing */
   .ant-menu-item-icon,
   .ant-menu-submenu-title .ant-menu-item-icon {
     font-size: 17px !important;
     vertical-align: middle !important;
   }
 
-  /* Text clipping */
   .ant-menu-title-content {
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
   }
 
-  /* Submenu arrow */
   .ant-menu-submenu-arrow {
     color: rgba(165, 180, 252, 0.5) !important;
   }
 
-  /* Scrollbar inside collapsed popup */
   .ant-menu-submenu-popup {
     background: #2d2b6b !important;
     border-radius: 12px !important;
@@ -291,8 +361,8 @@ $text-accent: #4f46e5;
 /* ========== Header ========== */
 .app-header {
   height: 68px;
-  padding: 0 24px;
-  background: #ffffff;       // pure white — distinct from sidebar's blue-slate
+  padding: 0 16px;
+  background: #ffffff;
   border-bottom: 1px solid #e8edf5;
   display: flex;
   align-items: center;
@@ -301,6 +371,42 @@ $text-accent: #4f46e5;
   position: sticky;
   top: 0;
   z-index: 90;
+}
+
+.header-left {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  min-width: 0;
+  flex: 1;
+}
+
+.header-right {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-shrink: 0;
+}
+
+@media (max-width: $tablet) {
+  .header-right {
+    gap: 8px;
+  }
+}
+
+@media (max-width: $phone) {
+  .app-header {
+    height: 56px;
+    padding: 0 10px;
+  }
+
+  .header-left {
+    gap: 8px;
+  }
+
+  .header-right {
+    gap: 6px;
+  }
 }
 
 .toggle-btn {
@@ -325,20 +431,50 @@ $text-accent: #4f46e5;
   }
 }
 
-.header-breadcrumb {
-  h1 {
-    font-size: 18px;
-    font-weight: 700;
-    color: $text-main;
-    margin: 0;
-    line-height: 1.2;
+@media (max-width: $phone) {
+  .toggle-btn {
+    width: 34px;
+    height: 34px;
+    font-size: 15px;
+    border-radius: 8px;
   }
 }
 
-.icon-center {
+.header-breadcrumb {
+  min-width: 0;
+}
+
+.header-title {
+  font-size: 18px;
+  font-weight: 700;
+  color: $text-main;
+  margin: 0;
+  line-height: 1.2;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+@media (max-width: $phone) {
+  .header-title {
+    font-size: 14px;
+  }
+}
+
+.header-icon {
+  font-size: 20px;
+  color: #64748b;
+  cursor: pointer;
   transition: color 0.18s;
+
   &:hover {
     color: $primary;
+  }
+}
+
+@media (max-width: $phone) {
+  .header-icon {
+    font-size: 17px;
   }
 }
 
@@ -346,24 +482,150 @@ $text-accent: #4f46e5;
   text-decoration: none;
 }
 
+.user-profile-info {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+  padding: 4px 12px 4px 4px;
+  border-radius: 999px;
+  border: 1px solid #e8edf5;
+  transition: background 0.18s;
+
+  &:hover {
+    background: #f8fafc;
+  }
+}
+
+@media (max-width: $tablet) {
+  .user-profile-info {
+    padding: 3px 8px 3px 3px;
+    gap: 6px;
+  }
+}
+
+@media (max-width: $phone) {
+  .user-profile-info {
+    padding: 2px 6px 2px 2px;
+    gap: 4px;
+  }
+}
+
+.avatar-container {
+  position: relative;
+}
+
+.avatar-img {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  border: 2px solid #fff;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  object-fit: cover;
+}
+
+@media (max-width: $phone) {
+  .avatar-img {
+    width: 30px;
+    height: 30px;
+  }
+}
+
+.status-indicator {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  width: 10px;
+  height: 10px;
+  background: #10b981;
+  border-radius: 50%;
+  border: 2px solid #fff;
+}
+
+.user-details {
+  display: flex;
+  flex-direction: column;
+}
+
+.user-role {
+  font-size: 10px;
+  font-weight: 800;
+  color: #94a3b8;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  line-height: 1;
+  margin-bottom: 2px;
+}
+
+.user-name {
+  font-size: 13px;
+  font-weight: 700;
+  color: #475569;
+  line-height: 1;
+}
+
+.user-arrow {
+  font-size: 11px;
+  color: #94a3b8;
+}
+
 /* ========== Content ========== */
 .inner-content {
   padding: 28px !important;
-  background: #edf0f7 !important;   // distinct gray-blue, different from white cards
+  background: #edf0f7 !important;
   min-height: calc(100vh - 68px);
+}
+
+.content-wrapper {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.content-card {
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06), 0 1px 2px rgba(0, 0, 0, 0.04);
+  padding: 24px;
 }
 
 nz-content {
   overflow-y: auto;
+  max-height: calc(100vh - 68px);
+}
+
+@media (max-width: $phone) {
+  nz-content {
+    max-height: calc(100vh - 56px);
+  }
+}
+
+@media (max-width: $tablet) {
+  .inner-content {
+    padding: 16px !important;
+    min-height: calc(100vh - 68px);
+  }
+
+  .content-card {
+    padding: 16px;
+    border-radius: 8px;
+  }
+}
+
+@media (max-width: $phone) {
+  .inner-content {
+    padding: 10px !important;
+    min-height: calc(100vh - 56px);
+  }
+
+  .content-card {
+    padding: 12px;
+    border-radius: 6px;
+    box-shadow: none;
+    border: 1px solid #f0f0f0;
+  }
 }
 
 /* ========== Mobile ========== */
 .overlay-open {
   overflow: hidden;
-}
-
-@media (max-width: 768px) {
-  .inner-content {
-    padding: 16px !important;
-  }
 }

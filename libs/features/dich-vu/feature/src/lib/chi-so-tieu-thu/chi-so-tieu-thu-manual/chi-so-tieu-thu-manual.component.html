@@ -16,12 +16,11 @@
         <div>
           <label class="text-xs font-bold text-gray-500 mb-1 block uppercase">Thời điểm</label>
           <div class="flex gap-2">
-            <nz-select [(ngModel)]="thang" style="width: 70px" class="rounded-lg">
+            <nz-select [(ngModel)]="thang" nzAllowClear nzPlaceHolder="Tháng" style="width: 90px" class="rounded-lg">
               <nz-option *ngFor="let m of [1,2,3,4,5,6,7,8,9,10,11,12]" [nzValue]="m" [nzLabel]="m"></nz-option>
             </nz-select>
-            <nz-select [(ngModel)]="nam" style="width: 100px" class="rounded-lg">
-              <nz-option *ngFor="let y of [2024,2025,2026]" [nzValue]="y" [nzLabel]="y"></nz-option>
-            </nz-select>
+            <input nz-input type="number" [(ngModel)]="nam" placeholder="Năm" min="2020" max="2100"
+              style="width:100px;border-radius:6px;padding:6px 12px;border:1px solid #e5e7eb;height:40px;box-sizing:border-box" />
           </div>
         </div>
 
@@ -64,7 +63,7 @@
         </div>
       </div>
 
-      <div class="max-h-[500px] overflow-y-auto">
+      <app-scroll-table [height]="'calc(100vh - 420px)'">
         <table class="w-full">
           <thead class="bg-gray-50 sticky top-0 z-10">
             <tr>
@@ -105,13 +104,13 @@
             </tr>
           </tbody>
         </table>
-      </div>
+      </app-scroll-table>
 
       <div class="p-6 bg-gray-50 border-t flex justify-end gap-3">
         <button nz-button (click)="goBack()" class="h-11 px-8 rounded-xl font-bold">Hủy</button>
         <button nz-button nzType="primary" (click)="save()" [nzLoading]="saving"
           class="h-11 px-8 rounded-xl font-bold bg-emerald-600 border-emerald-600 hover:bg-emerald-700 shadow-lg shadow-emerald-200">
-          <i nz-icon nzType="save"></i>&nbsp;Lưu tất cả
+        Lưu tất cả
         </button>
       </div>
     </div>

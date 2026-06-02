@@ -15,8 +15,8 @@ export class DotThanhToanListComponent implements OnInit {
   loading = false;
   items: any[] = [];
 
-  thang = new Date().getMonth() + 1;
-  nam = new Date().getFullYear();
+  thang: number | null = null;
+  nam: number | null = null;
   trangThaiId: number | null = null;
   keyword = '';
 
@@ -37,14 +37,14 @@ export class DotThanhToanListComponent implements OnInit {
 
   load(): void {
     this.loading = true;
-    const query = {
-      thang: this.thang,
-      nam: this.nam,
-      trangThaiId: this.trangThaiId,
-      keyword: this.keyword,
+    const query: any = {
+      trangThaiId: this.trangThaiId || undefined,
+      keyword: this.keyword || undefined,
       pageNumber: this.pageNumber,
       pageSize: this.pageSize,
     };
+    if (this.thang != null) query.thang = this.thang;
+    if (this.nam != null) query.nam = this.nam;
     this.thanhToanService.getDotThanhToanList(query).subscribe({
       next: (res: ApiResponse<any>) => {
         this.items = res.result?.items || [];
@@ -84,18 +84,28 @@ export class DotThanhToanListComponent implements OnInit {
   approve(item: any): void {
     this.modal.confirm({
       nzTitle: 'Xác nhận duyệt',
-      nzContent: `Bạn có chắc chắn muốn duyệt đợt thanh toán "${item.tenDot}"?`,
+      nzContent: `Sau khi duyệt, đợt thanh toán "${item.tenDot}" sẽ chuyển sang trạng thái Đã duyệt và sẵn sàng để phát hành hóa đơn.`,
+      nzOkText: 'Duyệt',
       nzOnOk: () => {
+        this.loading = true;
         this.thanhToanService
           .approveDotThanhToan([item.id])
-          .subscribe((res: ApiResponse<any>) => {
-            if (res.isOk) {
-              this.notification.success(
-                'Thành công',
-                'Đã duyệt đợt thanh toán',
-              );
-              this.load();
-            }
+          .subscribe({
+            next: (res: ApiResponse<any>) => {
+              this.loading = false;
+              if (res.isOk) {
+                this.notification.success('Thành công', 'Đã duyệt đợt thanh toán');
+                this.load();
+              } else {
+                const msg = res.errors?.[0]?.description || 'Duyệt thất bại';
+                this.notification.error('Lỗi', msg);
+              }
+            },
+            error: (err) => {
+              this.loading = false;
+              const msg = err?.error?.errors?.[0]?.description || 'Duyệt đợt thất bại';
+              this.notification.error('Lỗi', msg);
+            },
           });
       },
     });
@@ -117,26 +127,40 @@ export class DotThanhToanListComponent implements OnInit {
   }
 
   lapHoaDon(item: any): void {
-    this.loading = true;
-    this.thanhToanService.lapHoaDonDuThao(item.id).subscribe({
-      next: (res: ApiResponse<any>) => {
-        if (res.isOk) {
-          this.notification.success(
-            'Thành công',
-            `Đã lập ${res.result.soLuongHoaDonTaoMoi} hóa đơn dự thảo`,
-          );
-          this.load();
-        }
-        this.loading = false;
+    this.modal.confirm({
+      nzTitle: 'Xác nhận lập hóa đơn dự thảo',
+      nzContent: `Hệ thống sẽ tự động tính toán phí cho toàn bộ căn hộ trong đợt "${item.tenDot}". Bạn có chắc chắn muốn tiếp tục?`,
+      nzOkText: 'Lập hóa đơn',
+      nzOnOk: () => {
+        this.loading = true;
+        this.thanhToanService.lapHoaDonDuThao(item.id).subscribe({
+          next: (res: ApiResponse<any>) => {
+            this.loading = false;
+            if (res.isOk) {
+              this.notification.success(
+                'Thành công',
+                `Đã lập ${res.result?.soLuongHoaDonTaoMoi ?? 0} hóa đơn dự thảo cho đợt "${res.result?.tenDotThanhToan ?? ''}"`,
+              );
+              this.load();
+            } else {
+              const msg = res.errors?.[0]?.description || 'Lập hóa đơn thất bại';
+              this.notification.error('Lỗi', msg);
+            }
+          },
+          error: (err) => {
+            this.loading = false;
+            const msg = err?.error?.errors?.[0]?.description || 'Lập hóa đơn dự thảo thất bại';
+            this.notification.error('Lỗi', msg);
+          },
+        });
       },
-      error: () => (this.loading = false),
     });
   }
 
   onRefresh(): void {
     this.keyword = '';
-    this.thang = new Date().getMonth() + 1;
-    this.nam = new Date().getFullYear();
+    this.thang = null;
+    this.nam = null;
     this.trangThaiId = null;
     this.pageNumber = 1;
     this.load();
@@ -169,15 +193,29 @@ export class DotThanhToanListComponent implements OnInit {
   dongDot(item: any): void {
     this.modal.confirm({
       nzTitle: 'Xác nhận đóng đợt',
-      nzContent: `Bạn có chắc chắn muốn đóng đợt thanh toán "${item.tenDot}"? Sau khi đóng, đợt thanh toán này sẽ không thể nhận thêm thanh toán nào nữa.`,
+      nzContent: `Sau khi đóng, đợt "${item.tenDot}" sẽ bị khóa và không thể nhận thêm thanh toán nào nữa. Bạn có chắc chắn muốn tiếp tục?`,
+      nzOkText: 'Đóng đợt',
+      nzOkDanger: true,
       nzOnOk: () => {
+        this.loading = true;
         this.thanhToanService
           .dongDotThanhToan(item.id)
-          .subscribe((res: ApiResponse<any>) => {
-            if (res.isOk) {
-              this.notification.success('Thành công', 'Đã đóng đợt thanh toán');
-              this.load();
-            }
+          .subscribe({
+            next: (res: ApiResponse<any>) => {
+              this.loading = false;
+              if (res.isOk) {
+                this.notification.success('Thành công', 'Đã đóng đợt thanh toán');
+                this.load();
+              } else {
+                const msg = res.errors?.[0]?.description || 'Đóng đợt thất bại';
+                this.notification.error('Lỗi', msg);
+              }
+            },
+            error: (err) => {
+              this.loading = false;
+              const msg = err?.error?.errors?.[0]?.description || 'Đóng đợt thất bại';
+              this.notification.error('Lỗi', msg);
+            },
           });
       },
     });

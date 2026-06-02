@@ -18,6 +18,10 @@ export class LichBaoTriFormComponent implements OnInit {
   loading = false;
   tanSuatBaoTriOptions: any[] = [];
 
+  get hasHistory(): boolean {
+    return !!this.item?.ngayBaoTriGanNhat;
+  }
+
   constructor(
     private fb: FormBuilder,
     private baoTriService: BaoTriService,

@@ -1,7 +1,7 @@
 <nz-spin [nzSpinning]="loading">
-  <div class="p-6 bg-gray-50" [ngClass]="inModal ? 'min-h-0' : 'min-h-screen'">
+  <div class="p-4 sm:p-6 bg-gray-50" [ngClass]="inModal ? 'min-h-0' : 'min-h-screen'">
     <!-- Header Area -->
-    <div *ngIf="model" class="flex justify-between items-start mb-6">
+    <div *ngIf="model" class="flex flex-col sm:flex-row justify-between items-start gap-3 mb-6">
       <div class="flex items-center gap-4">
         <div>
           <h1 class="text-2xl font-bold text-gray-900 mb-1">{{ model.tenDichVu || 'Dịch vụ chưa đặt tên' }}</h1>
@@ -30,14 +30,14 @@
     <nz-tabset [(nzSelectedIndex)]="activeTabIndex" nzType="card" class="custom-tabset">
       <nz-tab [nzTitle]="titleOverview">
         <ng-template #titleOverview><span class="font-bold">Tổng quan</span></ng-template>
-        <div *ngIf="model; else empty" class="grid grid-cols-3 gap-6 animate-fade-in">
+        <div *ngIf="model; else empty" class="grid grid-cols-1 lg:grid-cols-3 gap-6 animate-fade-in">
           <!-- Main Info Card -->
-          <div class="col-span-2 space-y-6">
+          <div class="lg:col-span-2 space-y-6">
             <div class="bg-white rounded-2xl p-6 shadow-sm border border-gray-100">
               <h3 class="text-sm font-bold text-gray-400 uppercase tracking-widest mb-4 flex items-center gap-2">
                 <i nz-icon nzType="info-circle" class="text-blue-500"></i> Thông tin chi tiết
               </h3>
-              <div class="grid grid-cols-2 gap-y-6">
+              <div class="grid grid-cols-1 sm:grid-cols-2 gap-y-6">
                 <div>
                   <label class="block text-xs text-gray-400 mb-1 uppercase font-bold">Tên đầy đủ</label>
                   <p class="text-gray-900 font-semibold">{{ model.tenDichVu || '-' }}</p>
@@ -54,7 +54,7 @@
                   <label class="block text-xs text-gray-400 mb-1 uppercase font-bold">Số lượng tối đa</label>
                   <p class="text-gray-900 font-semibold">{{ model.soLuongToiDa || 'Không giới hạn' }}</p>
                 </div>
-                <div class="col-span-2">
+                <div class="sm:col-span-2">
                   <label class="block text-xs text-gray-400 mb-1 uppercase font-bold">Mô tả dịch vụ</label>
                   <p class="text-gray-700 leading-relaxed">{{ model.moTa || 'Chưa có mô tả cho dịch vụ này.' }}</p>
                 </div>
@@ -65,23 +65,21 @@
               <h3 class="text-sm font-bold text-blue-800 uppercase tracking-widest mb-4 flex items-center gap-2">
                 <i nz-icon nzType="team" class="text-blue-600"></i> Đơn vị cung cấp (Đối tác)
               </h3>
-              <div class="flex justify-between items-center">
+              <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3">
                 <div>
-                  <p class="text-blue-900 font-bold text-lg">{{ model.tenDoiTac || 'Chưa liên kết đối tác' }}</p>
-                  <p class="text-blue-600 text-sm">Hợp đồng: <span class="font-semibold">{{ model.soHopDong || '-'
-                      }}</span></p>
+                  <p class="text-blue-900 font-bold text-base sm:text-lg">{{ model.tenDoiTac || 'Chưa liên kết đối tác' }}</p>
+                  <p class="text-blue-600 text-xs sm:text-sm">Hợp đồng: <span class="font-semibold">{{ model.soHopDong || '-' }}</span></p>
                 </div>
-                <div class="text-right">
+                <div class="sm:text-right">
                   <p class="text-blue-900 font-bold">{{ model.trangThaiHopDongTen || '-' }}</p>
-                  <p class="text-blue-600 text-xs uppercase tracking-tighter">{{ model.nguonCungCapDescription || 'Dịch
-                    vụ ngoài' }}</p>
+                  <p class="text-blue-600 text-xs uppercase tracking-tighter">{{ model.nguonCungCapDescription || 'Dịch vụ ngoài' }}</p>
                 </div>
               </div>
             </div>
           </div>
 
           <!-- Quick Stats / Actions Sidebar -->
-          <div class="col-span-1 space-y-6">
+          <div class="lg:col-span-1 space-y-6">
             <div
               class="bg-white rounded-2xl p-6 shadow-sm border border-gray-100 flex flex-col items-center text-center">
               <div class="w-20 h-20 bg-green-50 rounded-full flex items-center justify-center mb-4">

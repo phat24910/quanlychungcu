@@ -131,6 +131,12 @@
       ],
       "@features/quy-thu-chi/data-access": [
         "libs/features/quy-thu-chi/data-access/src/lib/index.ts"
+      ],
+      "@features/tri-thuc/feature": [
+        "libs/features/tri-thuc/feature/src/lib/index.ts"
+      ],
+      "@features/tri-thuc/data-access": [
+        "libs/features/tri-thuc/data-access/src/lib/index.ts"
       ]
     }
   }

@@ -1,4 +1,4 @@
-<nz-modal [(nzVisible)]="isAddingResident" nzTitle="Thiết lập quan hệ cư trú tại quầy tiếp tân" (nzOnCancel)="cancelRegister()"
+﻿<nz-modal [(nzVisible)]="isAddingResident" nzTitle="Thiết lập quan hệ cư trú tại quầy tiếp tân" (nzOnCancel)="cancelRegister()"
   [nzFooter]="null" nzWidth="80%" nzWrapClassName="custom-modal wide-modal">
   <ng-container *nzModalContent>
     <form [formGroup]="registerForm" (ngSubmit)="submitRegister()" style="margin-top:8px">
@@ -94,7 +94,7 @@
                       <div style="margin-top:8px; width:100%; box-sizing:border-box;">
                         <div style="width:100%; padding:8px; border:1px dashed #e5e7eb; border-radius:6px; background:#fff; display:flex; justify-content:center; align-items:center; box-sizing:border-box">
                           <button nz-button nzType="dashed" type="button" (click)="startAddFileToCard(i, cardFileInput)" style="border-color:#60a5fa;color:#0ea5e9;border-radius:6px;padding:6px 12px;font-weight:600;height:36px;box-sizing:border-box;display:flex;align-items:center;gap:8px">
-                            <i nz-icon nzType="plus" nzTheme="outline" style="font-size:16px;line-height:1;color:currentColor"></i>
+                            <i nz-icon nzType="plus-circle" nzTheme="outline" style="font-size:16px;line-height:1;color:currentColor"></i>
                             <span style="font-weight:600;color:currentColor;text-align:center">Thêm file</span>
                           </button>
                         </div>
@@ -103,7 +103,7 @@
                     <ng-template #noFiles>
                       <div style="margin-top:6px;padding:12px;border:1px dashed #e5e7eb;border-radius:6px;background:#fff;color:#6b7280;display:flex;align-items:center;justify-content:center;width:100%;box-sizing:border-box">
                         <button nz-button nzType="dashed" type="button" (click)="startAddFileToCard(i, cardFileInput)" style="border-color:#60a5fa;color:#0ea5e9;border-radius:6px;padding:6px 12px;font-weight:600;height:36px;box-sizing:border-box;display:flex;align-items:center;gap:8px">
-                          <i nz-icon nzType="plus" nzTheme="outline" style="font-size:18px;line-height:1;color:currentColor"></i>
+                          <i nz-icon nzType="plus-circle" nzTheme="outline" style="font-size:18px;line-height:1;color:currentColor"></i>
                           <span style="font-weight:600;color:currentColor">Thêm file</span>
                         </button>
                       </div>
@@ -142,9 +142,9 @@
       </div>
 
       <div style="margin-top:14px;display:flex;gap:8px;justify-content:flex-end">
-        <button nz-button type="button" (click)="cancelRegister()">Đóng</button>
-        <button nz-button nzType="default" [nzLoading]="registerLoading" type="submit">Tạo hồ sơ cư dân</button>
-        <button nz-button nzType="primary" type="button" (click)="setResidence()" [nzLoading]="setResidenceLoading">Thiết lập cư trú</button>
+        <button nz-button type="button" (click)="cancelRegister()" class="rounded-lg">Đóng</button>
+        <button nz-button nzType="default" [nzLoading]="registerLoading" type="submit" class="rounded-lg">Tạo hồ sơ cư dân</button>
+        <button nz-button nzType="primary" type="button" (click)="setResidence()" [nzLoading]="setResidenceLoading" class="rounded-lg">Thiết lập cư trú</button>
       </div>
     </form>
   </ng-container>
@@ -163,8 +163,8 @@
         </div>
       </div>
       <div style="margin-top:10px;display:flex;gap:8px;justify-content:flex-end">
-        <button nz-button type="button" (click)="closeEdit()">Hủy</button>
-        <button nz-button nzType="primary" [nzLoading]="editLoading" type="submit">Lưu</button>
+        <button nz-button type="button" (click)="closeEdit()" class="rounded-lg">Hủy</button>
+        <button nz-button nzType="primary" [nzLoading]="editLoading" type="submit" class="rounded-lg">Lưu</button>
       </div>
     </form>
   </ng-container>

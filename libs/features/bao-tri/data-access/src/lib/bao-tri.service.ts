@@ -82,6 +82,10 @@ export class BaoTriService {
     return this.http.put<ApiResponse<any>>(`${this.base}/phieu-bao-tri/huy`, payload);
   }
 
+  exportPhieuBaoTri(id: number): Observable<Blob> {
+    return this.http.post(`${this.base}/phieu-bao-tri/export`, { id }, { responseType: 'blob' });
+  }
+
   // --- Hạng mục bảo trì ---
   getHangMucList(query: any): Observable<ApiResponse<any>> {
     return this.http.post<ApiResponse<any>>(`${this.base}/hang-muc/get-list`, query);

@@ -3,6 +3,12 @@
     nzCollapsible nzWidth="280px" nzBreakpoint="md" [(nzCollapsed)]="isCollapsed" [nzCollapsedWidth]="isMobile ? 0 : 64"
     (nzBreakpoint)="onBreakpoint($event)" [nzTrigger]="null" [@.disabled]="true">
 
+    <div class="sidebar-header">
+      <button class="sidebar-close-btn" *ngIf="isMobile" (click)="toggleSidebar()" aria-label="Đóng menu">
+        <i nz-icon nzType="close" nzTheme="outline"></i>
+      </button>
+    </div>
+
     <div class="sidebar-logo">
       <div class="logo-inner">
         <div class="logo-mark">
@@ -52,34 +58,33 @@
   </nz-sider>
 
   <nz-layout [class.overlay-open]="isMobile && !isCollapsed">
-    <nz-header class="app-header flex items-center justify-between px-6">
-      <div class="flex items-center gap-4 min-w-0 flex-1">
-        <button class="toggle-btn flex items-center justify-center" (click)="toggleSidebar()">
+    <nz-header class="app-header">
+      <div class="header-left">
+        <button class="toggle-btn" (click)="toggleSidebar()" aria-label="Toggle menu">
           <i nz-icon [nzType]="isCollapsed ? 'menu-unfold' : 'menu-fold'"></i>
         </button>
         <div class="header-breadcrumb">
-          <!-- <span class="text-xs font-black text-indigo-500 uppercase tracking-widest block leading-none mb-0.5">Trang hiện tại</span> -->
-          <h1 class="text-xl font-bold text-slate-800 tracking-tight leading-none truncate">{{currentTitle}}</h1>
+          <h1 class="header-title">{{currentTitle}}</h1>
         </div>
       </div>
 
-      <div class="flex items-center gap-5 flex-nowrap min-w-max">
-        <i nz-icon nzType="home" class="text-xl text-gray-600 cursor-pointer icon-center" title="Trang chủ" (click)="goHome()"></i>
+      <div class="header-right">
+        <i nz-icon nzType="home" class="header-icon" title="Trang chủ" (click)="goHome()"></i>
 
         <app-notification-bell></app-notification-bell>
 
         <a nz-dropdown nzTrigger="click" [nzDropdownMenu]="menu" class="user-profile-trigger">
-          <div class="flex items-center gap-3 cursor-pointer p-1.5 pr-4 rounded-full border border-slate-100 hover:bg-slate-50 transition-all">
-            <div class="avatar-container relative">
+          <div class="user-profile-info">
+            <div class="avatar-container">
               <img [src]="avatarUrl || defaultAvatar" (error)="onAvatarError($event)" alt="Avatar"
-                class="w-9 h-9 rounded-full border-2 border-white shadow-sm object-cover" />
-              <div class="status-indicator absolute bottom-0 right-0 w-2.5 h-2.5 bg-emerald-500 rounded-full border-2 border-white"></div>
+                class="avatar-img" />
+              <div class="status-indicator"></div>
             </div>
-            <div *ngIf="!isMobile" class="flex flex-col">
-              <span class="text-[10px] font-black text-slate-400 uppercase tracking-widest leading-none mb-0.5">Quản trị viên</span>
-              <span class="text-sm font-bold text-slate-700 leading-none">{{ username }}</span>
+            <div class="user-details hide-phone">
+              <span class="user-role">Quản trị viên</span>
+              <span class="user-name">{{ username }}</span>
             </div>
-            <i nz-icon nzType="down" class="text-xs text-slate-400"></i>
+            <i nz-icon nzType="down" class="user-arrow"></i>
           </div>
         </a>
 
@@ -101,9 +106,9 @@
     </nz-header>
 
     <nz-content>
-      <div class="inner-content p-6 bg-gradient-to-b from-gray-100 via-white to-gray-50 min-h-[calc(100vh-64px)]">
-        <div class="max-w-[1200px] mx-auto">
-          <div class="bg-white rounded-xl shadow-lg p-6">
+      <div class="inner-content">
+        <div class="content-wrapper">
+          <div class="content-card">
             <router-outlet></router-outlet>
           </div>
         </div>
@@ -111,3 +116,6 @@
     </nz-content>
   </nz-layout>
 </nz-layout>
+
+<!-- Mobile overlay backdrop -->
+<div class="mobile-overlay-backdrop" *ngIf="isMobile && !isCollapsed" (click)="toggleSidebar()"></div>

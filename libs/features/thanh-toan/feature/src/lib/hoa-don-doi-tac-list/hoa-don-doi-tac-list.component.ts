@@ -16,8 +16,8 @@ export class HoaDonDoiTacListComponent implements OnInit {
   items: any[] = [];
 
   doiTacId: number | null = null;
-  thang = new Date().getMonth() + 1;
-  nam = new Date().getFullYear();
+  thang: number | null = null;
+  nam: number | null = null;
   trangThaiThanhToanId: number | null = null;
 
   doiTacOptions: any[] = [];
@@ -48,11 +48,11 @@ export class HoaDonDoiTacListComponent implements OnInit {
 
   load(): void {
     this.loading = true;
-    const query = {
-      doiTacId: this.doiTacId,
-      thang: this.thang,
-      nam: this.nam,
-      trangThaiThanhToanId: this.trangThaiThanhToanId,
+    const query: any = {
+      doiTacId: this.doiTacId || undefined,
+      thang: this.thang || undefined,
+      nam: this.nam || undefined,
+      trangThaiThanhToanId: this.trangThaiThanhToanId || undefined,
       pageNumber: this.pageNumber,
       pageSize: this.pageSize,
     };
@@ -70,6 +70,15 @@ export class HoaDonDoiTacListComponent implements OnInit {
         );
       },
     });
+  }
+
+  onRefresh(): void {
+    this.doiTacId = null;
+    this.thang = null;
+    this.nam = null;
+    this.trangThaiThanhToanId = null;
+    this.pageNumber = 1;
+    this.load();
   }
 
   onPageChange(page: number): void {

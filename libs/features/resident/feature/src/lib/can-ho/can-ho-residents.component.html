@@ -1,4 +1,4 @@
-<div>
+﻿<div>
   <!-- Modal thêm cư dân -->
   <nz-modal [(nzVisible)]="isAddingResident" nzTitle="Thêm cư dân vào căn hộ" (nzOnCancel)="cancelRegister()"
     [nzFooter]="null" nzWidth="520" nzWrapClassName="custom-modal">
@@ -104,15 +104,15 @@
           </div>
         </div>
         <div style="margin-top:10px;display:flex;gap:8px;justify-content:flex-end">
-          <button nz-button type="button" (click)="closeEdit()">Hủy</button>
-          <button nz-button nzType="primary" [nzLoading]="editLoading" type="submit">Lưu</button>
+          <button nz-button type="button" (click)="closeEdit()" class="rounded-lg">Hủy</button>
+          <button nz-button nzType="primary" [nzLoading]="editLoading" type="submit" class="rounded-lg">Lưu</button>
         </div>
       </form>
     </ng-container>
   </nz-modal>
 
   <!-- Thanh tìm kiếm và hành động trên danh sách cư dân hiện tại -->
-  <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px">
+  <div class="page-toolbar flex flex-wrap items-center gap-2 sm:gap-3" style="justify-content:space-between;margin-bottom:12px">
     <div style="display:flex; gap:8px; align-items:center; max-width:70%">
       <input nz-input placeholder="Nhập tên/ điện thoại" [(ngModel)]="keyword" (keydown.enter)="applyFilter()"
         style="width:360px;border-radius:6px;padding:6px 12px;border:1px solid #e5e7eb;height:40px;box-sizing:border-box" />
@@ -130,10 +130,10 @@
         <i nz-icon nzType="reload" nzTheme="outline"
           style="font-size:20px;line-height:20px;transform:scale(1.06);display:inline-block;color:#1e3a8a"></i>
       </button>
-      <button nz-button nzType="primary" (click)="isAddingResident = true"
+      <!-- <button nz-button nzType="primary" (click)="isAddingResident = true"
         style="display:flex;align-items:center;border-radius:6px;padding:6px 12px;font-weight:600;height:40px;box-sizing:border-box">
-        <i nz-icon nzType="plus" nzTheme="outline"></i>&nbsp;Thêm cư dân
-      </button>
+        <i nz-icon nzType="plus-circle" nzTheme="outline"></i>&nbsp;Thêm cư dân
+      </button> -->
     </div>
   </div>
   <app-scroll-table [height]="'450px'">

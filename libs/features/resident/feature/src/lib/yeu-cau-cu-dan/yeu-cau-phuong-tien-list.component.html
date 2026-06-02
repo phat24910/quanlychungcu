@@ -1,9 +1,9 @@
 <div class="p-4">
-  <div class="flex justify-between items-center mb-4">
-    <div style="display:flex;gap:8px;align-items:center">
+  <div class="page-toolbar flex justify-between items-center flex-wrap gap-2 sm:gap-3 mb-4">
+    <div style="display:flex;gap:8px;align-items:center" class="flex-wrap">
       <input nz-input placeholder="Nhập người gửi/ người xử lý/ biển số" [(ngModel)]="keyword"
         (keydown.enter)="onSearch()"
-        style="width:330px;border-radius:6px;padding:6px 12px;border:1px solid #e5e7eb;height:40px;box-sizing:border-box" />
+        class="w-full sm:w-80" style="border-radius:6px;padding:6px 12px;border:1px solid #e5e7eb;height:40px;box-sizing:border-box" />
       <button nz-button nzType="primary" (click)="onSearch()"
         style="height:40px;padding:6px 12px;border-radius:6px;display:flex;align-items:center;gap:8px;font-weight:600">
         <i nz-icon nzType="search" nzTheme="outline"></i>
@@ -12,10 +12,10 @@
       <button nz-button type="button" (click)="openAdvanced()"
         style="height:40px;padding:6px 12px;border-radius:6px;display:flex;align-items:center;gap:8px;font-weight:600">
         <i nz-icon nzType="filter" nzTheme="outline"></i>
-        <span>Tìm nâng cao</span>
+        <span class="hidden sm:inline">Tìm nâng cao</span>
       </button>
     </div>
-    <div class="flex items-center" style="gap:8px">
+    <div class="flex items-center flex-wrap" style="gap:8px">
       <button *ngIf="setOfCheckedId.size > 0" nz-button nzType="primary" nzDanger (click)="deleteSelected()"
         style="height:40px;padding:6px 12px;border-radius:6px;display:flex;align-items:center;justify-content:center;gap:8px;font-weight:600">
         <i nz-icon nzType="delete" nzTheme="outline"></i>&nbsp;Xóa đã chọn
@@ -328,8 +328,8 @@
       </div>
 
       <div style="margin-top:12px;display:flex;justify-content:flex-end;gap:8px">
-        <button nz-button type="button" (click)="closeAdvanced()">Hủy</button>
-        <button nz-button nzType="primary" type="button" (click)="applyAdvanced()">Áp dụng</button>
+        <button nz-button type="button" (click)="closeAdvanced()" class="rounded-lg">Hủy</button>
+        <button nz-button nzType="primary" type="button" (click)="applyAdvanced()" class="rounded-lg">Áp dụng</button>
       </div>
     </ng-container>
   </nz-modal>

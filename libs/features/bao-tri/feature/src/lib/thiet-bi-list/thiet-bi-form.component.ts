@@ -43,6 +43,7 @@ export class ThietBiFormComponent implements OnInit {
     this.loadTrangThais();
     if (this.item) {
       this.form.patchValue(this.item);
+      this.form.get('maThietBi')?.disable();
     }
   }
 

@@ -9,8 +9,8 @@ import { NzUploadFile } from 'ng-zorro-antd/upload';
   styleUrls: ['./chi-so-tieu-thu-import.component.scss']
 })
 export class ChiSoTieuThuImportComponent {
-  @Input() thang = new Date().getMonth() + 1;
-  @Input() nam = new Date().getFullYear();
+  @Input() thang: number | null = null;
+  @Input() nam: number | null = null;
   @Output() success = new EventEmitter<void>();
 
   ngayChot = new Date().toISOString();
@@ -42,6 +42,10 @@ export class ChiSoTieuThuImportComponent {
   doImportExcel(): void {
     if (!this.excelFile) {
       this.notification.warning('Cảnh báo', 'Vui lòng chọn file Excel');
+      return;
+    }
+    if (!this.thang || !this.nam) {
+      this.notification.warning('Cảnh báo', 'Vui lòng chọn tháng và năm');
       return;
     }
 

@@ -1,6 +1,6 @@
 ﻿<div class="p-3 bg-gray-50 min-h-screen">
   <div
-    class="bg-white p-3 rounded-xl shadow-sm border border-gray-100 mb-3 flex flex-wrap gap-4 items-end"
+    class="page-toolbar bg-white p-3 rounded-xl shadow-sm border border-gray-100 mb-3 flex flex-wrap gap-2 sm:gap-3 items-end"
   >
     <div>
       <!-- <label class="text-[10px] font-semibold text-gray-400 mb-1 block"
@@ -11,11 +11,12 @@
         placeholder="Mã thiết bị, tên thiết bị, vị trí..."
         [(ngModel)]="keyword"
         (keyup.enter)="load()"
-        style="min-width:260px;width:320px;border-radius:8px;padding:8px 12px;border:1px solid #e5e7eb;height:40px;box-sizing:border-box"
+        class="w-full sm:w-80"
+        style="border-radius:8px;padding:8px 12px;border:1px solid #e5e7eb;height:40px;box-sizing:border-box"
       />
     </div>
 
-    <div style="width: 200px">
+    <div class="w-full sm:w-[200px]">
       <label class="text-[10px] font-semibold text-gray-400 mb-1 block"
         >Trạng thái</label
       >
@@ -43,7 +44,7 @@
       <i nz-icon nzType="search" nzTheme="outline"></i>&nbsp;Tìm kiếm
     </button>
 
-    <div style="margin-left:auto;display:flex;gap:8px">
+    <div style="margin-left:auto;display:flex;gap:8px" class="flex-wrap">
       <button
         nz-button
         type="button"

@@ -5,6 +5,7 @@
     <!-- <div class="text-xs text-gray-500 mt-1">{{ totalItems }} căn hộ đã tham gia</div> -->
   </div>
 
+  <div class="responsive-table">
   <nz-table #tgTable [nzData]="items" [nzLoading]="loading" [nzFrontPagination]="false" [nzTotal]="totalItems"
     [nzPageSize]="pageSize" [nzPageIndex]="pageNumber" (nzPageIndexChange)="onPageChange($event)" nzSize="small">
     <thead>
@@ -34,4 +35,5 @@
       </tr>
     </tbody>
   </nz-table>
+  </div>
 </div>

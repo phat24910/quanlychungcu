@@ -1,5 +1,5 @@
 <div class="p-3">
-  <div class="flex items-center justify-between mb-3">
+  <div class="page-toolbar flex items-center justify-between flex-wrap gap-2 sm:gap-3 mb-3">
     <h2 class="text-lg font-semibold">Báo cáo tài chính</h2>
     <button nz-button nzType="default" routerLink="/dashboard/quy-thu-chi"
       style="height:40px;padding:6px 12px;border-radius:8px;display:flex;align-items:center;gap:8px;font-weight:600">
@@ -11,7 +11,7 @@
   <nz-tabset [(nzSelectedIndex)]="selectedTab" (nzSelectChange)="onTabChange($event.index)">
     <!-- Tab 1: Báo cáo Thu-Chi -->
     <nz-tab nzTitle="Báo cáo Thu-Chi">
-      <div class="bg-white p-3 rounded-xl shadow-sm border border-gray-100 mb-3 flex flex-wrap gap-4 items-end">
+      <div class="page-toolbar bg-white p-3 rounded-xl shadow-sm border border-gray-100 mb-3 flex flex-wrap gap-2 sm:gap-3 items-end">
         <div style="width: 160px">
           <label class="text-[11px] font-bold text-gray-400 mb-1.5 block ml-1">Từ ngày</label>
           <nz-date-picker [(ngModel)]="bcTuNgay" class="w-full rounded-lg"></nz-date-picker>
@@ -58,6 +58,7 @@
             <h4 class="text-sm font-bold text-green-600 uppercase mb-3 flex items-center gap-2">
               <i nz-icon nzType="arrow-up"></i> Các khoản thu
             </h4>
+            <div class="responsive-table">
             <nz-table #thuTable [nzData]="bcData.danhSachKhoanThu" [nzFrontPagination]="false" [nzShowPagination]="false" nzSize="small">
               <thead>
                 <tr>
@@ -73,11 +74,12 @@
                   <td class="text-right">{{ row.soGiaoDich }}</td>
                   <td class="text-right text-green-600 font-bold">{{ formatCurrency(row.tongSoTien) }} đ</td>
                   <td class="text-right">
-                    <nz-tag [nzColor]="getTyLeColor(row.tyLePhanTram)">{{ row.tyLePhanTram }}%</nz-tag>
+                    <nz-tag [nzColor]="getTyLeColor(row.tyLePhanTram)">{{ row.tyLePhanTram | number:'1.2-2' }}%</nz-tag>
                   </td>
                 </tr>
               </tbody>
             </nz-table>
+            </div>
           </div>
 
           <!-- Khoản chi -->
@@ -85,6 +87,7 @@
             <h4 class="text-sm font-bold text-red-600 uppercase mb-3 flex items-center gap-2">
               <i nz-icon nzType="arrow-down"></i> Các khoản chi
             </h4>
+            <div class="responsive-table">
             <nz-table #chiTable [nzData]="bcData.danhSachKhoanChi" [nzFrontPagination]="false" [nzShowPagination]="false" nzSize="small">
               <thead>
                 <tr>
@@ -100,11 +103,12 @@
                   <td class="text-right">{{ row.soGiaoDich }}</td>
                   <td class="text-right text-red-600 font-bold">{{ formatCurrency(row.tongSoTien) }} đ</td>
                   <td class="text-right">
-                    <nz-tag [nzColor]="getTyLeColor(row.tyLePhanTram)">{{ row.tyLePhanTram }}%</nz-tag>
+                    <nz-tag [nzColor]="getTyLeColor(row.tyLePhanTram)">{{ row.tyLePhanTram | number:'1.2-2' }}%</nz-tag>
                   </td>
                 </tr>
               </tbody>
             </nz-table>
+            </div>
           </div>
         </div>
 
@@ -114,7 +118,7 @@
 
     <!-- Tab 2: Công nợ căn hộ -->
     <nz-tab nzTitle="Công nợ căn hộ">
-      <div class="bg-white p-3 rounded-xl shadow-sm border border-gray-100 mb-3 flex flex-wrap gap-4 items-end">
+      <div class="page-toolbar bg-white p-3 rounded-xl shadow-sm border border-gray-100 mb-3 flex flex-wrap gap-2 sm:gap-3 items-end">
         <div style="width: 100px">
           <label class="text-[11px] font-bold text-gray-400 mb-1.5 block ml-1">Tháng</label>
           <nz-select [(ngModel)]="cnThang" class="w-full rounded-lg overflow-hidden">
@@ -172,7 +176,7 @@
 
     <!-- Tab 3: Công nợ tòa nhà -->
     <nz-tab nzTitle="Công nợ tòa nhà">
-      <div class="bg-white p-3 rounded-xl shadow-sm border border-gray-100 mb-3 flex flex-wrap gap-4 items-end">
+      <div class="page-toolbar bg-white p-3 rounded-xl shadow-sm border border-gray-100 mb-3 flex flex-wrap gap-2 sm:gap-3 items-end">
         <div style="width: 100px">
           <label class="text-[11px] font-bold text-gray-400 mb-1.5 block ml-1">Tháng</label>
           <nz-select [(ngModel)]="tnThang" class="w-full rounded-lg overflow-hidden">

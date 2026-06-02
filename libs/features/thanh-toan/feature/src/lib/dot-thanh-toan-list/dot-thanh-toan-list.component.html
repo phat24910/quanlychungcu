@@ -1,27 +1,26 @@
 <div class="p-3">
-  <div class="bg-white p-3 rounded-xl shadow-sm border border-gray-100 mb-3 flex flex-wrap gap-4 items-end">
+  <div class="page-toolbar bg-white p-3 rounded-xl shadow-sm border border-gray-100 mb-3 flex flex-wrap gap-2 sm:gap-3 items-end">
     <input nz-input [(ngModel)]="keyword" (keyup.enter)="load()" placeholder="Tìm kiếm đợt..."
       style="min-width:260px;width:320px;border-radius:8px;padding:8px 12px;border:1px solid #e5e7eb;height:40px;box-sizing:border-box">
 
     <div style="width: 100px">
       <label class="text-[11px] font-bold text-gray-400 mb-1.5 block ml-1">Tháng</label>
-      <nz-select [(ngModel)]="thang" class="w-full rounded-lg overflow-hidden" (ngModelChange)="load()">
-        <nz-option *ngFor="let m of [1,2,3,4,5,6,7,8,9,10,11,12]" [nzValue]="m" [nzLabel]="m"></nz-option>
+      <nz-select [(ngModel)]="thang" class="w-full rounded-lg overflow-hidden" nzAllowClear nzPlaceHolder="Tất cả">
+        <nz-option *ngFor="let m of [1,2,3,4,5,6,7,8,9,10,11,12]" [nzValue]="m" [nzLabel]="'Tháng ' + m"></nz-option>
       </nz-select>
     </div>
 
-    <div style="width: 120px">
+    <div style="width: 100px">
       <label class="text-[11px] font-bold text-gray-400 mb-1.5 block ml-1">Năm</label>
-      <nz-select [(ngModel)]="nam" class="w-full rounded-lg overflow-hidden" (ngModelChange)="load()">
-        <nz-option *ngFor="let y of [2024,2025,2026,2027,2028,2029,2030]" [nzValue]="y" [nzLabel]="y"></nz-option>
-      </nz-select>
+      <input nz-input type="number" [(ngModel)]="nam" placeholder="Nhập năm" min="2020" max="2100"
+        style="border-radius:6px;padding:6px 12px;border:1px solid #e5e7eb;height:40px;box-sizing:border-box" />
     </div>
 
     <button nz-button (click)="load()"
       style="display:flex;align-items:center;background:#0b84e6;border-color:#0b84e6;color:#fff;border-radius:8px;padding:6px 14px;font-weight:600;height:40px;box-sizing:border-box">
       <i nz-icon nzType="search" nzTheme="outline"></i>&nbsp;Tìm kiếm</button>
 
-    <button nz-button type="button" (click)="onRefresh()"
+    <button nz-button type="button" (click)="onRefresh()" class="ml-auto"
       style="height:40px;padding:6px 12px;border-radius:6px;display:flex;align-items:center;justify-content:center;gap:8px;font-weight:600;border:1px solid #60a5fa;background:#eff6ff;color:#1e3a8a">
       <i nz-icon nzType="reload" nzTheme="outline"
         style="font-size:20px;line-height:20px;transform:scale(1.06);display:inline-block;color:#1e3a8a"></i>
@@ -29,7 +28,7 @@
 
     <button nz-button nzType="primary" type="button" (click)="openCreateModal()"
       style="height:40px;padding:6px 12px;border-radius:8px;display:flex;align-items:center;gap:8px;font-weight:700;box-shadow:0 2px 6px rgba(0,0,0,0.06)">
-      <i nz-icon nzType="plus" nzTheme="outline"></i>
+      <i nz-icon nzType="plus-circle" nzTheme="outline"></i>
       <span>Thêm đợt mới</span>
     </button>
   </div>
@@ -60,25 +59,38 @@
             </a>
             <nz-dropdown-menu #menu="nzDropdownMenu">
               <ul nz-menu>
+                <!-- Bước 1: Chỉnh sửa đợt (trạng thái Tạo mới) -->
                 <li nz-menu-item (click)="openCreateModal(data)" *ngIf="data.trangThaiDotThanhToanId === 1">
-                  <i nz-icon nzType="edit"></i>&nbsp;Chỉnh sửa
+                  <i nz-icon nzType="edit"></i>&nbsp;Chỉnh sửa thông tin
                 </li>
-                <li nz-menu-item (click)="lapHoaDon(data)" *ngIf="data.trangThaiDotThanhToanId <= 2">
-                  <i nz-icon nzType="file-add"></i>&nbsp;Lập hóa đơn dự thảo
-                </li>
+
+                <!-- Bước 2: Duyệt đợt (chỉ khi Tạo mới) -->
                 <li nz-menu-item (click)="approve(data)" *ngIf="data.trangThaiDotThanhToanId === 1">
                   <i nz-icon nzType="check-circle"></i>&nbsp;Duyệt đợt
                 </li>
-                <li nz-menu-divider *ngIf="data.trangThaiDotThanhToanId === 1"></li>
-                <li nz-menu-item nzDanger (click)="delete(data)" *ngIf="data.trangThaiDotThanhToanId === 1">
-                  <i nz-icon nzType="delete"></i>&nbsp;Xóa đợt
+
+                <!-- Bước 3: Lập hóa đơn dự thảo (chỉ khi Đã duyệt, sau khi duyệt đợt) -->
+                <li nz-menu-item (click)="lapHoaDon(data)" *ngIf="data.trangThaiDotThanhToanId === 3">
+                  <i nz-icon nzType="file-add"></i>&nbsp;Lập hóa đơn dự thảo
                 </li>
+
+                <li nz-menu-divider></li>
+
+                <!-- Bước 4 & 5: Xem/Quản lý hóa đơn (mọi trạng thái) -->
                 <li nz-menu-item (click)="viewInvoices(data)">
                   <i nz-icon nzType="profile"></i>&nbsp;Quản lý hóa đơn
                 </li>
-                <li nz-menu-divider *ngIf="data.trangThaiDotThanhToanId === 3"></li>
+
+                <!-- Bước 6: Đóng đợt (chỉ khi Đã duyệt = 3) -->
                 <li nz-menu-item (click)="dongDot(data)" *ngIf="data.trangThaiDotThanhToanId === 3">
                   <i nz-icon nzType="lock"></i>&nbsp;Đóng đợt
+                </li>
+
+                <li nz-menu-divider *ngIf="data.trangThaiDotThanhToanId === 1"></li>
+
+                <!-- Xóa đợt (chỉ khi Tạo mới) -->
+                <li nz-menu-item nzDanger (click)="delete(data)" *ngIf="data.trangThaiDotThanhToanId === 1">
+                  <i nz-icon nzType="delete"></i>&nbsp;Xóa đợt
                 </li>
               </ul>
             </nz-dropdown-menu>

@@ -1,7 +1,7 @@
-<div>
+﻿<div>
   <!-- <h2 class="text-lg font-semibold mb-3">Sao lưu &amp; Khôi phục CSDL</h2> -->
 
-  <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px">
+  <div class="page-toolbar flex flex-wrap items-center gap-2 sm:gap-3" style="justify-content:space-between;margin-bottom:12px">
     <div style="display:flex; gap:8px; align-items:center; max-width:70%">
       <input nz-input placeholder="Nhập tên file" [(ngModel)]="keyword"
         style="width:360px;border-radius:6px;padding:6px 12px;border:1px solid #e5e7eb;height:40px;box-sizing:border-box" />
@@ -17,7 +17,7 @@
           style="font-size:20px;line-height:20px;transform:scale(1.06);display:inline-block;color:#1e3a8a"></i></button>
       <button nz-button nzType="primary" (click)="openCreateModal()"
         style="display:flex;align-items:center;border:1px solid #e5e7eb;border-radius:6px;padding:6px 12px;font-weight:600;height:40px;box-sizing:border-box"><i
-          nz-icon nzType="plus" nzTheme="outline"></i>&nbsp;Tạo bản sao lưu</button>
+          nz-icon nzType="plus-circle" nzTheme="outline"></i>&nbsp;Tạo bản sao lưu</button>
     </div>
   </div>
 

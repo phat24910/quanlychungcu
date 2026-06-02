@@ -13,6 +13,7 @@ import { PhieuBaoTriFormComponent } from './phieu-bao-tri-form.component';
 })
 export class PhieuBaoTriListComponent implements OnInit {
   loading = false;
+  exportLoading = false;
   items: any[] = [];
   trangThaiPhieuBaoTriOptions: any[] = [];
 
@@ -105,8 +106,8 @@ export class PhieuBaoTriListComponent implements OnInit {
       nzWidth: 1000,
     });
 
-    drawerRef.afterClose.subscribe((res) => {
-      if (res) this.load();
+    drawerRef.afterClose.subscribe(() => {
+      this.load();
     });
   }
 
@@ -139,5 +140,25 @@ export class PhieuBaoTriListComponent implements OnInit {
       default:
         return 'default';
     }
+  }
+
+  exportExcel(id: number): void {
+    this.exportLoading = true;
+    this.baoTriService.exportPhieuBaoTri(id).subscribe({
+      next: (blob: Blob) => {
+        const url = window.URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = `phieu-bao-tri_${id}_${new Date().toISOString().slice(0, 10)}.xlsx`;
+        a.click();
+        window.URL.revokeObjectURL(url);
+        this.exportLoading = false;
+        this.notification.success('Thành công', 'Xuất Excel phiếu bảo trì thành công');
+      },
+      error: () => {
+        this.exportLoading = false;
+        this.notification.error('Lỗi', 'Xuất Excel thất bại');
+      },
+    });
   }
 }

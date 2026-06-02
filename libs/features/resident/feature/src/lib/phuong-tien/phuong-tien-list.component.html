@@ -1,4 +1,4 @@
-<div class="p-4">
+﻿<div class="p-4">
   <ng-template #bulkStatusTpl>
     <div style="min-width:320px">
       <p>Áp dụng trạng thái cho <strong>{{ setOfCheckedId.size }}</strong> phương tiện đã chọn</p>
@@ -8,7 +8,7 @@
       </nz-select>
     </div>
   </ng-template>
-  <div class="flex justify-between items-center mb-4">
+  <div class="page-toolbar flex justify-between items-center flex-wrap gap-2 sm:gap-3 mb-4">
     <div *ngIf="setOfCheckedId.size === 0" style="display:flex;gap:8px;align-items:center">
       <input nz-input placeholder="Nhập từ khóa (Tên, Biển số, Màu)" [(ngModel)]="keyword" (keydown.enter)="onSearch()"
         style="width:230px;border-radius:6px;padding:6px 12px;border:1px solid #e5e7eb;height:40px;box-sizing:border-box" />
@@ -40,7 +40,7 @@
 
         <!-- <button nz-button nzType="primary" (click)="create()"
           style="height:40px;padding:6px 12px;border-radius:8px;display:flex;align-items:center;gap:8px;font-weight:700;box-shadow:0 2px 6px rgba(0,0,0,0.06)">
-          <i nz-icon nzType="plus" nzTheme="outline"></i>
+          <i nz-icon nzType="plus-circle" nzTheme="outline"></i>
           <span>Đăng ký phương tiện mới</span>
         </button> -->
 
@@ -60,7 +60,7 @@
       <ng-container *ngIf="setOfCheckedId.size === 0">
         <button nz-button nzType="primary" (click)="create()"
           style="height:40px;padding:6px 12px;border-radius:8px;display:flex;align-items:center;gap:8px;font-weight:700;box-shadow:0 2px 6px rgba(0,0,0,0.06)">
-          <i nz-icon nzType="plus" nzTheme="outline"></i>
+          <i nz-icon nzType="plus-circle" nzTheme="outline"></i>
           <span>Đăng ký phương tiện</span>
         </button>
       </ng-container>
@@ -121,10 +121,9 @@
       <tbody>
         <tr *ngFor="let it of items; let i = index">
           <td [nzChecked]="setOfCheckedId.has(it.id)" (nzCheckedChange)="onItemChecked(it.id, $event)"></td>
-          <td style="text-align:center;vertical-align:middle">
-            <a nz-dropdown nzTrigger="hover" [nzDropdownMenu]="actionMenu"
-              style="display:inline-flex;align-items:center;justify-content:center">
-              <i nz-icon nzType="unordered-list" nzTheme="outline" class="text-lg cursor-pointer"></i>
+          <td style="text-align:center;vertical-align:middle" class="action-cell">
+            <a nz-dropdown nzTrigger="hover" [nzDropdownMenu]="actionMenu" class="action-btn">
+              <i nz-icon nzType="unordered-list" nzTheme="outline" class="text-lg cursor-pointer action-icon"></i>
             </a>
             <nz-dropdown-menu #actionMenu="nzDropdownMenu">
               <ul nz-menu>
@@ -207,8 +206,8 @@
       </div>
 
       <div style="margin-top:12px;display:flex;justify-content:flex-end;gap:8px">
-        <button nz-button type="button" (click)="closeAdvanced()">Hủy</button>
-        <button nz-button nzType="primary" type="button" (click)="applyAdvanced()">Áp dụng</button>
+        <button nz-button type="button" (click)="closeAdvanced()" class="rounded-lg">Hủy</button>
+        <button nz-button nzType="primary" type="button" (click)="applyAdvanced()" class="rounded-lg">Áp dụng</button>
       </div>
     </ng-container>
   </nz-modal>
@@ -234,8 +233,8 @@
               <div class="text-sm text-gray-500">Căn hộ: {{ pt.maCanHo }}</div>
             </div>
             <div style="display:flex;gap:8px;align-items:center">
-              <button nz-button nzType="primary" (click)="taoThe(pt)">
-                <i nz-icon nzType="plus" nzTheme="outline"></i>
+              <button nz-button nzType="primary" (click)="taoThe(pt)" class="rounded-lg inline-flex items-center gap-1.5">
+                <i nz-icon nzType="plus-circle" nzTheme="outline"></i>
                 <span>Tạo thẻ</span>
               </button>
             </div>

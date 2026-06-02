@@ -1,47 +1,46 @@
 ﻿<div class="p-3">
-  <div class="flex justify-between items-center mb-3">
-    <div>
-      <h2 class="text-2xl font-bold text-gray-800">Hóa đơn đối tác</h2>
-      <p class="text-gray-500 text-sm">Quản lý các khoản chi trả cho nhà cung cấp dịch vụ.</p>
-    </div>
-    <button nz-button type="button" (click)="openCreateModal()"
-      style="display:flex;align-items:center;background:#0b84e6;border-color:#0b84e6;color:#fff;border-radius:8px;padding:6px 12px;font-weight:700;height:40px;box-sizing:border-box;box-shadow:0 2px 6px rgba(0,0,0,0.06)">
-      <i nz-icon nzType="plus" nzTheme="outline"></i>
-      <span>Lập hóa đơn mới</span>
-    </button>
-  </div>
+  <div class="page-toolbar bg-white rounded-2xl shadow-sm border border-gray-100 p-4 mb-4 grid grid-cols-1 lg:grid-cols-2 gap-2 sm:gap-3">
+    <div class="flex flex-wrap items-end gap-3">
+      <div class="flex-1 min-w-[200px]">
+        <label class="text-[11px] font-bold text-gray-400 mb-1.5 block ml-1">Đối tác / Nhà cung cấp</label>
+        <nz-select [(ngModel)]="doiTacId" class="w-full rounded-lg" nzShowSearch nzAllowClear
+          nzPlaceHolder="Chọn đối tác">
+          <nz-option *ngFor="let o of doiTacOptions" [nzValue]="o.id" [nzLabel]="o.tenDoiTac"></nz-option>
+        </nz-select>
+      </div>
 
-  <div class="bg-white p-3 rounded-xl shadow-sm border border-gray-100 mb-3 flex flex-wrap gap-4 items-end">
-    <div class="flex-1 min-w-[200px]">
-      <label class="text-xs font-bold text-gray-400 mb-1 block">Đối tác / Nhà cung cấp</label>
-      <nz-select [(ngModel)]="doiTacId" class="w-full rounded-lg" nzShowSearch nzAllowClear (ngModelChange)="load()">
-        <nz-option *ngFor="let o of doiTacOptions" [nzValue]="o.id" [nzLabel]="o.tenDoiTac"></nz-option>
-      </nz-select>
-    </div>
+      <div style="width: 100px">
+        <label class="text-[11px] font-bold text-gray-400 mb-1.5 block ml-1">Tháng</label>
+        <nz-select [(ngModel)]="thang" class="w-full rounded-lg" nzAllowClear nzPlaceHolder="Tất cả">
+          <nz-option *ngFor="let m of [1,2,3,4,5,6,7,8,9,10,11,12]" [nzValue]="m" [nzLabel]="'Tháng ' + m"></nz-option>
+        </nz-select>
+      </div>
 
-    <div style="width: 100px">
-      <label class="text-xs font-bold text-gray-400 mb-1 block">Tháng</label>
-      <nz-select [(ngModel)]="thang" class="w-full rounded-lg" (ngModelChange)="load()">
-        <nz-option *ngFor="let m of [1,2,3,4,5,6,7,8,9,10,11,12]" [nzValue]="m" [nzLabel]="m"></nz-option>
-      </nz-select>
-    </div>
+      <div style="width: 110px">
+        <label class="text-[11px] font-bold text-gray-400 mb-1.5 block ml-1">Năm</label>
+        <input nz-input type="number" [(ngModel)]="nam" placeholder="Nhập năm" min="2020" max="2100"
+          style="border-radius:6px;padding:6px 12px;border:1px solid #e5e7eb;height:40px;box-sizing:border-box" />
+      </div>
 
-    <div style="width: 120px">
-      <label class="text-xs font-bold text-gray-400 mb-1 block">Năm</label>
-      <nz-select [(ngModel)]="nam" class="w-full rounded-lg" (ngModelChange)="load()">
-        <nz-option *ngFor="let y of [2024,2025,2026]" [nzValue]="y" [nzLabel]="y"></nz-option>
-      </nz-select>
+      <button nz-button type="button" (click)="load()"
+        class="h-10 px-4 rounded-lg font-semibold flex items-center gap-2"
+        style="background:#0b84e6;border-color:#0b84e6;color:#fff">
+        <i nz-icon nzType="search" nzTheme="outline"></i>Tìm kiếm
+      </button>
     </div>
 
-    <button nz-button type="button" (click)="load()"
-      style="display:flex;align-items:center;background:#0b84e6;border-color:#0b84e6;color:#fff;border-radius:8px;padding:6px 14px;font-weight:600;height:40px;box-sizing:border-box">
-      <i nz-icon nzType="search" nzTheme="outline"></i>&nbsp;Tìm kiếm
-    </button>
-    <button nz-button type="button" (click)="load()"
-      style="height:40px;padding:6px 12px;border-radius:6px;display:flex;align-items:center;justify-content:center;gap:8px;font-weight:600;border:1px solid #60a5fa;background:#eff6ff;color:#1e3a8a">
-      <i nz-icon nzType="reload" nzTheme="outline"
-        style="font-size:20px;line-height:20px;transform:scale(1.06);display:inline-block;color:#1e3a8a"></i>
-    </button>
+    <div class="flex items-end justify-end gap-3">
+      <button nz-button type="button" (click)="onRefresh()"
+        class="h-10 w-10 rounded-lg flex items-center justify-center"
+        style="border:1px solid #60a5fa;background:#eff6ff;color:#1e3a8a">
+        <i nz-icon nzType="reload" nzTheme="outline" class="text-lg"></i>
+      </button>
+      <button nz-button nzType="primary" type="button" (click)="openCreateModal()"
+        class="h-10 px-5 rounded-lg font-semibold shadow-sm flex items-center gap-2">
+        <i nz-icon nzType="plus-circle" nzTheme="outline"></i>
+        <span>Lập hóa đơn mới</span>
+      </button>
+    </div>
   </div>
 
   <app-scroll-table [height]="'calc(100vh - 240px)'">
@@ -49,18 +48,22 @@
       [nzPageSize]="pageSize" [nzPageIndex]="pageNumber" (nzPageIndexChange)="onPageChange($event)">
       <thead>
         <tr>
-          <th nzWidth="150px" class="text-center">Thao tác</th>
-          <th nzWidth="60px" class="text-center">STT</th>
-          <th>Đối tác</th>
-          <th>Hợp đồng</th>
-          <th class="text-right">Số tiền</th>
-          <th class="text-center">Kỳ thanh toán</th>
-          <th>Trạng thái</th>
-          <th>Chứng từ</th>
+          <th nzWidth="120px"
+            class="text-center bg-gray-50/80 text-gray-500 font-bold text-[12px] py-4 border-none first:rounded-l-xl">
+            Thao tác</th>
+          <th nzWidth="50px" class="text-center bg-gray-50/80 text-gray-500 font-bold text-[12px] py-4 border-none">
+            STT</th>
+          <th class="bg-gray-50/80 text-gray-500 font-bold text-[12px] py-4 border-none">Đối tác</th>
+          <th class="bg-gray-50/80 text-gray-500 font-bold text-[12px] py-4 border-none">Hợp đồng</th>
+          <th class="text-right bg-gray-50/80 text-gray-500 font-bold text-[12px] py-4 border-none">Số tiền</th>
+          <th class="text-center bg-gray-50/80 text-gray-500 font-bold text-[12px] py-4 border-none">Kỳ thanh toán</th>
+          <th class="bg-gray-50/80 text-gray-500 font-bold text-[12px] py-4 border-none">Trạng thái</th>
+          <th class="text-center bg-gray-50/80 text-gray-500 font-bold text-[12px] py-4 border-none last:rounded-r-xl">
+            Chứng từ</th>
         </tr>
       </thead>
       <tbody>
-        <tr *ngFor="let data of basicTable.data; let i = index">
+        <tr *ngFor="let data of basicTable.data; let i = index" class="hover:bg-gray-50/50 transition-colors">
           <td class="text-center align-middle">
             <a nz-dropdown [nzDropdownMenu]="menu" nzTrigger="hover" (click)="$event.stopPropagation()"
               class="text-gray-400 hover:text-indigo-600">
@@ -72,18 +75,20 @@
                   <i nz-icon nzType="check-square" nzTheme="outline"></i>&nbsp;Xác nhận thanh toán
                 </li>
                 <li nz-menu-item (click)="openCreateModal(data)"><i nz-icon nzType="edit"
-                    nzTheme="outline"></i>&nbsp;Sửa</li>
+                    nzTheme="outline"></i>&nbsp;Chỉnh sửa</li>
                 <li nz-menu-item *ngIf="data.trangThaiThanhToanId === 1" (click)="delete(data)" class="text-red-500">
                   <i nz-icon nzType="delete" nzTheme="outline"></i>&nbsp;Xóa
                 </li>
               </ul>
             </nz-dropdown-menu>
           </td>
-          <td class="text-center text-gray-400">{{ (pageNumber - 1) * pageSize + i + 1 }}</td>
-          <td><span class="font-bold text-gray-800">{{ data.tenDoiTac }}</span></td>
-          <td><span class="text-xs font-mono text-indigo-600">{{ data.soHopDong }}</span></td>
-          <td class="text-right font-bold text-blue-600">{{ data.soTien | number }} đ</td>
-          <td class="text-center">{{ data.thang }}/{{ data.nam }}</td>
+          <td class="text-center text-gray-400 text-sm">{{ (pageNumber - 1) * pageSize + i + 1 }}</td>
+          <td><span class="font-semibold text-gray-800">{{ data.tenDoiTac }}</span></td>
+          <td><span class="text-xs font-mono font-semibold text-indigo-600 bg-indigo-50 px-2 py-0.5 rounded">{{ data.soHopDong }}</span></td>
+          <td class="text-right font-bold text-blue-600 tabular-nums">{{ data.soTien | number }} đ</td>
+          <td class="text-center">
+            <span class="text-xs font-semibold text-gray-500 bg-gray-100 px-2 py-0.5 rounded-full">{{ data.thang }}/{{ data.nam }}</span>
+          </td>
           <td>
             <nz-tag [nzColor]="getStatusColor(data.trangThaiThanhToanId)">
               {{ data.trangThaiThanhToanTen }}
@@ -91,12 +96,11 @@
           </td>
           <td class="text-center">
             <a *ngIf="data.fileHoaDonUrl" [href]="data.fileHoaDonUrl" target="_blank" nz-tooltip
-              nzTooltipTitle="Xem file">
-              <i nz-icon nzType="file-pdf" class="text-xl text-red-500"></i>
+              nzTooltipTitle="Xem file" class="inline-flex items-center justify-center w-8 h-8 rounded-lg hover:bg-red-50 transition-colors">
+              <i nz-icon nzType="file-pdf" class="text-lg text-red-500"></i>
             </a>
-            <span *ngIf="!data.fileHoaDonUrl" class="text-gray-300">-</span>
+            <span *ngIf="!data.fileHoaDonUrl" class="text-gray-300">—</span>
           </td>
-          <!-- action moved to first column -->
         </tr>
       </tbody>
     </nz-table>

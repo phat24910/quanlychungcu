@@ -1,9 +1,9 @@
 ﻿<div class="yeu-cau-thi-cong-list">
   <!-- Toolbar -->
-  <div class="flex justify-between items-center mb-3">
-    <div class="flex items-center gap-3">
+  <div class="page-toolbar flex justify-between items-center flex-wrap gap-2 sm:gap-3 mb-3">
+    <div class="flex items-center gap-1 sm:gap-3 flex-wrap">
       <input nz-input placeholder="Tìm theo căn hộ, người gửi" [(ngModel)]="keyword" (keydown.enter)="onSearch()"
-        class="w-80 rounded-lg h-10 border-gray-200" />
+        class="w-full sm:w-80 rounded-lg h-10 border-gray-200" />
       <button nz-button nzType="primary" (click)="onSearch()"
         style="height:40px;padding:6px 12px;border-radius:6px;display:flex;align-items:center;gap:8px;font-weight:600">
         <i nz-icon nzType="search" nzTheme="outline"></i>
@@ -12,11 +12,11 @@
       <button nz-button (click)="advancedVisible = true"
         style="height:40px;padding:6px 12px;border-radius:6px;display:flex;align-items:center;gap:8px;font-weight:600">
         <i nz-icon nzType="filter" nzTheme="outline"></i>
-        <span>Tìm nâng cao</span>
+        <span class="hidden sm:inline">Tìm nâng cao</span>
       </button>
     </div>
 
-    <div class="flex items-center gap-2">
+    <div class="flex items-center gap-1 sm:gap-2">
       <button nz-button nzType="default" (click)="onRefresh()"
         style="height:40px;padding:6px 12px;border-radius:6px;display:flex;align-items:center;justify-content:center;gap:8px;font-weight:600;border:1px solid #60a5fa;background:#eff6ff;color:#1e3a8a">
         <i nz-icon nzType="reload" nzTheme="outline"
@@ -48,38 +48,38 @@
 
         <div class="flex flex-col">
           <label class="mb-2 font-medium text-gray-700">Ngày tạo từ</label>
-          <nz-date-picker [(ngModel)]="ngayTaoTu" [ngModelOptions]="{standalone:true}" class="w-full"></nz-date-picker>
+          <nz-date-picker [(ngModel)]="ngayTaoTu" [ngModelOptions]="{standalone:true}" class="w-full rounded-lg"></nz-date-picker>
         </div>
 
         <div class="flex flex-col">
           <label class="mb-2 font-medium text-gray-700">Ngày tạo đến</label>
-          <nz-date-picker [(ngModel)]="ngayTaoDen" [ngModelOptions]="{standalone:true}" class="w-full"></nz-date-picker>
+          <nz-date-picker [(ngModel)]="ngayTaoDen" [ngModelOptions]="{standalone:true}" class="w-full rounded-lg"></nz-date-picker>
         </div>
 
         <div class="flex flex-col">
           <label class="mb-2 font-medium text-gray-700">Dự kiến bắt đầu (Từ)</label>
-          <nz-date-picker [(ngModel)]="batDauTu" [ngModelOptions]="{standalone:true}" class="w-full"></nz-date-picker>
+          <nz-date-picker [(ngModel)]="batDauTu" [ngModelOptions]="{standalone:true}" class="w-full rounded-lg"></nz-date-picker>
         </div>
 
         <div class="flex flex-col">
           <label class="mb-2 font-medium text-gray-700">Dự kiến bắt đầu (Đến)</label>
-          <nz-date-picker [(ngModel)]="batDauDen" [ngModelOptions]="{standalone:true}" class="w-full"></nz-date-picker>
+          <nz-date-picker [(ngModel)]="batDauDen" [ngModelOptions]="{standalone:true}" class="w-full rounded-lg"></nz-date-picker>
         </div>
 
         <div class="flex flex-col">
           <label class="mb-2 font-medium text-gray-700">Dự kiến kết thúc (Từ)</label>
-          <nz-date-picker [(ngModel)]="ketThucTu" [ngModelOptions]="{standalone:true}" class="w-full"></nz-date-picker>
+          <nz-date-picker [(ngModel)]="ketThucTu" [ngModelOptions]="{standalone:true}" class="w-full rounded-lg"></nz-date-picker>
         </div>
 
         <div class="flex flex-col">
           <label class="mb-2 font-medium text-gray-700">Dự kiến kết thúc (Đến)</label>
-          <nz-date-picker [(ngModel)]="ketThucDen" [ngModelOptions]="{standalone:true}" class="w-full"></nz-date-picker>
+          <nz-date-picker [(ngModel)]="ketThucDen" [ngModelOptions]="{standalone:true}" class="w-full rounded-lg"></nz-date-picker>
         </div>
       </div>
 
       <div style="margin-top:12px;display:flex;justify-content:flex-end;gap:8px">
-        <button nz-button type="button" (click)="closeAdvanced()">Hủy</button>
-        <button nz-button nzType="primary" type="button" (click)="applyAdvanced()">Áp dụng</button>
+        <button nz-button type="button" (click)="closeAdvanced()" class="rounded-lg">Hủy</button>
+        <button nz-button nzType="primary" type="button" (click)="applyAdvanced()" class="rounded-lg">Áp dụng</button>
       </div>
     </ng-container>
   </nz-modal>
@@ -252,11 +252,12 @@
             selectedRequest.nhanSuThiCongs?.length || 0 }})</label>
           <button nz-button nzType="dashed" nzSize="small" (click)="openAddNhanSu()"
             *ngIf="selectedRequest.trangThaiYeuCauId !== 7 && selectedRequest.trangThaiYeuCauId !== 8"
-            class="rounded-lg border-indigo-200 text-indigo-600">
-            <i nz-icon nzType="plus"></i> Thêm thợ
+            class="rounded-lg border-indigo-200 text-indigo-600 inline-flex items-center gap-1">
+            <i nz-icon nzType="plus-circle"></i> Thêm thợ
           </button>
         </div>
 
+        <div class="responsive-table">
         <nz-table #nsTable [nzData]="selectedRequest.nhanSuThiCongs" [nzShowPagination]="false" nzSize="small"
           class="bg-transparent">
           <thead>
@@ -286,6 +287,7 @@
             </tr> -->
           </tbody>
         </nz-table>
+        </div>
       </div>
 
       <!-- FILES -->
@@ -324,8 +326,8 @@
       <div class="pt-6 border-t border-gray-100 bg-white pb-2 mt-8">
         <div class="flex flex-wrap gap-2 justify-end">
           <!-- Return/Cancel -->
-          <button nz-button nzDanger nzType="default" (click)="openCancel()" *ngIf="canShowAction('Cancel')">Hủy yêu
-            cầu</button>
+          <button nz-button nzDanger nzType="default" (click)="openCancel()" *ngIf="canShowAction('Cancel')"
+            class="rounded-lg px-4">Hủy yêu cầu</button>
           <button nz-button nzType="default" (click)="openReturn()" *ngIf="canShowAction('Return')"
             class="border-orange-500 text-orange-600">Trả lại hồ sơ</button>
 

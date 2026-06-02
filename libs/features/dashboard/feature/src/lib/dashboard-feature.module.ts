@@ -13,6 +13,7 @@ import { NzSelectModule } from 'ng-zorro-antd/select';
 import { NzTagModule } from 'ng-zorro-antd/tag';
 import { NzPaginationModule } from 'ng-zorro-antd/pagination';
 import { NzCardModule } from 'ng-zorro-antd/card';
+import { NzDatePickerModule } from 'ng-zorro-antd/date-picker';
 import { NotificationBellComponent } from './notification-bell/notification-bell.component';
 import { NotificationsComponent } from './notifications/notifications.component';
 import { NzBadgeModule } from 'ng-zorro-antd/badge';
@@ -41,7 +42,8 @@ const routes: Routes = [
       { path: 'khao-sat', loadChildren: () => import('@features/khao-sat/feature').then((m) => m.KhaoSatFeatureModule) },
       { path: 'phan-anh', loadChildren: () => import('@features/phan-anh/feature').then((m) => m.PhanAnhFeatureModule) },
       { path: 'sao-luu', loadChildren: () => import('@features/sao-luu/feature').then((m) => m.SaoLuuFeatureModule) },
-      { path: 'quy-thu-chi', loadChildren: () => import('@features/quy-thu-chi/feature').then((m) => m.QuyThuChiFeatureModule) }
+      { path: 'quy-thu-chi', loadChildren: () => import('@features/quy-thu-chi/feature').then((m) => m.QuyThuChiFeatureModule) },
+      { path: 'tri-thuc', loadChildren: () => import('@features/tri-thuc/feature').then((m) => m.TriThucFeatureModule) }
     ]
   }
 ];
@@ -68,7 +70,8 @@ const routes: Routes = [
     NzSelectModule,
     NzTagModule,
     NzPaginationModule,
-    NzCardModule
+    NzCardModule,
+    NzDatePickerModule
   ]
 })
 export class DashboardFeatureModule {}

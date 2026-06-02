@@ -1,49 +1,77 @@
 ﻿<div class="p-3">
-  <div class="flex justify-between items-center mb-3">
-    <div>
-      <h2 class="text-2xl font-bold text-gray-800">Quản lý hóa đơn</h2>
-      <p class="text-gray-500 text-sm">Tra cứu và phê duyệt hóa đơn phí dịch vụ cư dân.</p>
-    </div>
+  <div class="page-toolbar flex justify-between items-center flex-wrap gap-2 sm:gap-3 mb-3">
     <button nz-button nzType="primary" (click)="publishInvoices()"
-      class="h-10 px-6 rounded-lg font-semibold bg-green-600 border-none hover:bg-green-700 shadow-sm flex items-center gap-2">
-      <i nz-icon nzType="send"></i> Phát hành hàng loạt
+      class="ml-auto h-10 px-6 rounded-lg font-semibold bg-green-600 border-none hover:bg-green-700 shadow-sm flex items-center gap-2">
+      <i nz-icon nzType="send"></i> <span class="hidden sm:inline">Phát hành hàng loạt</span>
     </button>
   </div>
 
-  <div class="bg-white p-3 rounded-xl shadow-sm border border-gray-100 mb-3 flex flex-wrap gap-4 items-end">
-    <input nz-input [(ngModel)]="keyword" (keyup.enter)="load()" placeholder="Tìm kiếm hóa đơn..."
-      style="min-width:260px;width:320px;border-radius:8px;padding:8px 12px;border:1px solid #e5e7eb;height:40px;box-sizing:border-box">
+  <div class="bg-white p-3 rounded-xl shadow-sm border border-gray-100 mb-3">
+    <div class="flex flex-wrap gap-4 items-end">
+      <input nz-input [(ngModel)]="keyword" (keyup.enter)="load()" placeholder="Tìm kiếm hóa đơn..."
+        style="min-width:260px;width:320px;border-radius:8px;padding:8px 12px;border:1px solid #e5e7eb;height:40px;box-sizing:border-box">
 
-    <div style="width: 200px">
-      <label class="text-[11px] font-bold text-gray-400 mb-1.5 block ml-1">Đợt thanh toán</label>
-      <nz-select [(ngModel)]="dotThanhToanId" class="w-full rounded-lg overflow-hidden" nzShowSearch nzAllowClear
-        (ngModelChange)="load()">
-        <nz-option *ngFor="let d of dotThanhToanOptions" [nzValue]="d.id" [nzLabel]="d.tenDot"></nz-option>
-      </nz-select>
+      <div style="width: 200px">
+        <label class="text-[11px] font-bold text-gray-400 mb-1.5 block ml-1">Đợt thanh toán</label>
+        <nz-select [(ngModel)]="dotThanhToanId" class="w-full rounded-lg overflow-hidden" nzShowSearch nzAllowClear (ngModelChange)="load()">
+          <nz-option *ngFor="let d of dotThanhToanOptions" [nzValue]="d.id" [nzLabel]="d.tenDot"></nz-option>
+        </nz-select>
+      </div>
+
+      <button nz-button (click)="load()"
+        style="display:flex;align-items:center;background:#0b84e6;border-color:#0b84e6;color:#fff;border-radius:8px;padding:6px 14px;font-weight:600;height:40px;box-sizing:border-box">
+        <i nz-icon nzType="search" nzTheme="outline"></i>&nbsp;Tìm kiếm</button>
+
+      <button nz-button type="button" (click)="toggleAdvanced()"
+        style="height:40px;padding:6px 12px;border-radius:6px;display:flex;align-items:center;gap:8px;font-weight:600;margin-left:6px">
+        <i nz-icon nzType="filter" nzTheme="outline"></i>
+        <span>Tìm nâng cao</span>
+      </button>
+
+      <button nz-button type="button" (click)="onRefresh()"
+        style="height:40px;padding:6px 12px;border-radius:6px;display:flex;align-items:center;justify-content:center;gap:8px;font-weight:600;border:1px solid #60a5fa;background:#eff6ff;color:#1e3a8a">
+        <i nz-icon nzType="reload" nzTheme="outline"
+          style="font-size:20px;line-height:20px;transform:scale(1.06);display:inline-block;color:#1e3a8a"></i>
+      </button>
     </div>
-
-    <div style="width: 100px">
-      <label class="text-[11px] font-bold text-gray-400 mb-1.5 block ml-1">Tháng</label>
-      <nz-select [(ngModel)]="thang" class="w-full rounded-lg overflow-hidden" (ngModelChange)="load()">
-        <nz-option *ngFor="let m of [1,2,3,4,5,6,7,8,9,10,11,12]" [nzValue]="m" [nzLabel]="m"></nz-option>
-      </nz-select>
-    </div>
-
-    <!-- <button nz-button nzType="primary" (click)="load()"
-      class="h-10 px-4 rounded-lg font-semibold bg-indigo-600 border-none flex items-center gap-2">
-      <i nz-icon nzType="search"></i> Tìm kiếm
-    </button> -->
-
-    <button nz-button (click)="load()"
-      style="display:flex;align-items:center;background:#0b84e6;border-color:#0b84e6;color:#fff;border-radius:8px;padding:6px 14px;font-weight:600;height:40px;box-sizing:border-box">
-      <i nz-icon nzType="search" nzTheme="outline"></i>&nbsp;Tìm kiếm</button>
-
-    <button nz-button type="button" (click)="onRefresh()"
-      style="height:40px;padding:6px 12px;border-radius:6px;display:flex;align-items:center;justify-content:center;gap:8px;font-weight:600;border:1px solid #60a5fa;background:#eff6ff;color:#1e3a8a">
-      <i nz-icon nzType="reload" nzTheme="outline"
-        style="font-size:20px;line-height:20px;transform:scale(1.06);display:inline-block;color:#1e3a8a"></i>
-    </button>
   </div>
+
+  <!-- Advanced Search Modal -->
+  <nz-modal [(nzVisible)]="advancedVisible" nzTitle="Tìm kiếm nâng cao" (nzOnCancel)="closeAdvanced()"
+    [nzFooter]="null" nzWrapClassName="advanced-search-modal">
+    <ng-container *nzModalContent>
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-3" style="margin-top:4px">
+        <div class="flex flex-col">
+          <label class="mb-2 font-medium text-gray-700">Tháng</label>
+          <nz-select [(ngModel)]="thang" [ngModelOptions]="{standalone:true}" nzAllowClear
+            nzPlaceHolder="-- Tất cả --" style="width:100%">
+            <nz-option *ngFor="let m of [1,2,3,4,5,6,7,8,9,10,11,12]" [nzValue]="m" [nzLabel]="'Tháng ' + m"></nz-option>
+          </nz-select>
+        </div>
+
+        <div class="flex flex-col">
+          <label class="mb-2 font-medium text-gray-700">Trạng thái</label>
+          <nz-select [(ngModel)]="trangThaiHoaDonId" [ngModelOptions]="{standalone:true}" nzAllowClear
+            nzPlaceHolder="-- Tất cả --" style="width:100%">
+            <nz-option *ngFor="let s of trangThaiHoaDonOptions" [nzValue]="s.id" [nzLabel]="s.ten || s.name"></nz-option>
+          </nz-select>
+        </div>
+
+        <div class="flex flex-col">
+          <label class="mb-2 font-medium text-gray-700">Căn hộ</label>
+          <nz-select [(ngModel)]="canHoId" [ngModelOptions]="{standalone:true}" nzShowSearch nzAllowClear
+            nzPlaceHolder="-- Tất cả --" style="width:100%">
+            <nz-option *ngFor="let ch of canHoOptions" [nzValue]="ch.id" [nzLabel]="ch.maCanHo + ' - ' + (ch.tenCanHo || '')"></nz-option>
+          </nz-select>
+        </div>
+      </div>
+
+      <div style="margin-top:12px;display:flex;justify-content:flex-end;gap:8px">
+        <button nz-button type="button" (click)="closeAdvanced()" class="rounded-lg">Hủy</button>
+        <button nz-button nzType="primary" type="button" (click)="applyAdvanced()" class="rounded-lg">Áp dụng</button>
+      </div>
+    </ng-container>
+  </nz-modal>
 
   <app-scroll-table [height]="'calc(100vh - 240px)'">
     <nz-table #basicTable [nzData]="items" [nzLoading]="loading" [nzFrontPagination]="false" [nzTotal]="totalItems"

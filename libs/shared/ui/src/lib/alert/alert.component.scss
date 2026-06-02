@@ -9,6 +9,15 @@
 	gap: 0.5rem;
 }
 
+@media (max-width: 480px) {
+	.alert-wrapper {
+		top: 0.5rem;
+		right: 0.5rem;
+		left: 0.5rem;
+		width: auto;
+	}
+}
+
 .alert-item {
 	margin: 0;
 }

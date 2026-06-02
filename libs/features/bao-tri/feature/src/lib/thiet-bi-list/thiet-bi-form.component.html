@@ -1,5 +1,5 @@
 <form nz-form [formGroup]="form" (ngSubmit)="submit()" nzLayout="vertical">
-  <div class="grid grid-cols-2 gap-x-6">
+  <div class="grid grid-cols-1 md:grid-cols-2 gap-x-6">
     <nz-form-item>
       <nz-form-label class="text-gray-600 font-medium"
         >Mã thiết bị</nz-form-label
@@ -9,8 +9,9 @@
           nz-input
           formControlName="maThietBi"
           placeholder="Ví dụ: TB-001"
-          [disabled]="!!item"
           class="rounded-lg"
+          [class.bg-gray-50]="!!item"
+          [class.cursor-not-allowed]="!!item"
         />
       </nz-form-control>
     </nz-form-item>

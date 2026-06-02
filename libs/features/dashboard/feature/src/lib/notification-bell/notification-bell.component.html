@@ -1,11 +1,11 @@
-<div nz-dropdown [nzDropdownMenu]="menu" [nzVisible]="dropdownVisible" nzTrigger="click" (nzVisibleChange)="onDropdownVisibleChange($event)" class="notification-bell-wrapper cursor-pointer flex items-center h-8 min-w-max" title="Thông báo">
+<div nz-dropdown [nzDropdownMenu]="menu" [nzVisible]="dropdownVisible" nzTrigger="click" (nzVisibleChange)="onDropdownVisibleChange($event)" class="notification-bell-wrapper cursor-pointer flex items-center h-8" title="Thông báo">
   <nz-badge [nzCount]="unreadCount" [nzOverflowCount]="99" class="flex items-center">
-    <i nz-icon nzType="bell" nzTheme="outline" class="text-xl text-gray-600 icon-center"></i>
+    <i nz-icon nzType="bell" nzTheme="outline" class="text-lg sm:text-xl text-gray-600 icon-center"></i>
   </nz-badge>
 </div>
 
 <nz-dropdown-menu #menu nzPlacement="bottomRight">
-  <div class="notification-panel p-2 max-w-sm">
+  <div class="notification-panel p-2 max-w-sm sm:max-w-sm w-screen sm:w-auto">
     <div class="notification-header">
       <div class="notification-title">
         <!-- <i nz-icon nzType="notification" nzTheme="outline" class="header-icon"></i> -->

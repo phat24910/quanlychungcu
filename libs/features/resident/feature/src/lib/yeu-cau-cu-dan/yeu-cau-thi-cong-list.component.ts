@@ -465,7 +465,7 @@ export class YeuCauThiCongListComponent implements OnInit, OnDestroy {
     if (!this.selectedRequest) return false;
 
     this.actionLoading = true;
-    this.chungCu.uploadMedia([file as File], 'ho-so-thi-cong').subscribe({
+    this.chungCu.uploadMedia([file as File], 'yeu-cau-thi-cong').subscribe({
       next: (res) => {
         if (res.isOk && res.result && res.result.length > 0) {
           const tepIds = res.result.map((f: any) => f.fileId);

@@ -1,7 +1,7 @@
 <nz-spin [nzSpinning]="loading">
   <div *ngIf="item" class="p-2">
     <!-- Header -->
-    <div class="grid grid-cols-2 gap-4 mb-6 p-4 rounded-xl border" [ngClass]="item.loaiGiaoDichId === 1 ? 'bg-green-50 border-green-100' : 'bg-red-50 border-red-100'">
+    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-6 p-4 rounded-xl border" [ngClass]="item.loaiGiaoDichId === 1 ? 'bg-green-50 border-green-100' : 'bg-red-50 border-red-100'">
       <div>
         <div class="text-xs font-bold text-gray-400 uppercase tracking-wider mb-1">Mã giao dịch</div>
         <div class="text-lg font-bold text-gray-900">{{ item.maGiaoDich }}</div>
@@ -29,6 +29,7 @@
       <h4 class="text-sm font-bold text-gray-500 uppercase mb-3 flex items-center gap-2">
         <i nz-icon nzType="profile"></i> Chi tiết các khoản
       </h4>
+      <div class="responsive-table">
       <nz-table #innerTable [nzData]="item.chiTiets" [nzFrontPagination]="false" [nzShowPagination]="false" nzSize="small">
         <thead>
           <tr>
@@ -47,6 +48,7 @@
           </tr>
         </tbody>
       </nz-table>
+      </div>
     </div>
   </div>
 

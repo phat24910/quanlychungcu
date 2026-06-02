@@ -94,6 +94,7 @@ export class DashboardComponent implements OnInit {
       ], icon: 'setting' },
       { title: 'Khảo sát & Bầu cử', route: '/dashboard/khao-sat', icon: 'solution' },
       { title: 'Phản ánh cư dân', route: '/dashboard/phan-anh', icon: 'message' },
+      { title: 'Tri thức Chatbot', route: '/dashboard/tri-thuc', icon: 'book' },
       { title: 'Sao lưu & Khôi phục', route: '/dashboard/sao-luu', icon: 'cloud-server' },
       // { title: 'Thông báo', route: '/dashboard/notifications', icon: 'notification' },
       // { title: 'Cài đặt', route: '/dashboard/settings', icon: 'setting' }

@@ -20,8 +20,8 @@ export class ChiSoTieuThuListComponent implements OnInit {
   pageSize = 10;
 
   // Filters
-  thang = new Date().getMonth() + 1;
-  nam = new Date().getFullYear();
+  thang: number | null = null;
+  nam: number | null = null;
   toaNhaId: number | null = null;
   tangId: number | null = null;
   canHoId: number | null = null;
@@ -70,8 +70,8 @@ export class ChiSoTieuThuListComponent implements OnInit {
   load(): void {
     this.loading = true;
     const query = {
-      thang: this.thang,
-      nam: this.nam,
+      thang: this.thang || undefined,
+      nam: this.nam || undefined,
       toaNhaId: this.toaNhaId || undefined,
       tangId: this.tangId || undefined,
       canHoId: this.canHoId || undefined,
@@ -103,8 +103,8 @@ export class ChiSoTieuThuListComponent implements OnInit {
   }
 
   onRefresh(): void {
-    this.thang = new Date().getMonth() + 1;
-    this.nam = new Date().getFullYear();
+    this.thang = null;
+    this.nam = null;
     this.toaNhaId = null;
     this.tangId = null;
     this.canHoId = null;
@@ -146,18 +146,22 @@ export class ChiSoTieuThuListComponent implements OnInit {
 
   // Actions
   exportTemplate(): void {
+    if (!this.thang || !this.nam) {
+      this.notification.warning('Cảnh báo', 'Vui lòng chọn tháng và năm');
+      return;
+    }
     const payload = {
       toaNhaId: this.toaNhaId || undefined,
       tangId: this.tangId || undefined,
       dichVuId: this.dichVuId || undefined,
-      thang: this.thang,
-      nam: this.nam,
+      thang: this.thang!,
+      nam: this.nam!,
     };
     this.chiSoService.exportExcel(payload).subscribe((blob) => {
       const url = window.URL.createObjectURL(blob);
       const a = document.createElement('a');
       a.href = url;
-      a.download = `Mau_Ghi_Chi_So_${this.thang}_${this.nam}.xlsx`;
+      a.download = `Mau_Ghi_Chi_So_${this.thang ?? ''}_${this.nam ?? ''}.xlsx`;
       a.click();
     });
   }
@@ -170,14 +174,18 @@ export class ChiSoTieuThuListComponent implements OnInit {
       );
       return;
     }
+    if (!this.thang || !this.nam) {
+      this.notification.warning('Cảnh báo', 'Vui lòng chọn tháng và năm');
+      return;
+    }
     this.modal.confirm({
       nzTitle: 'Xác nhận hàng loạt',
       nzContent: `Bạn có chắc chắn muốn xác nhận tất cả chỉ số của tháng ${this.thang}/${this.nam} cho dịch vụ đã chọn?`,
       nzOnOk: () => {
         this.chiSoService
           .confirm({
-            thang: this.thang,
-            nam: this.nam,
+            thang: this.thang!,
+            nam: this.nam!,
             dichVuId: this.dichVuId!,
           })
           .subscribe((res) => {
@@ -219,8 +227,8 @@ export class ChiSoTieuThuListComponent implements OnInit {
       nzTitle: 'Nhập dữ liệu & Ảnh đồng hồ',
       nzContent: ChiSoTieuThuImportComponent,
       nzComponentParams: {
-        thang: this.thang,
-        nam: this.nam,
+        thang: this.thang || undefined,
+        nam: this.nam || undefined,
       },
       nzFooter: null,
       nzWidth: 600,

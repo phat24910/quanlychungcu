@@ -1,4 +1,4 @@
-<div style="padding:12px">
+﻿<div style="padding:12px">
   <div [formGroup]="form">
     <div class="form-root">
       <div class="modal-left">
@@ -135,7 +135,7 @@
                     <div style="margin-top:8px; width:100%; box-sizing:border-box;">
                       <div style="width:100%; padding:8px; border:1px dashed #e5e7eb; border-radius:6px; background:#fff; display:flex; justify-content:center; align-items:center; box-sizing:border-box">
                         <button nz-button nzType="dashed" type="button" (click)="startAddFileToCard(i, cardFileInput)" style="border-color:#60a5fa;color:#0ea5e9;border-radius:6px;padding:6px 12px;font-weight:600;height:36px;box-sizing:border-box;display:flex;align-items:center;gap:8px">
-                          <i nz-icon nzType="plus" nzTheme="outline" style="font-size:16px;line-height:1;color:currentColor"></i>
+                          <i nz-icon nzType="plus-circle" nzTheme="outline" style="font-size:16px;line-height:1;color:currentColor"></i>
                           <span style="font-weight:600;color:currentColor;text-align:center">Thêm file</span>
                         </button>
                       </div>
@@ -144,7 +144,7 @@
                   <ng-template #noFiles>
                     <div style="margin-top:6px;padding:12px;border:1px dashed #e5e7eb;border-radius:6px;background:#fff;color:#6b7280;display:flex;align-items:center;justify-content:center;width:100%;box-sizing:border-box">
                       <button nz-button nzType="dashed" type="button" (click)="startAddFileToCard(i, cardFileInput)" style="border-color:#60a5fa;color:#0ea5e9;border-radius:6px;padding:6px 12px;font-weight:600;height:36px;box-sizing:border-box;display:flex;align-items:center;gap:8px">
-                        <i nz-icon nzType="plus" nzTheme="outline" style="font-size:18px;line-height:1;color:currentColor"></i>
+                        <i nz-icon nzType="plus-circle" nzTheme="outline" style="font-size:18px;line-height:1;color:currentColor"></i>
                         <span style="font-weight:600;color:currentColor">Thêm file</span>
                       </button>
                     </div>
@@ -165,8 +165,8 @@
     </div>
 
       <div *ngIf="!inModal" style="margin-top:12px;display:flex;justify-content:flex-end;gap:8px">
-      <button nz-button type="button" (click)="saved.emit()">Hủy</button>
-      <button nz-button nzType="primary" [nzLoading]="loading" type="button" (click)="submit()">Lưu</button>
+      <button nz-button type="button" (click)="saved.emit()" class="rounded-lg">Hủy</button>
+      <button nz-button nzType="primary" [nzLoading]="loading" type="button" (click)="submit()" class="rounded-lg">Lưu</button>
     </div>
   </div>
 </div>

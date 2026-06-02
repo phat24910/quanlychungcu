@@ -9,17 +9,16 @@
   <div class="flex-1 overflow-y-auto">
     <div class="chi-so-list-container p-4">
       <!-- FILTER BAR -->
-      <div class="bg-white p-4 rounded-xl shadow-sm mb-4 border border-gray-100">
+      <div class="page-toolbar bg-white p-4 rounded-xl shadow-sm mb-4 border border-gray-100">
         <div class="grid grid-cols-1 md:grid-cols-4 gap-3 items-end">
           <div>
             <label class="text-[11px] font-bold text-gray-400 mb-1.5 block ml-1">Tháng / Năm</label>
             <div class="flex gap-2">
-              <nz-select [(ngModel)]="thang" class="w-20 rounded-xl overflow-hidden">
+              <nz-select [(ngModel)]="thang" nzAllowClear nzPlaceHolder="Tháng" class="w-40 rounded-xl overflow-hidden">
                 <nz-option *ngFor="let m of [1,2,3,4,5,6,7,8,9,10,11,12]" [nzValue]="m" [nzLabel]="m"></nz-option>
               </nz-select>
-              <nz-select [(ngModel)]="nam" class="w-24 rounded-xl overflow-hidden">
-                <nz-option *ngFor="let y of [2024,2025,2026]" [nzValue]="y" [nzLabel]="y"></nz-option>
-              </nz-select>
+              <input nz-input type="number" [(ngModel)]="nam" placeholder="Năm" min="2020" max="2100"
+                style="width:100px;border-radius:6px;padding:6px 12px;border:1px solid #e5e7eb;height:40px;box-sizing:border-box" />
             </div>
           </div>
 
@@ -108,7 +107,7 @@
             <tr *ngFor="let item of basicTable.data; let i = index">
               <td [nzChecked]="setOfCheckedId.has(item.id)" (nzCheckedChange)="onItemChecked(item.id, $event)"></td>
               <td class="text-center align-middle">
-                <a nz-dropdown [nzDropdownMenu]="menu" (click)="$event.stopPropagation()" class="text-gray-400 hover:text-indigo-600">
+                <a nz-dropdown [nzDropdownMenu]="menu" (click)="$event.stopPropagation()" class="text-gray-400">
                   <i nz-icon nzType="unordered-list" nzTheme="outline" class="text-xl"></i>
                 </a>
                 <nz-dropdown-menu #menu="nzDropdownMenu">

@@ -33,6 +33,7 @@ export class QuyThuChiListComponent implements OnInit {
 
   exportLoading = false;
   advancedVisible = false;
+  loaiThuChiOptions: any[] = [];
 
   constructor(
     private svc: QuyThuChiService,
@@ -43,6 +44,15 @@ export class QuyThuChiListComponent implements OnInit {
 
   ngOnInit(): void {
     this.load();
+    this.loadLoaiThuChiOptions();
+  }
+
+  loadLoaiThuChiOptions(): void {
+    this.svc.getLoaiThuChiForSelector().subscribe({
+      next: (res: ApiResponse<any[]>) => {
+        this.loaiThuChiOptions = res.result || [];
+      }
+    });
   }
 
   load(): void {

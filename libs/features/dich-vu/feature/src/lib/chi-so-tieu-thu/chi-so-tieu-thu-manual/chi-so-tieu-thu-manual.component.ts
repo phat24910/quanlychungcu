@@ -14,8 +14,8 @@ export class ChiSoTieuThuManualComponent implements OnInit {
   saving = false;
 
   // Filter for generating list
-  thang = new Date().getMonth() + 1;
-  nam = new Date().getFullYear();
+  thang: number | null = null;
+  nam: number | null = null;
   ngayGhiNhan = new Date().toISOString();
   toaNhaId: number | null = null;
   tangId: number | null = null;
@@ -64,6 +64,10 @@ export class ChiSoTieuThuManualComponent implements OnInit {
       this.notification.warning('Cảnh báo', 'Vui lòng chọn Tòa nhà, Tầng và Dịch vụ');
       return;
     }
+    if (!this.thang || !this.nam) {
+      this.notification.warning('Cảnh báo', 'Vui lòng chọn tháng và năm');
+      return;
+    }
 
     this.loading = true;
     // Get list of apartments in this floor and existing indices if any
@@ -104,6 +108,10 @@ export class ChiSoTieuThuManualComponent implements OnInit {
       this.notification.warning('Cảnh báo', 'Chưa có chỉ số mới nào được nhập');
       return;
     }
+    if (!this.thang || !this.nam) {
+      this.notification.warning('Cảnh báo', 'Vui lòng chọn tháng và năm');
+      return;
+    }
 
     this.saving = true;
     const payload = {
@@ -117,7 +125,7 @@ export class ChiSoTieuThuManualComponent implements OnInit {
       next: (res) => {
         if (res.isOk) {
           this.notification.success('Thành công', 'Đã lưu danh sách chỉ số');
-          this.router.navigate(['/dich-vu/chi-so-tieu-thu']);
+          this.router.navigate(['/dashboard/dich-vu/chi-so-tieu-thu']);
         }
         this.saving = false;
       },
@@ -129,7 +137,7 @@ export class ChiSoTieuThuManualComponent implements OnInit {
   }
 
   goBack(): void {
-    this.router.navigate(['/dich-vu/chi-so-tieu-thu']);
+    this.router.navigate(['/dashboard/dich-vu/chi-so-tieu-thu']);
   }
 
   onChiSoMoiChange(item: any): void {
